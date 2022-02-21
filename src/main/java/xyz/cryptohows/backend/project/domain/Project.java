@@ -34,7 +34,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private Mainnet mainnet;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<Partnership> partnerships = new ArrayList<>();
 
     @OneToMany(mappedBy = "project")
