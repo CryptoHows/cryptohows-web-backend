@@ -1,6 +1,7 @@
 package xyz.cryptohows.backend.round.domain;
 
-public enum FundingType {
+public enum FundingStage {
+    NONE,
     SEED,
     SERIES_A,
     SERIES_B,

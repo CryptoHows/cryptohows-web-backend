@@ -45,7 +45,7 @@ class RoundTest {
                 .project(cryptohouse)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
-                .fundingType(FundingType.SEED)
+                .fundingStage(FundingStage.SEED)
                 .build();
     }
 

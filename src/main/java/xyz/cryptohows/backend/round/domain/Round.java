@@ -15,16 +15,16 @@ public class Round {
     private final Project project;
     private final String announcedDate;
     private final String moneyRaised;
-    private final FundingType fundingType;
+    private final FundingStage fundingStage;
 
     private final List<RoundParticipation> participants = new ArrayList();
 
     @Builder
-    public Round(Project project, String announcedDate, String moneyRaised, FundingType fundingType) {
+    public Round(Project project, String announcedDate, String moneyRaised, FundingStage fundingStage) {
         this.project = project;
         this.announcedDate = announcedDate;
         this.moneyRaised = moneyRaised;
-        this.fundingType = fundingType;
+        this.fundingStage = fundingStage;
     }
 
     public void makeParticipation(VentureCapital ventureCapital) {
@@ -42,5 +42,9 @@ public class Round {
         return participants.stream()
                 .map(RoundParticipation::getVentureCapital)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isSameProject(Project project) {
+        return this.project.equals(project);
     }
 }
