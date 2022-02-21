@@ -8,7 +8,7 @@
 **[Partnership]**
 - 벤쳐 캐피탈 - 프로젝트를 잇는 중개 엔티티
 - 어떤 벤처 캐피탈과 프로젝트가 파트너쉽을 맺었는지 기록
-- VentureCaptial / Project
+- VentureCapital / Project
 
 **[Project]**
 - 프로젝트의 정보를 담은 엔티티
@@ -24,8 +24,8 @@
 - Project 프로젝트 / 투자 시기 / 투자 금액 / 투자 라운드 / List<RoundParticipation/> participants
 
 ### 구현할 기능 목록
-- [ ] TDD를 통한 도메인 설계
-- [ ] 도메인 별 패키지 분리
+- [x] TDD를 통한 도메인 설계
+- [x] 도메인 별 패키지 분리
 - [ ] Repository Layer 테스트 작성
 - [ ] Service Layer 구현
 - [ ] Web Layer 구현
