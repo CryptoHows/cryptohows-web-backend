@@ -1,28 +1,44 @@
 package xyz.cryptohows.backend.project.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.vc.domain.Partnership;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project {
 
-    private final String name;
-    private final String about;
-    private final String homepage;
-    private final Category category;
-    private final Mainnet mainnet;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final List<Partnership> partnerships = new ArrayList<>();
-    private final List<Round> rounds = new ArrayList<>();
+    private String name;
+    private String about;
+    private String homepage;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private Mainnet mainnet;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    private List<Partnership> partnerships = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    private List<Round> rounds = new ArrayList<>();
 
     @Builder
     public Project(String name, String about, String homepage, Category category, Mainnet mainnet) {

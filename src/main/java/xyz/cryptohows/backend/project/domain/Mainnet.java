@@ -5,5 +5,6 @@ public enum Mainnet {
     SOLANA,
     AVALANCHE,
     KLAYTN,
+    EOS,
     NONE;
 }

@@ -1,22 +1,32 @@
 package xyz.cryptohows.backend.vc.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import xyz.cryptohows.backend.project.domain.Project;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VentureCapital {
 
-    private final String name;
-    private final String about;
-    private final String homepage;
-    private final String logo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final List<Partnership> partnerships = new ArrayList<>();
+    private String name;
+    private String about;
+    private String homepage;
+    private String logo;
+
+    @OneToMany(mappedBy = "ventureCapital", cascade = CascadeType.REMOVE)
+    private List<Partnership> partnerships = new ArrayList<>();
 
     @Builder
     public VentureCapital(String name, String about, String homepage, String logo) {

@@ -1,30 +1,49 @@
 package xyz.cryptohows.backend.round.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Round {
 
-    private final Project project;
-    private final String announcedDate;
-    private final String moneyRaised;
-    private final FundingStage fundingStage;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final List<RoundParticipation> participants = new ArrayList();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private Project project;
+
+    private String announcedDate;
+    private String moneyRaised;
+
+    @Enumerated(EnumType.STRING)
+    private FundingStage fundingStage;
+
+    @OneToMany(mappedBy = "round", cascade = CascadeType.REMOVE)
+    private List<RoundParticipation> participants = new ArrayList<>();
 
     @Builder
-    public Round(Project project, String announcedDate, String moneyRaised, FundingStage fundingStage) {
-        this.project = project;
+    public Round(String announcedDate, String moneyRaised, FundingStage fundingStage) {
         this.announcedDate = announcedDate;
         this.moneyRaised = moneyRaised;
         this.fundingStage = fundingStage;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+        project.addRound(this);
     }
 
     public void makeParticipation(VentureCapital ventureCapital) {

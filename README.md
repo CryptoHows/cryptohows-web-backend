@@ -3,7 +3,7 @@
 ### 도메인 설계
 **[VentureCapital]**
 - 벤쳐 캐피탈의 정보를 담은 엔티티
-- 이름 / 소개 / 홈페이지 / 로고 사진 / List<Partnership\> portfolio
+- 이름 / 소개 / 홈페이지 / 로고 사진 / List<Partnership\> partnerships
 
 **[Partnership]**
 - 벤쳐 캐피탈 - 프로젝트를 잇는 중개 엔티티
@@ -12,7 +12,7 @@
 
 **[Project]**
 - 프로젝트의 정보를 담은 엔티티
-- 이름 / 소개 / 홈페이지 / 카테고리 / 메인넷 / List<Partnership\> investors / List<Round\> rounds
+- 이름 / 소개 / 홈페이지 / 카테고리 / 메인넷 / List<Partnership\> partnerships / List<Round\> rounds
 
 **[RoundParticipation]**
 - 벤처 캐피탈 - 라운드를 잇는 중개 엔티티
@@ -26,7 +26,7 @@
 ### 구현할 기능 목록
 - [x] TDD를 통한 도메인 설계
 - [x] 도메인 별 패키지 분리
-- [ ] Repository Layer 테스트 작성
+- [x] Repository Layer 테스트 작성
 - [ ] Service Layer 구현
 - [ ] Web Layer 구현
 - [ ] SpringRestDocs 작성
