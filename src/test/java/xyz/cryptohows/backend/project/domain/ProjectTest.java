@@ -76,7 +76,7 @@ class ProjectTest {
 
         List<VentureCapital> investors = klaytn.getInvestors();
 
-        assertThat(investors).containsExactly(hashed, a16z);
+        assertThat(investors).containsExactlyInAnyOrder(hashed, a16z);
     }
 
     @Test

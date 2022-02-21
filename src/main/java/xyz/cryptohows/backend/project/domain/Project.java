@@ -10,9 +10,10 @@ import xyz.cryptohows.backend.vc.domain.Partnership;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -35,10 +36,10 @@ public class Project {
     private Mainnet mainnet;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
-    private List<Partnership> partnerships = new ArrayList<>();
+    private Set<Partnership> partnerships = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
-    private List<Round> rounds = new ArrayList<>();
+    private Set<Round> rounds = new HashSet<>();
 
     @Builder
     public Project(String name, String about, String homepage, Category category, Mainnet mainnet) {

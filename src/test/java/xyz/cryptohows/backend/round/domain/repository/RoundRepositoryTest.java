@@ -18,7 +18,8 @@ import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import java.util.Arrays;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 class RoundRepositoryTest {

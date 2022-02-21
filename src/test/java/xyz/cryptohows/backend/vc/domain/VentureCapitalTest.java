@@ -9,6 +9,7 @@ import xyz.cryptohows.backend.project.domain.Project;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,15 +63,11 @@ class VentureCapitalTest {
     void partnership() {
         hashed.makePartnership(cryptoHows);
 
-        List<Partnership> hashedPartnerships = hashed.getPartnerships();
+        Set<Partnership> hashedPartnerships = hashed.getPartnerships();
         assertThat(hashedPartnerships).hasSize(1);
-        assertThat(hashedPartnerships.get(0).getVentureCapital()).isEqualTo(hashed);
-        assertThat(hashedPartnerships.get(0).getProject()).isEqualTo(cryptoHows);
 
-        List<Partnership> cryptoHowsPartnerships = cryptoHows.getPartnerships();
+        Set<Partnership> cryptoHowsPartnerships = cryptoHows.getPartnerships();
         assertThat(cryptoHowsPartnerships).hasSize(1);
-        assertThat(cryptoHowsPartnerships.get(0).getVentureCapital()).isEqualTo(hashed);
-        assertThat(cryptoHowsPartnerships.get(0).getProject()).isEqualTo(cryptoHows);
     }
 
     @Test
@@ -79,6 +76,6 @@ class VentureCapitalTest {
         hashed.makePartnerships(Arrays.asList(cryptoHows, cryptoWhys));
 
         List<Project> portfolio = hashed.getPortfolio();
-        assertThat(portfolio).containsExactly(cryptoHows, cryptoWhys);
+        assertThat(portfolio).containsExactlyInAnyOrder(cryptoHows, cryptoWhys);
     }
 }
