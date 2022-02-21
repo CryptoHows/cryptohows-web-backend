@@ -26,7 +26,7 @@
 ### 구현할 기능 목록
 - [x] TDD를 통한 도메인 설계
 - [x] 도메인 별 패키지 분리
-- [ ] Repository Layer 테스트 작성
+- [x] Repository Layer 테스트 작성
 - [ ] Service Layer 구현
 - [ ] Web Layer 구현
 - [ ] SpringRestDocs 작성
