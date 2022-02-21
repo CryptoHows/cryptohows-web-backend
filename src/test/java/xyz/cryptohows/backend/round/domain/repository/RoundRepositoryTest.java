@@ -1,4 +1,4 @@
-package xyz.cryptohows.backend.project.domain.repository;
+package xyz.cryptohows.backend.round.domain.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,38 +9,31 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
+import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.RoundParticipation;
-import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
-import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
-import xyz.cryptohows.backend.vc.domain.Partnership;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
-import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import java.util.Arrays;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
-class ProjectRepositoryTest {
-
-    @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
-    private VentureCapitalRepository ventureCapitalRepository;
-
-    @Autowired
-    private PartnershipRepository partnershipRepository;
+class RoundRepositoryTest {
 
     @Autowired
     private RoundRepository roundRepository;
 
     @Autowired
     private RoundParticipationRepository roundParticipationRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private VentureCapitalRepository ventureCapitalRepository;
 
     @Autowired
     private TestEntityManager tem;
@@ -81,26 +74,34 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("해당 Project 삭제되면 VentureCapital에서 체결했던 파트너쉽이 삭제된다.")
-    void deleteProjectPartnershipDeleted() {
-        // given
-        Partnership hashedEOS = new Partnership(hashed, EOS);
-        Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
-        partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedAxieInfinity));
-        tem.clear();
-        tem.flush();
-
-        // when
-        projectRepository.deleteById(EOS.getId());
-
-        // then
-        List<Partnership> partnerships = partnershipRepository.findAll();
-        assertThat(partnerships).hasSize(1);
+    @DisplayName("Round의 Project가 없다면 저장되지 않는다.")
+    void cannotSaveRound() {
+        assertThatThrownBy(() -> roundRepository.save(EOSSeed))
+                .isInstanceOf(Exception.class);
     }
 
     @Test
-    @DisplayName("해당 Project 삭제되면, 참여했던 Round가 삭제된다.")
-    void deleteProjectRoundDeleted() {
+    @DisplayName("해당 Round에 벤처캐피탈이 참여할 수 있다.")
+    void vcJoinsRound() {
+        // given
+        EOSSeed.setProject(EOS);
+        roundRepository.save(EOSSeed);
+        RoundParticipation hashedEOSRound = new RoundParticipation(hashed, EOSSeed);
+
+        // when
+        roundParticipationRepository.save(hashedEOSRound);
+        tem.flush();
+        tem.clear();
+
+        // then
+        Round round = roundRepository.findById(EOSSeed.getId())
+                .orElseThrow(IllegalArgumentException::new);
+        assertThat(round.getParticipants()).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("해당 라운드가 삭제되면, RoundParticipant 모두 삭제된다.")
+    void roundDeleted() {
         // given
         EOSSeed.setProject(EOS);
         roundRepository.save(EOSSeed);
@@ -109,10 +110,9 @@ class ProjectRepositoryTest {
         tem.clear();
 
         // when
-        projectRepository.deleteById(EOS.getId());
+        roundRepository.deleteById(EOSSeed.getId());
 
         // then
-        assertThat(roundRepository.count()).isZero();
         assertThat(roundParticipationRepository.count()).isZero();
     }
 }

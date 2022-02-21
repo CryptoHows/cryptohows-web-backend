@@ -22,6 +22,7 @@ public class Round {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Project project;
 
     private String announcedDate;
@@ -30,15 +31,19 @@ public class Round {
     @Enumerated(EnumType.STRING)
     private FundingStage fundingStage;
 
-    @OneToMany(mappedBy = "round")
+    @OneToMany(mappedBy = "round", cascade = CascadeType.REMOVE)
     private List<RoundParticipation> participants = new ArrayList<>();
 
     @Builder
-    public Round(Project project, String announcedDate, String moneyRaised, FundingStage fundingStage) {
-        this.project = project;
+    public Round(String announcedDate, String moneyRaised, FundingStage fundingStage) {
         this.announcedDate = announcedDate;
         this.moneyRaised = moneyRaised;
         this.fundingStage = fundingStage;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+        project.addRound(this);
     }
 
     public void makeParticipation(VentureCapital ventureCapital) {

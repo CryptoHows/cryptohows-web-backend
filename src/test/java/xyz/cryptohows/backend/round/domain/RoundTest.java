@@ -42,11 +42,11 @@ class RoundTest {
     @BeforeEach
     void setUp() {
         round = Round.builder()
-                .project(cryptohouse)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .fundingStage(FundingStage.SEED)
                 .build();
+        round.setProject(cryptohouse);
     }
 
     @Test
