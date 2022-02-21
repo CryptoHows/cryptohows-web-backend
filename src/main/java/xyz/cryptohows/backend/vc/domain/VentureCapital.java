@@ -25,7 +25,7 @@ public class VentureCapital {
     private String homepage;
     private String logo;
 
-    @OneToMany(mappedBy = "ventureCapital")
+    @OneToMany(mappedBy = "ventureCapital", cascade = CascadeType.REMOVE)
     private List<Partnership> partnerships = new ArrayList<>();
 
     @Builder
