@@ -28,6 +28,7 @@ public class Round {
 
     private String announcedDate;
     private String moneyRaised;
+    private String newsArticle;
 
     @Enumerated(EnumType.STRING)
     private FundingStage fundingStage;
@@ -36,9 +37,10 @@ public class Round {
     private Set<RoundParticipation> participants = new HashSet<>();
 
     @Builder
-    public Round(String announcedDate, String moneyRaised, FundingStage fundingStage) {
+    public Round(String announcedDate, String moneyRaised, String newsArticle, FundingStage fundingStage) {
         this.announcedDate = announcedDate;
         this.moneyRaised = moneyRaised;
+        this.newsArticle = newsArticle;
         this.fundingStage = fundingStage;
     }
 

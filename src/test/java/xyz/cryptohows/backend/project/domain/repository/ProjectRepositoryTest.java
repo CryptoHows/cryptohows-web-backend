@@ -71,6 +71,7 @@ class ProjectRepositoryTest {
     private final Round EOSSeed = Round.builder()
             .announcedDate("2019-10")
             .moneyRaised("$20M")
+            .newsArticle("https://news.com/funding")
             .fundingStage(FundingStage.SEED)
             .build();
 

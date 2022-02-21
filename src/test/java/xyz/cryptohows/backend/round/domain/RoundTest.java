@@ -44,6 +44,7 @@ class RoundTest {
         round = Round.builder()
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
+                .newsArticle("https://news.com/funding")
                 .fundingStage(FundingStage.SEED)
                 .build();
         round.setProject(cryptohouse);
