@@ -15,13 +15,11 @@ public class Projects {
 
     public Map<Category, List<Project>> sortProjectsByCategory() {
         Map<Category, List<Project>> projectsByCategory = new LinkedHashMap<>();
-        for (Category category : Category.values()) {
-            projectsByCategory.put(category, new ArrayList<>());
-        }
-
         for (Project project : projects) {
-            List<Project> projectsInCategory = projectsByCategory.get(project.getCategory());
+            Category category = project.getCategory();
+            List<Project> projectsInCategory = projectsByCategory.getOrDefault(category, new ArrayList<>());
             projectsInCategory.add(project);
+            projectsByCategory.put(category, projectsInCategory);
         }
         return projectsByCategory;
     }
