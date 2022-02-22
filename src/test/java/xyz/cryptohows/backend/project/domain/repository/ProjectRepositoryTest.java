@@ -56,6 +56,7 @@ class ProjectRepositoryTest {
             .name("EOS")
             .about("EOS 프로젝트")
             .homepage("https://EOS.io/")
+            .logo("https://EOS.io/logo.png")
             .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
             .mainnet(Mainnet.EOS)
             .build();

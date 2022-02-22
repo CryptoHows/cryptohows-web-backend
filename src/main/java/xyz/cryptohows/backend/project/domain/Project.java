@@ -28,6 +28,7 @@ public class Project {
     private String name;
     private String about;
     private String homepage;
+    private String logo;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -42,10 +43,11 @@ public class Project {
     private Set<Round> rounds = new HashSet<>();
 
     @Builder
-    public Project(String name, String about, String homepage, Category category, Mainnet mainnet) {
+    public Project(String name, String about, String homepage, String logo, Category category, Mainnet mainnet) {
         this.name = name;
         this.about = about;
         this.homepage = homepage;
+        this.logo = logo;
         this.category = category;
         this.mainnet = mainnet;
     }

@@ -12,7 +12,7 @@
 
 **[Project]**
 - 프로젝트의 정보를 담은 엔티티
-- 이름 / 소개 / 홈페이지 / 카테고리 / 메인넷 / List<Partnership\> partnerships / List<Round\> rounds
+- 이름 / 소개 / 홈페이지 / 로고 사진 / 카테고리 / 메인넷 / List<Partnership\> partnerships / List<Round\> rounds
 
 **[RoundParticipation]**
 - 벤처 캐피탈 - 라운드를 잇는 중개 엔티티
