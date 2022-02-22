@@ -34,11 +34,178 @@
 ### Web Layer 필요한 요구 사항
 **[Project]**
 - [ ] 현재 어떤 프로젝트들이 등록이 되어있는지 반환
+    ```json
+    [
+      {
+        "id" : 1,
+        "name" : "klaytn",
+        "logo" : "https://klaytn.com/logo.png",
+        "about" : "카카오의 자회사 GroundX에서 만든 블록체인 플랫폼",
+        "category" : "Blockchain_Infrastructure",
+        "round" : "Seed",
+        "partnerships" : [ {
+          "id" : 1,
+          "name" : "Hashed",
+          "logo" : "https://hashed.com/logo.png"
+        }, {
+          "id" : 2,
+          "name" : "a16z",
+          "logo" : "https://a16z.com/logo.png"
+        } ]
+      },
+      {
+        "id" : 2,
+        "name" : "cryptohows",
+        "logo" : "https://cryptohows.xyz/logo.png",
+        "about" : "VC가 투자한 블록체인 서비스 확인하기",
+        "category" : "Social_Network",
+        "round" : "Series B",
+        "partnerships" : [ {
+          "id" : 1,
+          "name" : "Hashed",
+          "logo" : "https://hashed.com/logo.png"
+        }, {
+          "id" : 2,
+          "name" : "a16z",
+          "logo" : "https://a16z.com/logo.png"
+        } ]
+      }
+    ]
+    ```
 - [ ] 가장 많은 파트너쉽을 보유한 프로젝트를 반환
+    ```json
+    [
+      {
+        "id" : 1,
+        "name" : "klaytn",
+        "logo" : "https://klaytn.com/logo.png",
+        "about" : "카카오의 자회사 GroundX에서 만든 블록체인 플랫폼",
+        "category" : "Blockchain_Infrastructure",
+        "round" : "Seed",
+        "partnerships" : [ {
+          "id" : 1,
+          "name" : "Hashed",
+          "logo" : "https://hashed.com/logo.png"
+        }, {
+          "id" : 2,
+          "name" : "a16z",
+          "logo" : "https://a16z.com/logo.png"
+        } ]
+      },
+      {
+        "id" : 2,
+        "name" : "cryptohows",
+        "logo" : "https://cryptohows.xyz/logo.png",
+        "about" : "VC가 투자한 블록체인 서비스 확인하기",
+        "category" : "Social_Network",
+        "round" : "Series B",
+        "partnerships" : [ {
+          "id" : 1,
+          "name" : "Hashed",
+          "logo" : "https://hashed.com/logo.png"
+        } ]
+      }
+    ]
+    ```
 
 **[VentureCapital]**
 - [ ] 현재 어떤 벤처캐피탈이 등록이 되어있는지 반환
+    ```json
+    [
+      {
+        "id" : 1,
+        "name" : "Hashed",
+        "logo" : "https://hashed.com/logo.png",
+        "about" : "해시드는 대한민국의 블록체인 전문 VC입니다.",
+        "homepage" : "https://hashed.com"
+      },
+      {
+        "id" : 2,
+        "name" : "a16z",
+        "logo" : "https://a16z.com/logo.png",
+        "about" : "a16z는 앤드리슨 호로위츠는 마크 앤드리슨과 벤 호로위츠가 공동 창업한 미국의 IT 벤처 투자 전문 회사입니다.",
+        "homepage" : "https://a16z.com"
+      }
+    ]
+    ```
 - [ ] 해당 벤처 캐피탈이 카테고리별로 어떤 프로젝트에 투자했는지 반환
+    ```json
+    {
+      "id" : 1,
+      "name" : "Hashed",
+      "logo" : "https://hashed.com/logo.png",
+      "about" : "해시드는 대한민국의 블록체인 전문 VC입니다.",
+      "homepage" : "https://hashed.com",
+      "blockchainInfrastructure" : [ {
+        "id" : 1,
+        "name" : "klaytn",
+        "logo" : "https://klaytn.com/logo.png",
+        "about" : "카카오의 자회사 GroundX에서 만든 블록체인 플랫폼",
+        "category" : "Blockchain_Infrastructure",
+        "round" : "Seed"
+      } ],
+      "socialNetwork" : [ {
+        "id" : 2,
+        "name" : "cryptohows",
+        "logo" : "https://cryptohows.xyz/logo.png",
+        "about" : "VC가 투자한 블록체인 서비스 확인하기",
+        "category" : "Social_Network",
+        "round" : "Series B"
+      } ]
+    }
+    ```
 
 **[Rounds]**
 - [ ] 최근 투자받은 프로젝트를 순서대로 반환
+  ```json
+  [
+    {
+      "id" : 3,
+      "project" : {
+        "id" : 1,
+        "name" : "klaytn",
+        "logo" : "https://klaytn.com/logo.png",
+        "about" : "카카오의 자회사 GroundX에서 만든 블록체인 플랫폼",
+        "category" : "Blockchain_Infrastructure",
+        "round" : "Seed"
+      },
+      "announcedDate" : "2021-10",
+      "moneyRaised" : "$20M",
+      "newsArticle" : "https://investinfo.com/article",
+      "fundingStage" : "Seed",
+      "participants" : [ {
+          "id" : 1,
+          "name" : "Hashed",
+          "logo" : "https://hashed.com/logo.png"
+      }, {
+          "id" : 2,
+          "name" : "a16z",
+          "logo" : "https://a16z.com/logo.png"
+      } ]
+    }, 
+    {
+      "id" : 2,
+      "project" : {
+        "id" : 1,
+        "name" : "klaytn",
+        "logo" : "https://klaytn.com/logo.png",
+        "about" : "카카오의 자회사 GroundX에서 만든 블록체인 플랫폼",
+        "category" : "Blockchain_Infrastructure",
+        "round" : "Seed"
+      },
+      "announcedDate" : "2021-10",
+      "moneyRaised" : "$20M",
+      "newsArticle" : "https://investinfo.com/article",
+      "fundingStage" : "Seed",
+      "participants" : [ {
+          "id" : 1,
+          "name" : "Hashed",
+          "logo" : "https://hashed.com/logo.png"
+      }, {
+          "id" : 2,
+          "name" : "a16z",
+          "logo" : "https://a16z.com/logo.png"
+      } ]
+    }
+  ]
+  ```
