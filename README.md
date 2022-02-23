@@ -36,7 +36,7 @@
 - [x] Repository Layer 테스트 작성
 - [ ] Service Layer 구현
 - [ ] Web Layer 구현
-- [ ] SpringRestDocs 작성
+- [ ] API 문서화
 
 ### Web Layer 필요한 요구 사항
 
@@ -87,7 +87,7 @@
       }
     ]
     ```
-- [ ] 가장 많은 파트너쉽을 보유한 프로젝트를 반환
+- [x] 가장 많은 파트너쉽을 보유한 프로젝트를 순서대로 반환
     ```json
     [
       {

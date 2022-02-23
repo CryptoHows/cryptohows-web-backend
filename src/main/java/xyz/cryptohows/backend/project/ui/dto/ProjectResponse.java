@@ -4,6 +4,7 @@ import lombok.Getter;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class ProjectResponse {
         );
     }
 
-    public static List<ProjectResponse> toList(List<Project> projects) {
+    public static List<ProjectResponse> toList(Collection<Project> projects) {
         return projects.stream()
                 .map(ProjectResponse::of)
                 .collect(Collectors.toList());

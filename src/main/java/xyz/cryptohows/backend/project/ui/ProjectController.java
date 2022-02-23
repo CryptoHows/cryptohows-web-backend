@@ -20,4 +20,10 @@ public class ProjectController {
         List<ProjectResponse> projectResponses = projectService.findAllProjects();
         return ResponseEntity.ok(projectResponses);
     }
+
+    @GetMapping("/projects/investors-in-descending-order")
+    public ResponseEntity<List<ProjectResponse>> orderProjectByNumberOfInvestors() {
+        List<ProjectResponse> projectResponses = projectService.orderProjectByNumberOfInvestors();
+        return ResponseEntity.ok(projectResponses);
+    }
 }
