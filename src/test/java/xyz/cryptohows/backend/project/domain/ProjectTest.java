@@ -18,6 +18,7 @@ class ProjectTest {
     private Project klaytn;
 
     private final Project cryptohouse = Project.builder()
+            .id(1L)
             .name("크립토하우스")
             .about("크립토하우스입니다.")
             .homepage("크립토하우스.com")
@@ -26,6 +27,7 @@ class ProjectTest {
             .build();
 
     private final VentureCapital hashed = VentureCapital.builder()
+            .id(1L)
             .name("해시드")
             .about("해시드 VC입니다.")
             .homepage("해시드.com")
@@ -33,6 +35,7 @@ class ProjectTest {
             .build();
 
     private final VentureCapital a16z = VentureCapital.builder()
+            .id(2L)
             .name("a16z")
             .about("a16z VC입니다.")
             .homepage("a16z.com")
@@ -45,6 +48,7 @@ class ProjectTest {
                 .name("클레이튼")
                 .about("클레이튼(Klaytn)은 ㈜카카오의 자회사인 그라운드엑스가 개발한 디앱(dApp·분산애플리케이션)을 위한 블록체인 플랫폼이다")
                 .homepage("https://www.klaytn.com/")
+                .logo("https://www.klaytn.com/logo.png")
                 .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
                 .mainnet(Mainnet.KLAYTN)
                 .build();
@@ -76,19 +80,21 @@ class ProjectTest {
 
         List<VentureCapital> investors = klaytn.getInvestors();
 
-        assertThat(investors).containsExactly(hashed, a16z);
+        assertThat(investors).containsExactlyInAnyOrder(hashed, a16z);
     }
 
     @Test
     @DisplayName("프로젝트에 라운드를 추가할 수 있다.")
     void addRound() {
         Round seed = Round.builder()
+                .project(klaytn)
+                .id(1L)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .fundingStage(FundingStage.SEED)
                 .build();
 
-        seed.setProject(klaytn);
+        klaytn.addRound(seed);
         assertThat(klaytn.getRounds()).hasSize(1);
     }
 
@@ -96,12 +102,13 @@ class ProjectTest {
     @DisplayName("자기 프로젝트의 라운드가 아니면 추가할 수 없다.")
     void cannotAddRound() {
         Round seriesA = Round.builder()
+                .project(cryptohouse)
+                .id(1L)
                 .announcedDate("2020-01")
                 .moneyRaised("$20M")
                 .fundingStage(FundingStage.SERIES_A)
                 .build();
 
-        seriesA.setProject(cryptohouse);
         assertThatThrownBy(() -> klaytn.addRound(seriesA))
                 .isInstanceOf(IllegalArgumentException.class);
     }
@@ -110,19 +117,23 @@ class ProjectTest {
     @DisplayName("여러 라운드가 진행되었다면 가장 최신 라운드를 반환할 수 있다.")
     void getRound() {
         Round seed = Round.builder()
+                .id(1L)
+                .project(klaytn)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .fundingStage(FundingStage.SEED)
                 .build();
-        seed.setProject(klaytn);
 
         Round seriesA = Round.builder()
+                .id(2L)
+                .project(klaytn)
                 .announcedDate("2020-01")
                 .moneyRaised("$20M")
                 .fundingStage(FundingStage.SERIES_A)
                 .build();
-        seriesA.setProject(klaytn);
 
+        klaytn.addRound(seed);
+        klaytn.addRound(seriesA);
         assertThat(klaytn.getCurrentRound()).isEqualTo(FundingStage.SERIES_A);
     }
 

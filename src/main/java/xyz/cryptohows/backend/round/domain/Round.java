@@ -8,8 +8,12 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -25,25 +29,24 @@ public class Round {
     @JoinColumn(nullable = false)
     private Project project;
 
-    private String announcedDate;
+    private LocalDate announcedDate;
     private String moneyRaised;
+    private String newsArticle;
 
     @Enumerated(EnumType.STRING)
     private FundingStage fundingStage;
 
     @OneToMany(mappedBy = "round", cascade = CascadeType.REMOVE)
-    private List<RoundParticipation> participants = new ArrayList<>();
+    private Set<RoundParticipation> participants = new HashSet<>();
 
     @Builder
-    public Round(String announcedDate, String moneyRaised, FundingStage fundingStage) {
-        this.announcedDate = announcedDate;
-        this.moneyRaised = moneyRaised;
-        this.fundingStage = fundingStage;
-    }
-
-    public void setProject(Project project) {
+    public Round(Long id, Project project, String announcedDate, String moneyRaised, String newsArticle, FundingStage fundingStage) {
+        this.id = id;
         this.project = project;
-        project.addRound(this);
+        this.announcedDate = LocalDateConverter.formatDate(announcedDate);
+        this.moneyRaised = moneyRaised;
+        this.newsArticle = newsArticle;
+        this.fundingStage = fundingStage;
     }
 
     public void makeParticipation(VentureCapital ventureCapital) {
@@ -65,5 +68,18 @@ public class Round {
 
     public boolean isSameProject(Project project) {
         return this.project.equals(project);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Round round = (Round) o;
+        return id.equals(round.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

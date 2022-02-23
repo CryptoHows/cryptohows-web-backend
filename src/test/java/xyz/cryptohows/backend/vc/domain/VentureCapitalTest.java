@@ -9,6 +9,7 @@ import xyz.cryptohows.backend.project.domain.Project;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,6 +23,7 @@ class VentureCapitalTest {
     private final String logo = "https://www.hashed.com/icons/icon-48x48.png?v=0d0c5de3e1ce3cc2a754603c645abcb9";
 
     Project cryptoHows = Project.builder()
+            .id(1L)
             .name("cryptoHows")
             .about("VC가 투자한 프로젝트를 한눈에 볼 수 있어요")
             .homepage("https://cryptohows.xyz/")
@@ -30,6 +32,7 @@ class VentureCapitalTest {
             .build();
 
     Project cryptoWhys = Project.builder()
+            .id(2L)
             .name("cryptoWhys")
             .about("VC가 투자한 프로젝트를 한눈에 볼 수 있어요")
             .homepage("https://cryptoWhys.xyz/")
@@ -40,6 +43,7 @@ class VentureCapitalTest {
     @BeforeEach
     void setUp() {
         hashed = VentureCapital.builder()
+                .id(1L)
                 .name(name)
                 .about(about)
                 .homepage(homepage)
@@ -62,15 +66,11 @@ class VentureCapitalTest {
     void partnership() {
         hashed.makePartnership(cryptoHows);
 
-        List<Partnership> hashedPartnerships = hashed.getPartnerships();
+        Set<Partnership> hashedPartnerships = hashed.getPartnerships();
         assertThat(hashedPartnerships).hasSize(1);
-        assertThat(hashedPartnerships.get(0).getVentureCapital()).isEqualTo(hashed);
-        assertThat(hashedPartnerships.get(0).getProject()).isEqualTo(cryptoHows);
 
-        List<Partnership> cryptoHowsPartnerships = cryptoHows.getPartnerships();
+        Set<Partnership> cryptoHowsPartnerships = cryptoHows.getPartnerships();
         assertThat(cryptoHowsPartnerships).hasSize(1);
-        assertThat(cryptoHowsPartnerships.get(0).getVentureCapital()).isEqualTo(hashed);
-        assertThat(cryptoHowsPartnerships.get(0).getProject()).isEqualTo(cryptoHows);
     }
 
     @Test
@@ -79,6 +79,6 @@ class VentureCapitalTest {
         hashed.makePartnerships(Arrays.asList(cryptoHows, cryptoWhys));
 
         List<Project> portfolio = hashed.getPortfolio();
-        assertThat(portfolio).containsExactly(cryptoHows, cryptoWhys);
+        assertThat(portfolio).containsExactlyInAnyOrder(cryptoHows, cryptoWhys);
     }
 }
