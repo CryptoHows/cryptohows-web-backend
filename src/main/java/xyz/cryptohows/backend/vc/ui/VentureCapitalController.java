@@ -17,15 +17,15 @@ public class VentureCapitalController {
 
     private final VentureCapitalService ventureCapitalService;
 
-    @GetMapping("/vc")
+    @GetMapping("/venture-capitals")
     public ResponseEntity<List<VentureCapitalSimpleResponse>> findAllVentureCapitals() {
         List<VentureCapitalSimpleResponse> ventureCapitalSimpleResponses = ventureCapitalService.findAllVentureCapitals();
         return ResponseEntity.ok(ventureCapitalSimpleResponses);
     }
 
-    @GetMapping("/vc/{ventureCapital}")
-    public ResponseEntity<VentureCapitalResponse> findVentureCapital(@PathVariable String ventureCapital) {
-        VentureCapitalResponse ventureCapitalResponse = ventureCapitalService.findVentureCapitalByName(ventureCapital);
+    @GetMapping("/venture-capitals/{vcId:[\\d]+}")
+    public ResponseEntity<VentureCapitalResponse> findVentureCapital(@PathVariable Long vcId) {
+        VentureCapitalResponse ventureCapitalResponse = ventureCapitalService.findVentureCapitalByName(vcId);
         return ResponseEntity.ok(ventureCapitalResponse);
     }
 }

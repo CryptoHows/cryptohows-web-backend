@@ -21,9 +21,9 @@ public class VentureCapitalService {
         return VentureCapitalSimpleResponse.toList(ventureCapitals);
     }
 
-    public VentureCapitalResponse findVentureCapitalByName(String ventureCapitalName) {
-        VentureCapital ventureCapital = ventureCapitalRepository.findByName(ventureCapitalName)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이름의 벤처캐피탈은 없습니다."));
+    public VentureCapitalResponse findVentureCapitalByName(Long vcId) {
+        VentureCapital ventureCapital = ventureCapitalRepository.findById(vcId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 벤처캐피탈은 없습니다."));
         Projects portfolio = new Projects(ventureCapital.getPortfolio());
         return VentureCapitalResponse.of(ventureCapital, portfolio.sortProjectsByCategory());
     }
