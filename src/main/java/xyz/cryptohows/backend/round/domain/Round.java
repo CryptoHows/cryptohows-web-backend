@@ -10,6 +10,7 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,8 @@ public class Round {
     private Set<RoundParticipation> participants = new HashSet<>();
 
     @Builder
-    public Round(String announcedDate, String moneyRaised, String newsArticle, FundingStage fundingStage) {
+    public Round(Long id, String announcedDate, String moneyRaised, String newsArticle, FundingStage fundingStage) {
+        this.id = id;
         this.announcedDate = announcedDate;
         this.moneyRaised = moneyRaised;
         this.newsArticle = newsArticle;
@@ -68,5 +70,18 @@ public class Round {
 
     public boolean isSameProject(Project project) {
         return this.project.equals(project);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Round round = (Round) o;
+        return id.equals(round.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

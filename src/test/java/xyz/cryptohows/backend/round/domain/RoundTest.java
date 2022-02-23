@@ -18,6 +18,7 @@ class RoundTest {
     private Round round;
 
     private Project cryptohouse = Project.builder()
+            .id(1L)
             .name("크립토하우스")
             .about("크립토하우스입니다.")
             .homepage("크립토하우스.com")
@@ -27,6 +28,7 @@ class RoundTest {
             .build();
 
     private final VentureCapital hashed = VentureCapital.builder()
+            .id(1L)
             .name("해시드")
             .about("해시드 VC입니다.")
             .homepage("해시드.com")
@@ -34,6 +36,7 @@ class RoundTest {
             .build();
 
     private final VentureCapital a16z = VentureCapital.builder()
+            .id(2L)
             .name("a16z")
             .about("a16z VC입니다.")
             .homepage("a16z.com")
@@ -43,6 +46,7 @@ class RoundTest {
     @BeforeEach
     void setUp() {
         round = Round.builder()
+                .id(1L)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .newsArticle("https://news.com/funding")

@@ -18,6 +18,7 @@ class ProjectTest {
     private Project klaytn;
 
     private final Project cryptohouse = Project.builder()
+            .id(1L)
             .name("크립토하우스")
             .about("크립토하우스입니다.")
             .homepage("크립토하우스.com")
@@ -26,6 +27,7 @@ class ProjectTest {
             .build();
 
     private final VentureCapital hashed = VentureCapital.builder()
+            .id(1L)
             .name("해시드")
             .about("해시드 VC입니다.")
             .homepage("해시드.com")
@@ -33,6 +35,7 @@ class ProjectTest {
             .build();
 
     private final VentureCapital a16z = VentureCapital.builder()
+            .id(2L)
             .name("a16z")
             .about("a16z VC입니다.")
             .homepage("a16z.com")
@@ -84,6 +87,7 @@ class ProjectTest {
     @DisplayName("프로젝트에 라운드를 추가할 수 있다.")
     void addRound() {
         Round seed = Round.builder()
+                .id(1L)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .fundingStage(FundingStage.SEED)
@@ -97,6 +101,7 @@ class ProjectTest {
     @DisplayName("자기 프로젝트의 라운드가 아니면 추가할 수 없다.")
     void cannotAddRound() {
         Round seriesA = Round.builder()
+                .id(1L)
                 .announcedDate("2020-01")
                 .moneyRaised("$20M")
                 .fundingStage(FundingStage.SERIES_A)
@@ -111,6 +116,7 @@ class ProjectTest {
     @DisplayName("여러 라운드가 진행되었다면 가장 최신 라운드를 반환할 수 있다.")
     void getRound() {
         Round seed = Round.builder()
+                .id(1L)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .fundingStage(FundingStage.SEED)
@@ -118,6 +124,7 @@ class ProjectTest {
         seed.setProject(klaytn);
 
         Round seriesA = Round.builder()
+                .id(2L)
                 .announcedDate("2020-01")
                 .moneyRaised("$20M")
                 .fundingStage(FundingStage.SERIES_A)

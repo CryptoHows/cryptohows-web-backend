@@ -10,10 +10,7 @@ import xyz.cryptohows.backend.vc.domain.Partnership;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
 import javax.persistence.*;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -43,7 +40,8 @@ public class Project {
     private Set<Round> rounds = new HashSet<>();
 
     @Builder
-    public Project(String name, String about, String homepage, String logo, Category category, Mainnet mainnet) {
+    public Project(Long id, String name, String about, String homepage, String logo, Category category, Mainnet mainnet) {
+        this.id = id;
         this.name = name;
         this.about = about;
         this.homepage = homepage;
@@ -77,5 +75,25 @@ public class Project {
                 .map(Round::getFundingStage)
                 .max(Comparator.comparing(Enum::ordinal))
                 .orElse(FundingStage.NONE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return id.equals(project.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

@@ -9,6 +9,7 @@ import xyz.cryptohows.backend.project.domain.Project;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,8 @@ public class VentureCapital {
     private Set<Partnership> partnerships = new HashSet<>();
 
     @Builder
-    public VentureCapital(String name, String about, String homepage, String logo) {
+    public VentureCapital(Long id, String name, String about, String homepage, String logo) {
+        this.id = id;
         this.name = name;
         this.about = about;
         this.homepage = homepage;
@@ -53,5 +55,18 @@ public class VentureCapital {
         return partnerships.stream()
                 .map(Partnership::getProject)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VentureCapital that = (VentureCapital) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
