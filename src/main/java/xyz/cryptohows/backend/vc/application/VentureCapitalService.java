@@ -22,7 +22,7 @@ public class VentureCapitalService {
     }
 
     public VentureCapitalResponse findVentureCapitalByName(Long vcId) {
-        VentureCapital ventureCapital = ventureCapitalRepository.findById(vcId)
+        VentureCapital ventureCapital = ventureCapitalRepository.findByIdFetchJoinPartnerships(vcId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id의 벤처캐피탈은 없습니다."));
         Projects portfolio = new Projects(ventureCapital.getPortfolio());
         return VentureCapitalResponse.of(ventureCapital, portfolio.sortProjectsByCategory());

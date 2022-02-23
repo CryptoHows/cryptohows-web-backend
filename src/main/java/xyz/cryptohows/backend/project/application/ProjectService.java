@@ -16,7 +16,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     public List<ProjectResponse> findAllProjects() {
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectRepository.findAllFetchJoinPartnerships();
         return ProjectResponse.toList(projects);
     }
 
