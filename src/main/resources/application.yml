@@ -31,3 +31,8 @@ spring:
 logging:
   file:
     path: /home/ubuntu/
+---
+springdoc:
+  version: 1.0.0
+  swagger-ui:
+    path: index.html
