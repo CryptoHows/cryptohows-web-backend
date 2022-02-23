@@ -92,28 +92,28 @@ public class DataLoader implements ApplicationRunner {
 
 
         Round klaytnSeed = Round.builder()
+                .project(klaytn)
                 .announcedDate("2019-03")
                 .moneyRaised("$90M")
                 .newsArticle("https://www.finyear.com/Klaytn-raises-90-million-in-seed-funding-to-drive-the-mainstream-adoption-of-blockchain_a41034.html")
                 .fundingStage(FundingStage.SEED)
                 .build();
-        klaytnSeed.setProject(klaytn);
 
         Round EOSICO = Round.builder()
+                .project(EOS)
                 .announcedDate("2019-09")
                 .moneyRaised("$4B")
                 .newsArticle("https://www.coindesk.com/markets/2019/09/17/the-first-yearlong-ico-for-eos-raised-4-billion-the-second-just-28-million/")
                 .fundingStage(FundingStage.ICO)
                 .build();
-        EOSICO.setProject(EOS);
 
         Round axieInfinitySeriesB = Round.builder()
+                .project(axieInfinity)
                 .announcedDate("2021-10")
                 .moneyRaised("$150M")
                 .newsArticle("https://www.coindesk.com/business/2021/10/04/axie-infinity-to-raise-150m-series-b-at-3b-valuation-report/")
                 .fundingStage(FundingStage.SERIES_B)
                 .build();
-        axieInfinitySeriesB.setProject(axieInfinity);
         roundRepository.saveAll(Arrays.asList(klaytnSeed, EOSICO, axieInfinitySeriesB));
 
 

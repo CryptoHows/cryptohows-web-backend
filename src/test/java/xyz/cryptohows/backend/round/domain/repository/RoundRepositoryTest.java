@@ -17,6 +17,7 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -63,6 +64,7 @@ class RoundRepositoryTest {
             .build();
 
     private final Round EOSSeed = Round.builder()
+            .project(EOS)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -78,7 +80,14 @@ class RoundRepositoryTest {
     @Test
     @DisplayName("Round의 Project가 없다면 저장되지 않는다.")
     void cannotSaveRound() {
-        assertThatThrownBy(() -> roundRepository.save(EOSSeed))
+        Round noProject = Round.builder()
+                .announcedDate("2019-10")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SEED)
+                .build();
+
+        assertThatThrownBy(() -> roundRepository.save(noProject))
                 .isInstanceOf(Exception.class);
     }
 
@@ -86,7 +95,6 @@ class RoundRepositoryTest {
     @DisplayName("해당 Round에 벤처캐피탈이 참여할 수 있다.")
     void vcJoinsRound() {
         // given
-        EOSSeed.setProject(EOS);
         roundRepository.save(EOSSeed);
         RoundParticipation hashedEOSRound = new RoundParticipation(hashed, EOSSeed);
 
@@ -105,7 +113,6 @@ class RoundRepositoryTest {
     @DisplayName("해당 라운드가 삭제되면, RoundParticipant 모두 삭제된다.")
     void roundDeleted() {
         // given
-        EOSSeed.setProject(EOS);
         roundRepository.save(EOSSeed);
         roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
         tem.flush();
@@ -116,5 +123,62 @@ class RoundRepositoryTest {
 
         // then
         assertThat(roundParticipationRepository.count()).isZero();
+    }
+
+    @Test
+    @DisplayName("최근에 투자받은 라운드 순서대로 받아볼 수 있다.")
+    void recentRounds() {
+        // given
+        Round EOSSeed = Round.builder()
+                .project(EOS)
+                .announcedDate("2019-10")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SEED)
+                .build();
+        roundRepository.save(EOSSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
+
+        Round axieSeed = Round.builder()
+                .project(axieInfinity)
+                .announcedDate("2019-11")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SEED)
+                .build();
+        roundRepository.save(axieSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
+
+        Round EOSSeriesA = Round.builder()
+                .project(EOS)
+                .announcedDate("2020-02")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SERIES_A)
+                .build();
+        roundRepository.save(EOSSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
+
+        Round axieSeriesA = Round.builder()
+                .project(axieInfinity)
+                .announcedDate("2020-03")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SERIES_A)
+                .build();
+        roundRepository.save(axieSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
+
+        tem.flush();
+        tem.clear();
+
+        // when
+        List<Round> recentRounds = roundRepository.findRecentRounds();
+
+        // then
+        assertThat(recentRounds.get(0)).isEqualTo(axieSeriesA);
+        assertThat(recentRounds.get(1)).isEqualTo(EOSSeriesA);
+        assertThat(recentRounds.get(2)).isEqualTo(axieSeed);
+        assertThat(recentRounds.get(3)).isEqualTo(EOSSeed);
     }
 }

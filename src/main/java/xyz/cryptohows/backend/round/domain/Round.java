@@ -8,6 +8,8 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +29,7 @@ public class Round {
     @JoinColumn(nullable = false)
     private Project project;
 
-    private String announcedDate;
+    private LocalDate announcedDate;
     private String moneyRaised;
     private String newsArticle;
 
@@ -38,17 +40,13 @@ public class Round {
     private Set<RoundParticipation> participants = new HashSet<>();
 
     @Builder
-    public Round(Long id, String announcedDate, String moneyRaised, String newsArticle, FundingStage fundingStage) {
+    public Round(Long id, Project project, String announcedDate, String moneyRaised, String newsArticle, FundingStage fundingStage) {
         this.id = id;
-        this.announcedDate = announcedDate;
+        this.project = project;
+        this.announcedDate = LocalDateConverter.formatDate(announcedDate);
         this.moneyRaised = moneyRaised;
         this.newsArticle = newsArticle;
         this.fundingStage = fundingStage;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-        project.addRound(this);
     }
 
     public void makeParticipation(VentureCapital ventureCapital) {

@@ -103,6 +103,7 @@ class ProjectRepositoryTest {
             .build();
 
     private final Round EOSSeed = Round.builder()
+            .project(EOS)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -139,7 +140,6 @@ class ProjectRepositoryTest {
     @DisplayName("해당 Project 삭제되면, 참여했던 Round가 삭제된다.")
     void deleteProjectRoundDeleted() {
         // given
-        EOSSeed.setProject(EOS);
         roundRepository.save(EOSSeed);
         roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
         tem.flush();

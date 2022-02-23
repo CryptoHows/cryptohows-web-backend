@@ -47,12 +47,12 @@ class RoundTest {
     void setUp() {
         round = Round.builder()
                 .id(1L)
+                .project(cryptohouse)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .newsArticle("https://news.com/funding")
                 .fundingStage(FundingStage.SEED)
                 .build();
-        round.setProject(cryptohouse);
     }
 
     @Test

@@ -87,13 +87,14 @@ class ProjectTest {
     @DisplayName("프로젝트에 라운드를 추가할 수 있다.")
     void addRound() {
         Round seed = Round.builder()
+                .project(klaytn)
                 .id(1L)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .fundingStage(FundingStage.SEED)
                 .build();
 
-        seed.setProject(klaytn);
+        klaytn.addRound(seed);
         assertThat(klaytn.getRounds()).hasSize(1);
     }
 
@@ -101,13 +102,13 @@ class ProjectTest {
     @DisplayName("자기 프로젝트의 라운드가 아니면 추가할 수 없다.")
     void cannotAddRound() {
         Round seriesA = Round.builder()
+                .project(cryptohouse)
                 .id(1L)
                 .announcedDate("2020-01")
                 .moneyRaised("$20M")
                 .fundingStage(FundingStage.SERIES_A)
                 .build();
 
-        seriesA.setProject(cryptohouse);
         assertThatThrownBy(() -> klaytn.addRound(seriesA))
                 .isInstanceOf(IllegalArgumentException.class);
     }
@@ -117,20 +118,22 @@ class ProjectTest {
     void getRound() {
         Round seed = Round.builder()
                 .id(1L)
+                .project(klaytn)
                 .announcedDate("2019-03")
                 .moneyRaised("$10M")
                 .fundingStage(FundingStage.SEED)
                 .build();
-        seed.setProject(klaytn);
 
         Round seriesA = Round.builder()
                 .id(2L)
+                .project(klaytn)
                 .announcedDate("2020-01")
                 .moneyRaised("$20M")
                 .fundingStage(FundingStage.SERIES_A)
                 .build();
-        seriesA.setProject(klaytn);
 
+        klaytn.addRound(seed);
+        klaytn.addRound(seriesA);
         assertThat(klaytn.getCurrentRound()).isEqualTo(FundingStage.SERIES_A);
     }
 
