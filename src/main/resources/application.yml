@@ -1,6 +1,9 @@
 spring:
   profiles:
     active: local
+    group:
+      local: console-logging
+      prod: real-slack, file-info-logging, file-error-logging, slack-prod-error-logging
 ---
 spring:
   config:
@@ -20,3 +23,11 @@ spring:
     url: jdbc:h2:mem:cryptohows
     username: sa
     password:
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+logging:
+  file:
+    path: /home/ubuntu/

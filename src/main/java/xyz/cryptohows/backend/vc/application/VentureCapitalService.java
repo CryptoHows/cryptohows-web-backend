@@ -2,6 +2,7 @@ package xyz.cryptohows.backend.vc.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.domain.Projects;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
@@ -23,7 +24,7 @@ public class VentureCapitalService {
 
     public VentureCapitalResponse findVentureCapitalByName(Long vcId) {
         VentureCapital ventureCapital = ventureCapitalRepository.findByIdFetchJoinPartnerships(vcId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id의 벤처캐피탈은 없습니다."));
+                .orElseThrow(() -> new CryptoHowsException("해당 id의 벤처캐피탈은 없습니다."));
         Projects portfolio = new Projects(ventureCapital.getPortfolio());
         return VentureCapitalResponse.of(ventureCapital, portfolio.sortProjectsByCategory());
     }

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import xyz.cryptohows.backend.exception.DomainException;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.vc.domain.Partnership;
@@ -52,7 +53,7 @@ public class Project {
 
     public void addPartnership(Partnership partnership) {
         if (!partnership.isSameProject(this)) {
-            throw new IllegalArgumentException("해당 프로젝트의 파트너쉽이 아닙니다.");
+            throw new DomainException("해당 프로젝트의 파트너쉽이 아닙니다.");
         }
         partnerships.add(partnership);
     }
@@ -65,7 +66,7 @@ public class Project {
 
     public void addRound(Round round) {
         if (!round.isSameProject(this)) {
-            throw new IllegalArgumentException("해당 프로젝트의 라운드가 아닙니다.");
+            throw new DomainException("해당 프로젝트의 라운드가 아닙니다.");
         }
         rounds.add(round);
     }
@@ -88,12 +89,5 @@ public class Project {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "name='" + name + '\'' +
-                '}';
     }
 }
