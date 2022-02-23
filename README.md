@@ -42,7 +42,7 @@
 
 **[Project]**
 
-- [ ] 현재 어떤 프로젝트들이 등록이 되어있는지 반환
+- [x] 현재 어떤 프로젝트들이 등록이 되어있는지 반환
     ```json
     [
       {
@@ -55,6 +55,8 @@
         "investors" : [ {
           "id" : 1,
           "name" : "Hashed",
+          "about": "해시드(Hashed)는 한국의 블록체인 분야의 전문 투자업체이다.",
+          "homepage": "https://www.hashed.com/",
           "logo" : "https://hashed.com/logo.png"
         }, {
           "id" : 2,
@@ -72,10 +74,14 @@
         "investors" : [ {
           "id" : 1,
           "name" : "Hashed",
+          "about": "해시드(Hashed)는 한국의 블록체인 분야의 전문 투자업체이다.",
+          "homepage": "https://www.hashed.com/",
           "logo" : "https://hashed.com/logo.png"
         }, {
           "id" : 2,
           "name" : "a16z",
+          "about": "a16z는 앤드리슨 호로위츠는 마크 앤드리슨과 벤 호로위츠가 공동 창업한 미국의 IT 벤처 투자 전문 회사이다.",
+          "homepage": "https://a16z.com/",
           "logo" : "https://a16z.com/logo.png"
         } ]
       }
@@ -94,10 +100,14 @@
         "investors" : [ {
           "id" : 1,
           "name" : "Hashed",
+          "about": "해시드(Hashed)는 한국의 블록체인 분야의 전문 투자업체이다.",
+          "homepage": "https://www.hashed.com/",
           "logo" : "https://hashed.com/logo.png"
         }, {
           "id" : 2,
           "name" : "a16z",
+          "about": "a16z는 앤드리슨 호로위츠는 마크 앤드리슨과 벤 호로위츠가 공동 창업한 미국의 IT 벤처 투자 전문 회사이다.",
+          "homepage": "https://a16z.com/",
           "logo" : "https://a16z.com/logo.png"
         } ]
       },
@@ -111,6 +121,8 @@
         "investors" : [ {
           "id" : 1,
           "name" : "Hashed",
+          "about": "해시드(Hashed)는 한국의 블록체인 분야의 전문 투자업체이다.",
+          "homepage": "https://www.hashed.com/",
           "logo" : "https://hashed.com/logo.png"
         } ]
       }
@@ -206,10 +218,14 @@
       "participants" : [ {
           "id" : 1,
           "name" : "Hashed",
+          "about": "해시드(Hashed)는 한국의 블록체인 분야의 전문 투자업체이다.",
+          "homepage": "https://www.hashed.com/",
           "logo" : "https://hashed.com/logo.png"
       }, {
           "id" : 2,
           "name" : "a16z",
+          "about" : "a16z는 앤드리슨 호로위츠는 마크 앤드리슨과 벤 호로위츠가 공동 창업한 미국의 IT 벤처 투자 전문 회사입니다.",
+          "homepage" : "https://a16z.com",
           "logo" : "https://a16z.com/logo.png"
       } ]
     }, 
@@ -230,10 +246,14 @@
       "participants" : [ {
           "id" : 1,
           "name" : "Hashed",
+          "about": "해시드(Hashed)는 한국의 블록체인 분야의 전문 투자업체이다.",
+          "homepage": "https://www.hashed.com/",
           "logo" : "https://hashed.com/logo.png"
       }, {
           "id" : 2,
           "name" : "a16z",
+          "about" : "a16z는 앤드리슨 호로위츠는 마크 앤드리슨과 벤 호로위츠가 공동 창업한 미국의 IT 벤처 투자 전문 회사입니다.",
+          "homepage" : "https://a16z.com",
           "logo" : "https://a16z.com/logo.png"
       } ]
     }

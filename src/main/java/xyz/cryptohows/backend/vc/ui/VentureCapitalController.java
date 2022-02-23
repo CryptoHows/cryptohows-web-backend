@@ -19,8 +19,8 @@ public class VentureCapitalController {
 
     @GetMapping("/vc")
     public ResponseEntity<List<VentureCapitalSimpleResponse>> findAllVentureCapitals() {
-        List<VentureCapitalSimpleResponse> ventureCapitalSimpleRespons = ventureCapitalService.findAllVentureCapitals();
-        return ResponseEntity.ok(ventureCapitalSimpleRespons);
+        List<VentureCapitalSimpleResponse> ventureCapitalSimpleResponses = ventureCapitalService.findAllVentureCapitals();
+        return ResponseEntity.ok(ventureCapitalSimpleResponses);
     }
 
     @GetMapping("/vc/{ventureCapital}")
