@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum FundingStage {
     NONE("none"),
     ICO("ico"),
+    STRATEGIC("strategic"),
     SEED("seed"),
     SERIES_A("series A"),
     SERIES_B("series B"),

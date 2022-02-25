@@ -11,7 +11,12 @@ public enum Category {
     PAYMENTS("payments"),
     DIGITAL_ASSETS("digitalAssets"),
     SOCIAL_NETWORK("socialNetwork"),
-    GAMING("gaming");
+    GAMING("gaming"),
+    CEFI("cefi"),
+    DEFI("defi"),
+    INFRASTRUCTURE("infrastructure"),
+    NFTs("nfts"),
+    WEB3("web3");
 
     private final String category;
 
