@@ -8,6 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
+import xyz.cryptohows.backend.round.domain.Round;
+import xyz.cryptohows.backend.round.domain.RoundParticipation;
 import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 import xyz.cryptohows.backend.vc.domain.Partnership;
@@ -96,5 +98,32 @@ class UploadServiceTest {
     @DisplayName("라운드 정보를 담은 엑셀 파일을 업로드 할 수 있다.")
     @Test
     void uploadRounds() {
+        // given
+        uploadProjects();
+        MultipartFile roundsFile = ExcelFileFixture.getRounds();
+
+        // when
+        uploadService.uploadRounds(roundsFile);
+
+        // then
+        List<Round> rounds = roundRepository.findAll();
+        assertThat(rounds).hasSize(3);
+        assertThat(rounds.get(0).getMoneyRaised()).isEqualTo("3700000");
+        assertThat(rounds.get(1).getMoneyRaised()).isEqualTo("2500000");
+        assertThat(rounds.get(2).getMoneyRaised()).isEqualTo("1800000");
+
+        List<RoundParticipation> roundParticipations = roundParticipationRepository.findAll();
+        assertThat(roundParticipations).hasSize(4);
+        assertThat(roundParticipations.get(0).getVentureCapital().getName()).isEqualTo("Crypto.com Capital");
+        assertThat(roundParticipations.get(0).getRound().getProject().getName()).isEqualTo("Pendle Finance");
+
+        assertThat(roundParticipations.get(1).getVentureCapital().getName()).isEqualTo("Crypto.com Capital");
+        assertThat(roundParticipations.get(1).getRound().getProject().getName()).isEqualTo("Heroes of Mavia");
+
+        assertThat(roundParticipations.get(2).getVentureCapital().getName()).isEqualTo("GuildFi");
+        assertThat(roundParticipations.get(2).getRound().getProject().getName()).isEqualTo("Heroes of Mavia");
+
+        assertThat(roundParticipations.get(3).getVentureCapital().getName()).isEqualTo("GuildFi");
+        assertThat(roundParticipations.get(3).getRound().getProject().getName()).isEqualTo("Cyball");
     }
 }

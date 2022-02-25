@@ -1,7 +1,6 @@
 package xyz.cryptohows.backend.upload.application.excel;
 
 import lombok.Getter;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -13,7 +12,8 @@ import xyz.cryptohows.backend.project.domain.Project;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import static xyz.cryptohows.backend.upload.application.excel.ExcelFileUtil.checkNullAndGetStringCellValue;
 
 @Getter
 public class ProjectExcelFormat {
@@ -40,7 +40,7 @@ public class ProjectExcelFormat {
     public static List<ProjectExcelFormat> toList(MultipartFile file) {
         List<ProjectExcelFormat> projectExcelFormats = new ArrayList<>();
 
-        Workbook workbook = ExcelFileConverter.toWorkbook(file);
+        Workbook workbook = ExcelFileUtil.toWorkbook(file);
         Sheet excelSheet = workbook.getSheetAt(0);
         for (int i = 1; i < excelSheet.getPhysicalNumberOfRows(); i++) {
             Row row = excelSheet.getRow(i);
@@ -50,20 +50,13 @@ public class ProjectExcelFormat {
                     row.getCell(2).getStringCellValue(),
                     row.getCell(3).getStringCellValue(),
                     row.getCell(4).getStringCellValue(),
-                    validateMainnet(row.getCell(5)),
+                    checkNullAndGetStringCellValue(row.getCell(5)),
                     Arrays.asList(row.getCell(6).getStringCellValue().split(", "))
             );
             projectExcelFormats.add(projectExcelFormat);
         }
 
         return projectExcelFormats;
-    }
-
-    private static String validateMainnet(Cell cell) {
-        if (Objects.isNull(cell)) {
-            return "none";
-        }
-        return cell.getStringCellValue();
     }
 
     public Project toProject() {

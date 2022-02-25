@@ -2,8 +2,11 @@ package xyz.cryptohows.backend.round.domain;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum FundingStage {
+
     NONE("none"),
     ICO("ico"),
     STRATEGIC("strategic"),
@@ -18,5 +21,12 @@ public enum FundingStage {
 
     FundingStage(String fundingStage) {
         this.fundingStage = fundingStage;
+    }
+
+    public static FundingStage of(String input) {
+        return Arrays.stream(values())
+                .filter(stage -> stage.getFundingStage().equalsIgnoreCase(input))
+                .findAny()
+                .orElse(NONE);
     }
 }

@@ -9,7 +9,6 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;

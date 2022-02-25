@@ -3,7 +3,6 @@ package xyz.cryptohows.backend.vc.ui.dto;
 import lombok.Getter;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Project;
-import xyz.cryptohows.backend.project.domain.Projects;
 import xyz.cryptohows.backend.project.ui.dto.ProjectByCategoryResponse;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 

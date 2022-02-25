@@ -1,6 +1,5 @@
 package xyz.cryptohows.backend.upload.application.excel;
 
-import lombok.Getter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -27,7 +26,7 @@ public class VentureCapitalExcelFormat {
     public static List<VentureCapitalExcelFormat> toList(MultipartFile file) {
         List<VentureCapitalExcelFormat> ventureCapitalExcelFormats = new ArrayList<>();
 
-        Workbook workbook = ExcelFileConverter.toWorkbook(file);
+        Workbook workbook = ExcelFileUtil.toWorkbook(file);
         Sheet excelSheet = workbook.getSheetAt(0);
         for (int i = 1; i < excelSheet.getPhysicalNumberOfRows(); i++) {
             Row row = excelSheet.getRow(i);
