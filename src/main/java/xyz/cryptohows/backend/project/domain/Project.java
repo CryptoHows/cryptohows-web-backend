@@ -32,7 +32,7 @@ public class Project {
     private Category category;
 
     @Enumerated(EnumType.STRING)
-    private Mainnet mainnet;
+    private Mainnet mainnet = Mainnet.NONE;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private Set<Partnership> partnerships = new HashSet<>();

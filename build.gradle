@@ -35,6 +35,7 @@ dependencies {
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 
     // DB
     runtimeOnly 'com.h2database:h2:1.4.199'
@@ -44,6 +45,13 @@ dependencies {
 
     // Swagger
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.6'
+
+    // POI
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.0'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.0'
+
+    // Commons-IO
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 }
 
 tasks.named('test') {

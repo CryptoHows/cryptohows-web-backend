@@ -40,6 +40,13 @@ class VentureCapitalRepositoryTest {
             .logo("hashed.png")
             .build();
 
+    private final VentureCapital a16z = VentureCapital.builder()
+            .name("a16z")
+            .about("미국의 VC")
+            .homepage("a16z.com")
+            .logo("a16z.png")
+            .build();
+
     private final Project EOS = Project.builder()
             .name("EOS")
             .about("EOS 프로젝트")
@@ -61,6 +68,9 @@ class VentureCapitalRepositoryTest {
         projectRepository.save(EOS);
         projectRepository.save(axieInfinity);
         ventureCapitalRepository.save(hashed);
+        ventureCapitalRepository.save(a16z);
+        tem.flush();
+        tem.clear();
     }
 
 
@@ -80,5 +90,28 @@ class VentureCapitalRepositoryTest {
         // then
         List<Partnership> partnerships = partnershipRepository.findAll();
         assertThat(partnerships).isEmpty();
+    }
+
+    @Test
+    @DisplayName("VentureCapital의 이름 리스트로 조회할 수 있다.")
+    void findAllName() {
+        // when
+        List<VentureCapital> vcs = ventureCapitalRepository.findAllByNameInIgnoreCase(Arrays.asList("해시드", "a16z", "flower"));
+
+        // then
+        assertThat(vcs).hasSize(2);
+        assertThat(vcs).containsExactly(hashed, a16z);
+    }
+
+
+    @Test
+    @DisplayName("VentureCapital의 이름 리스트로 조회할 수 있으며, 대소문자는 상관이 없다.")
+    void findAllNameIgnoreCase() {
+        // when
+        List<VentureCapital> vcs = ventureCapitalRepository.findAllByNameInIgnoreCase(Arrays.asList("해시드", "A16Z", "flower"));
+
+        // then
+        assertThat(vcs).hasSize(2);
+        assertThat(vcs).containsExactly(hashed, a16z);
     }
 }

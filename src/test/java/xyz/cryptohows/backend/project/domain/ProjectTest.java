@@ -3,6 +3,7 @@ package xyz.cryptohows.backend.project.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import xyz.cryptohows.backend.exception.DomainException;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.vc.domain.Partnership;
@@ -69,7 +70,7 @@ class ProjectTest {
         Partnership partnership = new Partnership(hashed, cryptohouse);
 
         assertThatThrownBy(() -> klaytn.addPartnership(partnership))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DomainException.class);
     }
 
     @Test
@@ -110,7 +111,7 @@ class ProjectTest {
                 .build();
 
         assertThatThrownBy(() -> klaytn.addRound(seriesA))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DomainException.class);
     }
 
     @Test
