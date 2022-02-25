@@ -1,4 +1,4 @@
-## CryptoHows
+## CryptoHows Backend API
 
 ### 도메인 설계
 
@@ -37,3 +37,7 @@
 - [x] Service Layer 구현
 - [x] Web Layer 구현
 - [x] API 문서화
+- [ ] 데이터 Excel 파일 업로드 지원
+  - [ ] VC 업로드 지원
+  - [ ] Project 업로드 지원
+  - [ ] Round 업로드 지원

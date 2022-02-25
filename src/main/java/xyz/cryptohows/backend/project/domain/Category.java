@@ -2,8 +2,11 @@ package xyz.cryptohows.backend.project.domain;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum Category {
+    NONE("none"),
     EXCHANGES("exchanges"),
     BLOCKCHAIN_INFRASTRUCTURE("blockchainInfrastructure"),
     SECURITY_INFRASTRUCTURE("securityInfrastructure"),
@@ -15,12 +18,19 @@ public enum Category {
     CEFI("cefi"),
     DEFI("defi"),
     INFRASTRUCTURE("infrastructure"),
-    NFTs("nfts"),
+    NFTS("nfts"),
     WEB3("web3");
 
-    private final String category;
+    private final String categoryName;
 
-    Category(String category) {
-        this.category = category;
+    Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public static Category of(String input) {
+        return Arrays.stream(values())
+                .filter(category -> category.categoryName.equalsIgnoreCase(input))
+                .findAny()
+                .orElse(NONE);
     }
 }

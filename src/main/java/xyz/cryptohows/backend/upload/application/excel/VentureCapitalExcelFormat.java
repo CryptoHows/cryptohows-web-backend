@@ -10,7 +10,6 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 public class VentureCapitalExcelFormat {
 
     private final String name;

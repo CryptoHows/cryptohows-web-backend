@@ -21,7 +21,7 @@ public class ProjectByCategoryResponse {
 
     public static ProjectByCategoryResponse of(Category category, List<Project> portfolio) {
         return new ProjectByCategoryResponse(
-                category.getCategory(),
+                category.getCategoryName(),
                 ProjectSimpleResponse.toList(portfolio)
         );
     }

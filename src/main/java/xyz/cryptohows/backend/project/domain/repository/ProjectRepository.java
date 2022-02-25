@@ -21,4 +21,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "join fetch project.partnerships " +
             "order by project.partnerships.size desc")
     LinkedHashSet<Project> findAllProjectsOrderByNumberOfPartnerships();
+
+    Project findByName(String name);
 }
