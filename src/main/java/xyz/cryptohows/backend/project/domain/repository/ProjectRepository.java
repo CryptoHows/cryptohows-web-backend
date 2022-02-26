@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    @Query("select project " +
+    @Query("select distinct project " +
             "from Project as project " +
             "join fetch project.partnerships")
     List<Project> findAllFetchJoinPartnerships();
