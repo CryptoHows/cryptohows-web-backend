@@ -32,6 +32,8 @@ logging:
             sql: trace
 upload:
   password: cryptohows
+swagger-docs:
+  url: http://localhost:8080
 ---
 spring:
   config:
@@ -60,6 +62,8 @@ logging:
             sql: trace
 upload:
   password: cryptohows
+swagger-docs:
+  url: http://localhost:8080
 ---
 spring:
   config:
@@ -68,6 +72,8 @@ spring:
 logging:
   file:
     path: /home/ubuntu/
+swagger-docs:
+  url: https://api.cryptohows.xyz
 ---
 springdoc:
   version: 1.0.0
