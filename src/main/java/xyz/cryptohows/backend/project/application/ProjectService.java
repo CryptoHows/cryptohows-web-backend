@@ -1,6 +1,8 @@
 package xyz.cryptohows.backend.project.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
@@ -15,8 +17,9 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public List<ProjectResponse> findAllProjects() {
-        List<Project> projects = projectRepository.findAllFetchJoinPartnerships();
+    public List<ProjectResponse> findProjects(Integer page, Integer projectPerPage) {
+        Pageable pageable = PageRequest.of(page, projectPerPage);
+        List<Project> projects = projectRepository.findProjectsFetchJoinPartnerships(pageable);
         return ProjectResponse.toList(projects);
     }
 

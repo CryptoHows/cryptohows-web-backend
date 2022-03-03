@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
@@ -113,6 +115,12 @@ class ProjectRepositoryTest {
     @BeforeEach
     void setUp() {
         projectRepository.saveAll(Arrays.asList(EOS, ETHEREUM, KLAYTN, axieInfinity));
+        partnershipRepository.saveAll(Arrays.asList(
+                new Partnership(hashed, EOS),
+                new Partnership(hashed, ETHEREUM),
+                new Partnership(hashed, KLAYTN),
+                new Partnership(hashed, axieInfinity)
+        ));
         ventureCapitalRepository.saveAll(Arrays.asList(hashed, a16z, kakaoVentures));
         tem.clear();
         tem.flush();
@@ -177,5 +185,24 @@ class ProjectRepositoryTest {
 
         // then
         assertThat(projectsByNumberOfPartnerships).containsExactly(EOS, ETHEREUM, KLAYTN);
+    }
+
+    @Test
+    @DisplayName("프로젝트를 페이지네이션을 통해 구할 수 있다.")
+    void findProjects() {
+        // when
+        List<Project> firstPageProject =
+                projectRepository.findProjectsFetchJoinPartnerships(PageRequest.of(0, 2));
+        List<Project> secondPageProject =
+                projectRepository.findProjectsFetchJoinPartnerships(PageRequest.of(1, 2));
+
+        // then
+        assertThat(firstPageProject).hasSize(2);
+        assertThat(firstPageProject.get(0)).isEqualTo(EOS);
+        assertThat(firstPageProject.get(1)).isEqualTo(ETHEREUM);
+
+        assertThat(secondPageProject).hasSize(2);
+        assertThat(secondPageProject.get(0)).isEqualTo(KLAYTN);
+        assertThat(secondPageProject.get(1)).isEqualTo(axieInfinity);
     }
 }

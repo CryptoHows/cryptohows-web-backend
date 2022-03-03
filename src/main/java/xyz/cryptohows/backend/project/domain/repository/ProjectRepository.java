@@ -1,5 +1,6 @@
 package xyz.cryptohows.backend.project.domain.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,8 +14,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query("select distinct project " +
             "from Project as project " +
-            "join fetch project.partnerships")
-    List<Project> findAllFetchJoinPartnerships();
+            "left join fetch project.partnerships")
+    List<Project> findProjectsFetchJoinPartnerships(Pageable pageable);
 
     @Query("select project " +
             "from Project as project " +

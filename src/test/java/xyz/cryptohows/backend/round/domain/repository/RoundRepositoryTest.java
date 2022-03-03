@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
@@ -126,7 +129,7 @@ class RoundRepositoryTest {
     }
 
     @Test
-    @DisplayName("최근에 투자받은 라운드 순서대로 받아볼 수 있다.")
+    @DisplayName("최근에 투자받은 라운드 순서대로 페이지네이션을 통해 받아볼 수 있다.")
     void recentRounds() {
         // given
         Round EOSSeed = Round.builder()
@@ -173,12 +176,79 @@ class RoundRepositoryTest {
         tem.clear();
 
         // when
-        List<Round> recentRounds = roundRepository.findRecentRounds();
+        Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").descending());
+        List<Round> recentRounds1 = roundRepository.findRecentRounds(pageable1);
+
+        Pageable pageable2 = PageRequest.of(1, 2, Sort.by("announcedDate").descending());
+        List<Round> recentRounds2 = roundRepository.findRecentRounds(pageable2);
 
         // then
-        assertThat(recentRounds.get(0)).isEqualTo(axieSeriesA);
-        assertThat(recentRounds.get(1)).isEqualTo(EOSSeriesA);
-        assertThat(recentRounds.get(2)).isEqualTo(axieSeed);
-        assertThat(recentRounds.get(3)).isEqualTo(EOSSeed);
+        assertThat(recentRounds1.get(0)).isEqualTo(axieSeriesA);
+        assertThat(recentRounds1.get(1)).isEqualTo(EOSSeriesA);
+
+        assertThat(recentRounds2.get(0)).isEqualTo(axieSeed);
+        assertThat(recentRounds2.get(1)).isEqualTo(EOSSeed);
+    }
+
+    @Test
+    @DisplayName("투자받은 라운드 오래된 순서대로 페이지네이션을 통해 받아볼 수 있다.")
+    void recentRoundsASC() {
+        // given
+        Round EOSSeed = Round.builder()
+                .project(EOS)
+                .announcedDate("2019-10")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SEED)
+                .build();
+        roundRepository.save(EOSSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
+
+        Round axieSeed = Round.builder()
+                .project(axieInfinity)
+                .announcedDate("2019-11")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SEED)
+                .build();
+        roundRepository.save(axieSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
+
+        Round EOSSeriesA = Round.builder()
+                .project(EOS)
+                .announcedDate("2020-02")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SERIES_A)
+                .build();
+        roundRepository.save(EOSSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
+
+        Round axieSeriesA = Round.builder()
+                .project(axieInfinity)
+                .announcedDate("2020-03")
+                .moneyRaised("$20M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SERIES_A)
+                .build();
+        roundRepository.save(axieSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
+
+        tem.flush();
+        tem.clear();
+
+        // when
+        Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").ascending());
+        List<Round> oldRounds1 = roundRepository.findRecentRounds(pageable1);
+
+        Pageable pageable2 = PageRequest.of(1, 2, Sort.by("announcedDate").ascending());
+        List<Round> oldRounds2 = roundRepository.findRecentRounds(pageable2);
+
+        // then
+        assertThat(oldRounds1.get(0)).isEqualTo(EOSSeed);
+        assertThat(oldRounds1.get(1)).isEqualTo(axieSeed);
+
+        assertThat(oldRounds2.get(0)).isEqualTo(EOSSeriesA);
+        assertThat(oldRounds2.get(1)).isEqualTo(axieSeriesA);
     }
 }
