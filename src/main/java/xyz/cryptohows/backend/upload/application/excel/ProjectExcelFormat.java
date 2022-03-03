@@ -46,10 +46,10 @@ public class ProjectExcelFormat {
             Row row = excelSheet.getRow(i);
             ProjectExcelFormat projectExcelFormat = new ProjectExcelFormat(
                     row.getCell(0).getStringCellValue(),
-                    row.getCell(1).getStringCellValue(),
-                    row.getCell(2).getStringCellValue(),
-                    row.getCell(3).getStringCellValue(),
-                    row.getCell(4).getStringCellValue(),
+                    checkNullAndGetStringCellValue(row.getCell(1)),
+                    checkNullAndGetStringCellValue(row.getCell(2)),
+                    checkNullAndGetStringCellValue(row.getCell(3)),
+                    checkNullAndGetStringCellValue(row.getCell(4)),
                     checkNullAndGetStringCellValue(row.getCell(5)),
                     Arrays.asList(row.getCell(6).getStringCellValue().split(", "))
             );

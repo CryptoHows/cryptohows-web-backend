@@ -40,4 +40,11 @@ public class ExcelFileUtil {
         }
         return cell.getStringCellValue();
     }
+
+    public static double checkNullAndGetDoubleCellValue(Cell cell) {
+        if (Objects.isNull(cell)) {
+            return 0;
+        }
+        return cell.getNumericCellValue();
+    }
 }

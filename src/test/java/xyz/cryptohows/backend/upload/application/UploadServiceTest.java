@@ -108,9 +108,9 @@ class UploadServiceTest {
         // then
         List<Round> rounds = roundRepository.findAll();
         assertThat(rounds).hasSize(3);
-        assertThat(rounds.get(0).getMoneyRaised()).isEqualTo("3700000");
-        assertThat(rounds.get(1).getMoneyRaised()).isEqualTo("2500000");
-        assertThat(rounds.get(2).getMoneyRaised()).isEqualTo("1800000");
+        assertThat(rounds.get(0).getMoneyRaised()).isEqualTo("$3,700,000");
+        assertThat(rounds.get(1).getMoneyRaised()).isEqualTo("$2,500,000");
+        assertThat(rounds.get(2).getMoneyRaised()).isEqualTo("$1,800,000");
 
         List<RoundParticipation> roundParticipations = roundParticipationRepository.findAll();
         assertThat(roundParticipations).hasSize(4);
