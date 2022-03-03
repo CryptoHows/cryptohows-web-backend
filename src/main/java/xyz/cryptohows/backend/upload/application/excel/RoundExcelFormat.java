@@ -9,10 +9,12 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static xyz.cryptohows.backend.upload.application.excel.ExcelFileUtil.checkNullAndGetDoubleCellValue;
 import static xyz.cryptohows.backend.upload.application.excel.ExcelFileUtil.checkNullAndGetStringCellValue;
 
 @Getter
@@ -44,9 +46,9 @@ public class RoundExcelFormat {
             Row row = excelSheet.getRow(i);
             RoundExcelFormat roundExcelFormat = new RoundExcelFormat(
                     row.getCell(0).getStringCellValue(),
-                    row.getCell(1).getStringCellValue(),
-                    String.valueOf((int) row.getCell(2).getNumericCellValue()),
-                    row.getCell(3).getStringCellValue(),
+                    checkNullAndGetStringCellValue(row.getCell(1)),
+                    toDollar(checkNullAndGetDoubleCellValue(row.getCell(2))),
+                    checkNullAndGetStringCellValue(row.getCell(3)),
                     checkNullAndGetStringCellValue(row.getCell(4)),
                     Arrays.asList(row.getCell(5).getStringCellValue().split(", "))
             );
@@ -54,6 +56,13 @@ public class RoundExcelFormat {
         }
 
         return roundExcelFormats;
+    }
+
+    private static String toDollar(double value) {
+        if (value == 0) {
+            return "";
+        }
+        return "$" + NumberFormat.getInstance().format(value);
     }
 
     public Round toRound(Project project) {
