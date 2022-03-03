@@ -129,19 +129,12 @@ class ProjectRepositoryTest {
     @Test
     @DisplayName("해당 Project 삭제되면 VentureCapital에서 체결했던 파트너쉽이 삭제된다.")
     void deleteProjectPartnershipDeleted() {
-        // given
-        Partnership hashedEOS = new Partnership(hashed, EOS);
-        Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
-        partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedAxieInfinity));
-        tem.clear();
-        tem.flush();
-
         // when
         projectRepository.deleteById(EOS.getId());
 
         // then
         List<Partnership> partnerships = partnershipRepository.findAll();
-        assertThat(partnerships).hasSize(1);
+        assertThat(partnerships).hasSize(3);
     }
 
     @Test
@@ -165,6 +158,7 @@ class ProjectRepositoryTest {
     @DisplayName("프로젝트가 많은 파트너쉽을 가진 순서대대로 반할 수 있다")
     void findProjectsByNumberOfPartnerships() {
         // given
+        partnershipRepository.deleteAll();
         Partnership hashedEOS = new Partnership(hashed, EOS);
         Partnership hashedETHEREUM = new Partnership(hashed, ETHEREUM);
         Partnership hashedKLAYTN = new Partnership(hashed, KLAYTN);

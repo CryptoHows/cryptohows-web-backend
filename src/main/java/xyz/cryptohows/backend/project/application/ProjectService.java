@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
+import xyz.cryptohows.backend.project.ui.dto.ProjectCountResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 
 import java.util.LinkedHashSet;
@@ -26,5 +27,10 @@ public class ProjectService {
     public List<ProjectResponse> orderProjectByNumberOfInvestors() {
         LinkedHashSet<Project> projects = projectRepository.findAllProjectsOrderByNumberOfPartnerships();
         return ProjectResponse.toList(projects);
+    }
+
+    public ProjectCountResponse countProjects() {
+        long projectCount = projectRepository.count();
+        return new ProjectCountResponse(projectCount);
     }
 }

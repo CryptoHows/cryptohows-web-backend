@@ -74,10 +74,48 @@ class RoundRepositoryTest {
             .fundingStage(FundingStage.SEED)
             .build();
 
+    private final Round axieSeed = Round.builder()
+            .project(axieInfinity)
+            .announcedDate("2019-11")
+            .moneyRaised("$20M")
+            .newsArticle("https://news.com/funding")
+            .fundingStage(FundingStage.SEED)
+            .build();
+
+    private final Round EOSSeriesA = Round.builder()
+            .project(EOS)
+            .announcedDate("2020-02")
+            .moneyRaised("$20M")
+            .newsArticle("https://news.com/funding")
+            .fundingStage(FundingStage.SERIES_A)
+            .build();
+
+    private final Round axieSeriesA = Round.builder()
+            .project(axieInfinity)
+            .announcedDate("2020-03")
+            .moneyRaised("$20M")
+            .newsArticle("https://news.com/funding")
+            .fundingStage(FundingStage.SERIES_A)
+            .build();
     @BeforeEach
     void setUp() {
         projectRepository.saveAll(Arrays.asList(EOS, axieInfinity));
         ventureCapitalRepository.save(hashed);
+
+        roundRepository.save(EOSSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
+
+        roundRepository.save(axieSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
+
+        roundRepository.save(EOSSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
+
+        roundRepository.save(axieSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
+
+        tem.flush();
+        tem.clear();
     }
 
     @Test
@@ -97,84 +135,27 @@ class RoundRepositoryTest {
     @Test
     @DisplayName("해당 Round에 벤처캐피탈이 참여할 수 있다.")
     void vcJoinsRound() {
-        // given
-        roundRepository.save(EOSSeed);
-        RoundParticipation hashedEOSRound = new RoundParticipation(hashed, EOSSeed);
-
-        // when
-        roundParticipationRepository.save(hashedEOSRound);
-        tem.flush();
-        tem.clear();
-
-        // then
         Round round = roundRepository.findById(EOSSeed.getId())
                 .orElseThrow(IllegalArgumentException::new);
         assertThat(round.getParticipants()).hasSize(1);
     }
 
     @Test
-    @DisplayName("해당 라운드가 삭제되면, RoundParticipant 모두 삭제된다.")
+    @DisplayName("해당 라운드가 삭제되면, 그에 따른 RoundParticipant 모두 삭제된다.")
     void roundDeleted() {
-        // given
-        roundRepository.save(EOSSeed);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
-        tem.flush();
-        tem.clear();
-
         // when
+        long countBefore = roundParticipationRepository.count();
         roundRepository.deleteById(EOSSeed.getId());
+        long countAfter = roundParticipationRepository.count();
 
         // then
-        assertThat(roundParticipationRepository.count()).isZero();
+        assertThat(countBefore).isEqualTo(4L);
+        assertThat(countAfter).isEqualTo(3L);
     }
 
     @Test
     @DisplayName("최근에 투자받은 라운드 순서대로 페이지네이션을 통해 받아볼 수 있다.")
     void recentRounds() {
-        // given
-        Round EOSSeed = Round.builder()
-                .project(EOS)
-                .announcedDate("2019-10")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SEED)
-                .build();
-        roundRepository.save(EOSSeed);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
-
-        Round axieSeed = Round.builder()
-                .project(axieInfinity)
-                .announcedDate("2019-11")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SEED)
-                .build();
-        roundRepository.save(axieSeed);
-        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
-
-        Round EOSSeriesA = Round.builder()
-                .project(EOS)
-                .announcedDate("2020-02")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SERIES_A)
-                .build();
-        roundRepository.save(EOSSeriesA);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
-
-        Round axieSeriesA = Round.builder()
-                .project(axieInfinity)
-                .announcedDate("2020-03")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SERIES_A)
-                .build();
-        roundRepository.save(axieSeriesA);
-        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
-
-        tem.flush();
-        tem.clear();
-
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").descending());
         List<Round> recentRounds1 = roundRepository.findRecentRounds(pageable1);
@@ -193,50 +174,6 @@ class RoundRepositoryTest {
     @Test
     @DisplayName("투자받은 라운드 오래된 순서대로 페이지네이션을 통해 받아볼 수 있다.")
     void recentRoundsASC() {
-        // given
-        Round EOSSeed = Round.builder()
-                .project(EOS)
-                .announcedDate("2019-10")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SEED)
-                .build();
-        roundRepository.save(EOSSeed);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
-
-        Round axieSeed = Round.builder()
-                .project(axieInfinity)
-                .announcedDate("2019-11")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SEED)
-                .build();
-        roundRepository.save(axieSeed);
-        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
-
-        Round EOSSeriesA = Round.builder()
-                .project(EOS)
-                .announcedDate("2020-02")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SERIES_A)
-                .build();
-        roundRepository.save(EOSSeriesA);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
-
-        Round axieSeriesA = Round.builder()
-                .project(axieInfinity)
-                .announcedDate("2020-03")
-                .moneyRaised("$20M")
-                .newsArticle("https://news.com/funding")
-                .fundingStage(FundingStage.SERIES_A)
-                .build();
-        roundRepository.save(axieSeriesA);
-        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
-
-        tem.flush();
-        tem.clear();
-
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").ascending());
         List<Round> oldRounds1 = roundRepository.findRecentRounds(pageable1);
@@ -250,5 +187,15 @@ class RoundRepositoryTest {
 
         assertThat(oldRounds2.get(0)).isEqualTo(EOSSeriesA);
         assertThat(oldRounds2.get(1)).isEqualTo(axieSeriesA);
+    }
+
+    @Test
+    @DisplayName("라운드의 카운트를 셀 수 있다.")
+    void countRound() {
+        // when
+        long count = roundRepository.count();
+
+        // then
+        assertThat(count).isEqualTo(4L);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
+import xyz.cryptohows.backend.round.ui.dto.RoundCountResponse;
 import xyz.cryptohows.backend.round.ui.dto.RoundResponse;
 
 import java.util.List;
@@ -29,7 +30,8 @@ public class RoundService {
         return RoundResponse.toList(rounds);
     }
 
-    public Integer countRounds() {
-        return null;
+    public RoundCountResponse countRounds() {
+        long roundCount = roundRepository.count();
+        return new RoundCountResponse(roundCount);
     }
 }
