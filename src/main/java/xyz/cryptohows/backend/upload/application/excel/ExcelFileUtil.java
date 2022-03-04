@@ -38,7 +38,7 @@ public class ExcelFileUtil {
         if (Objects.isNull(cell)) {
             return "";
         }
-        return cell.getStringCellValue();
+        return cell.getStringCellValue().trim();
     }
 
     public static double checkNullAndGetDoubleCellValue(Cell cell) {

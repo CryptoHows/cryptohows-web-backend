@@ -75,7 +75,7 @@ public class Project {
         return rounds.stream()
                 .map(Round::getFundingStage)
                 .max(Comparator.comparing(Enum::ordinal))
-                .orElse(FundingStage.NONE);
+                .orElse(FundingStage.UNKNOWN);
     }
 
     @Override
