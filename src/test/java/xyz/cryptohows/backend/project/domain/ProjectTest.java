@@ -141,6 +141,6 @@ class ProjectTest {
     @Test
     @DisplayName("투자 받은 라운드가 없다면 최신 라운드 반환 시 NONE이 반환된다.")
     void getNoneRound() {
-        assertThat(klaytn.getCurrentRound()).isEqualTo(FundingStage.NONE);
+        assertThat(klaytn.getCurrentRound()).isEqualTo(FundingStage.UNKNOWN);
     }
 }
