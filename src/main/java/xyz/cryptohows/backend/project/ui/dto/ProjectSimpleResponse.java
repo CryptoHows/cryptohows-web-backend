@@ -15,14 +15,16 @@ public class ProjectSimpleResponse {
     private final String homepage;
     private final String logo;
     private final String round;
+    private final String category;
 
-    public ProjectSimpleResponse(Long id, String name, String about, String homepage, String logo, String round) {
+    public ProjectSimpleResponse(Long id, String name, String about, String homepage, String logo, String round, String category) {
         this.id = id;
         this.name = name;
         this.about = about;
         this.homepage = homepage;
         this.logo = logo;
         this.round = round;
+        this.category = category;
     }
 
     public static ProjectSimpleResponse of(Project project) {
@@ -32,7 +34,8 @@ public class ProjectSimpleResponse {
                 project.getAbout(),
                 project.getHomepage(),
                 project.getLogo(),
-                project.getCurrentRound().getFundingStage()
+                project.getCurrentRound().getFundingStage(),
+                project.getCategory().getCategoryName()
         );
     }
 
