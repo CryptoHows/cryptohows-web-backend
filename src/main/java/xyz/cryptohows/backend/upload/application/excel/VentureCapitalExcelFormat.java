@@ -8,6 +8,7 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class VentureCapitalExcelFormat {
 
@@ -30,6 +31,9 @@ public class VentureCapitalExcelFormat {
         Sheet excelSheet = workbook.getSheetAt(0);
         for (int i = 1; i < excelSheet.getPhysicalNumberOfRows(); i++) {
             Row row = excelSheet.getRow(i);
+            if (Objects.isNull(row)) {
+                break;
+            }
             VentureCapitalExcelFormat ventureCapitalExcelFormat = new VentureCapitalExcelFormat(
                     row.getCell(0).getStringCellValue(),
                     row.getCell(1).getStringCellValue(),
