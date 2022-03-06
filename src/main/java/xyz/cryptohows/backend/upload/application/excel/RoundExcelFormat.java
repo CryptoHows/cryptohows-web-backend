@@ -13,6 +13,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static xyz.cryptohows.backend.upload.application.excel.ExcelFileUtil.checkNullAndGetDoubleCellValue;
 import static xyz.cryptohows.backend.upload.application.excel.ExcelFileUtil.checkNullAndGetStringCellValue;
@@ -44,6 +45,9 @@ public class RoundExcelFormat {
         Sheet excelSheet = workbook.getSheetAt(0);
         for (int i = 1; i < excelSheet.getPhysicalNumberOfRows(); i++) {
             Row row = excelSheet.getRow(i);
+            if (Objects.isNull(row)) {
+                break;
+            }
             RoundExcelFormat roundExcelFormat = new RoundExcelFormat(
                     row.getCell(0).getStringCellValue(),
                     checkNullAndGetStringCellValue(row.getCell(1)),

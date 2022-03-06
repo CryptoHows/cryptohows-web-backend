@@ -12,6 +12,7 @@ import xyz.cryptohows.backend.project.domain.Project;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static xyz.cryptohows.backend.upload.application.excel.ExcelFileUtil.checkNullAndGetStringCellValue;
 
@@ -44,6 +45,9 @@ public class ProjectExcelFormat {
         Sheet excelSheet = workbook.getSheetAt(0);
         for (int i = 1; i < excelSheet.getPhysicalNumberOfRows(); i++) {
             Row row = excelSheet.getRow(i);
+            if (Objects.isNull(row)) {
+                break;
+            }
             ProjectExcelFormat projectExcelFormat = new ProjectExcelFormat(
                     row.getCell(0).getStringCellValue(),
                     checkNullAndGetStringCellValue(row.getCell(1)),
