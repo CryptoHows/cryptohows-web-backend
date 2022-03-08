@@ -85,15 +85,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         default_batch_fetch_size: 100
     show-sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgres://gryvkgujwvzfrg:83ab29e1edc3d237862a6a8f8cd3ff842965afc98ef581c1baf6c4663c4e2090@ec2-3-212-45-192.compute-1.amazonaws.com:5432/d5guh38oijobj
-    username: gryvkgujwvzfrg
-    password: 83ab29e1edc3d237862a6a8f8cd3ff842965afc98ef581c1baf6c4663c4e2090
-    port: 5432
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
 logging:
   level:
     org:
@@ -102,7 +101,7 @@ logging:
           descriptor:
             sql: trace
 upload:
-  password: cryptohows
+  password: ${DEV_PW}
 server:
   port: ${PORT:8080}
 swagger-docs:
