@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.Round;
@@ -21,6 +22,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -125,5 +127,69 @@ class UploadServiceTest {
 
         assertThat(roundParticipations.get(3).getVentureCapital().getName()).isEqualTo("GuildFi");
         assertThat(roundParticipations.get(3).getRound().getProject().getName()).isEqualTo("Cyball");
+    }
+
+    @DisplayName("VC 이름이 중복되면 업로드 할 수 없다.")
+    @Test
+    void duplicateVCUpload() {
+        // given
+        MultipartFile ventureCapitalsFile = ExcelFileFixture.getVentureCapitalsFile();
+        uploadService.uploadVentureCapitals(ventureCapitalsFile);
+
+        // when & then
+        assertThatThrownBy(() -> uploadService.uploadVentureCapitals(ventureCapitalsFile))
+                .isInstanceOf(CryptoHowsException.class)
+                .hasMessageContaining("은 이미 업로드 된 벤처캐피탈 입니다.");
+    }
+
+    @DisplayName("VC 이름이 한 파일에 중복되면 업로드 할 수 없다.")
+    @Test
+    void duplicateVCUploadSingleFile() {
+        // given
+        MultipartFile ventureCapitalsFile = ExcelFileFixture.getVentureCapitalsDuplicatedFile();
+
+        // when & then
+        assertThatThrownBy(() -> uploadService.uploadVentureCapitals(ventureCapitalsFile))
+                .isInstanceOf(CryptoHowsException.class)
+                .hasMessageContaining("은 이미 업로드 된 벤처캐피탈 입니다.");
+    }
+
+    @DisplayName("Project 이름이 중복되면 업로드 할 수 없다.")
+    @Test
+    void duplicateProjectUpload() {
+        // given
+        uploadVentureCapitals();
+        MultipartFile projectsFile = ExcelFileFixture.getProjects();
+        uploadService.uploadProjects(projectsFile);
+
+        // when & then
+        assertThatThrownBy(() -> uploadService.uploadProjects(projectsFile))
+                .isInstanceOf(CryptoHowsException.class)
+                .hasMessageContaining("은 이미 업로드 된 프로젝트입니다.");
+    }
+
+    @DisplayName("Project 이름이 중복되면 업로드 할 수 없다.")
+    @Test
+    void duplicateProjectUploadSingleFile() {
+        // given
+        uploadVentureCapitals();
+        MultipartFile projectsFile = ExcelFileFixture.getProjectsDuplicatedFile();
+
+        // when & then
+        assertThatThrownBy(() -> uploadService.uploadProjects(projectsFile))
+                .isInstanceOf(CryptoHowsException.class)
+                .hasMessageContaining("은 이미 업로드 된 프로젝트입니다.");
+    }
+
+    @DisplayName("Round에 올라갈 프로젝트가 없다면 오류가 발생한다.")
+    @Test
+    void roundProjectNotPresent() {
+        // given
+        MultipartFile projectsFile = ExcelFileFixture.getRoundsProjectNotUploadedFile();
+
+        // when & then
+        assertThatThrownBy(() -> uploadService.uploadRounds(projectsFile))
+                .isInstanceOf(CryptoHowsException.class)
+                .hasMessageContaining("은 업로드 되지 않은 프로젝트 입니다.");
     }
 }
