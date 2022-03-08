@@ -45,7 +45,8 @@ public class ProjectExcelFormat {
         Sheet excelSheet = workbook.getSheetAt(0);
         for (int i = 1; i < excelSheet.getPhysicalNumberOfRows(); i++) {
             Row row = excelSheet.getRow(i);
-            if (Objects.isNull(row) || Objects.isNull(row.getCell(0))) {
+            if (Objects.isNull(row) || Objects.isNull(row.getCell(0))
+                    || "".equals(row.getCell(0).getStringCellValue().trim())) {
                 break;
             }
             ProjectExcelFormat projectExcelFormat = new ProjectExcelFormat(
