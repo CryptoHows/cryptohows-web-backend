@@ -15,6 +15,9 @@ public class ExcelFileFixture {
     public static final String VENTURE_CAPITALS = "VC_excel_format.xlsx";
     public static final String PROJECTS = "Project_excel_format.xlsx";
     public static final String ROUNDS = "Round_excel_format.xlsx";
+    public static final String VENTURE_CAPITALS_DUPLICATED = "VC_duplicated.xlsx";
+    public static final String PROJECTS_DUPLICATED = "Project_duplicated.xlsx";
+    public static final String ROUNDS_PROJECT_NOT_UPLOADED = "Round_project_not_uploaded.xlsx";
 
     public static MultipartFile getVentureCapitalsFile() {
         File ventureCapitals = new File(new File("").getAbsolutePath() + FILE_PATH + VENTURE_CAPITALS);
@@ -28,6 +31,21 @@ public class ExcelFileFixture {
 
     public static MultipartFile getRounds() {
         File rounds = new File(new File("").getAbsolutePath() + FILE_PATH + ROUNDS);
+        return generateMultipartFile(ROUNDS, rounds);
+    }
+
+    public static MultipartFile getVentureCapitalsDuplicatedFile() {
+        File ventureCapitals = new File(new File("").getAbsolutePath() + FILE_PATH + VENTURE_CAPITALS_DUPLICATED);
+        return generateMultipartFile(VENTURE_CAPITALS, ventureCapitals);
+    }
+
+    public static MultipartFile getProjectsDuplicatedFile() {
+        File projects = new File(new File("").getAbsolutePath() + FILE_PATH + PROJECTS_DUPLICATED);
+        return generateMultipartFile(PROJECTS, projects);
+    }
+
+    public static MultipartFile getRoundsProjectNotUploadedFile() {
+        File rounds = new File(new File("").getAbsolutePath() + FILE_PATH + ROUNDS_PROJECT_NOT_UPLOADED);
         return generateMultipartFile(ROUNDS, rounds);
     }
 

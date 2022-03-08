@@ -45,7 +45,7 @@ public class RoundExcelFormat {
         Sheet excelSheet = workbook.getSheetAt(0);
         for (int i = 1; i < excelSheet.getPhysicalNumberOfRows(); i++) {
             Row row = excelSheet.getRow(i);
-            if (Objects.isNull(row)) {
+            if (Objects.isNull(row) || Objects.isNull(row.getCell(0))) {
                 break;
             }
             RoundExcelFormat roundExcelFormat = new RoundExcelFormat(

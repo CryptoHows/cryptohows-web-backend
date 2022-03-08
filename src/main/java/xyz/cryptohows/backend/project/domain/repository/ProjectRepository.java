@@ -8,6 +8,7 @@ import xyz.cryptohows.backend.project.domain.Project;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
@@ -24,4 +25,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     LinkedHashSet<Project> findAllProjectsOrderByNumberOfPartnerships();
 
     Project findByNameIgnoreCase(String name);
+
+    boolean existsByName(String name);
 }
