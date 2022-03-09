@@ -18,6 +18,7 @@ public class ExcelFileFixture {
     public static final String VENTURE_CAPITALS_DUPLICATED = "VC_duplicated.xlsx";
     public static final String PROJECTS_DUPLICATED = "Project_duplicated.xlsx";
     public static final String ROUNDS_PROJECT_NOT_UPLOADED = "Round_project_not_uploaded.xlsx";
+    public static final String ROUNDS_DUPLICATED = "Round_duplicated.xlsx";
 
     public static MultipartFile getVentureCapitalsFile() {
         File ventureCapitals = new File(new File("").getAbsolutePath() + FILE_PATH + VENTURE_CAPITALS);
@@ -46,6 +47,11 @@ public class ExcelFileFixture {
 
     public static MultipartFile getRoundsProjectNotUploadedFile() {
         File rounds = new File(new File("").getAbsolutePath() + FILE_PATH + ROUNDS_PROJECT_NOT_UPLOADED);
+        return generateMultipartFile(ROUNDS, rounds);
+    }
+
+    public static MultipartFile getRoundsDuplicated() {
+        File rounds = new File(new File("").getAbsolutePath() + FILE_PATH + ROUNDS_DUPLICATED);
         return generateMultipartFile(ROUNDS, rounds);
     }
 

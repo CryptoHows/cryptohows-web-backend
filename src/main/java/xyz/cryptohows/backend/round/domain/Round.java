@@ -69,6 +69,11 @@ public class Round {
         return this.project.equals(project);
     }
 
+    public boolean hasSameAttributes(Round round) {
+        return (this.announcedDate.isEqual(round.announcedDate)) && (this.moneyRaised.equals(round.moneyRaised))
+                && (this.newsArticle.equals(round.newsArticle)) && (this.fundingStage == round.fundingStage);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

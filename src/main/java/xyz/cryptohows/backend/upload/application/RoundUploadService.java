@@ -15,10 +15,7 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -32,15 +29,13 @@ public class RoundUploadService {
 
     public void uploadRounds(MultipartFile file) {
         List<RoundExcelFormat> roundExcelFormats = RoundExcelFormat.toList(file);
-        Map<Round, List<VentureCapital>> roundParticipants = new LinkedHashMap<>();
         for (RoundExcelFormat roundExcelFormat : roundExcelFormats) {
             Project project = findProject(roundExcelFormat.getProjectName());
             Round round = roundExcelFormat.toRound(project);
-            roundRepository.save(round);
+            validateRoundAndSave(project, round);
             List<VentureCapital> participants = findRoundParticipants(roundExcelFormat.getParticipants());
-            roundParticipants.put(round, participants);
+            uploadRoundParticipation(round, participants);
         }
-        uploadRoundParticipation(roundParticipants);
     }
 
     private Project findProject(String projectName) {
@@ -54,14 +49,21 @@ public class RoundUploadService {
         return ventureCapitalRepository.findAllByNameInIgnoreCase(roundParticipants);
     }
 
-    private void uploadRoundParticipation(Map<Round, List<VentureCapital>> roundParticipants) {
-        List<RoundParticipation> roundParticipations = new ArrayList<>();
-        for (Map.Entry<Round, List<VentureCapital>> roundParticipant : roundParticipants.entrySet()) {
-            Round round = roundParticipant.getKey();
-            List<VentureCapital> participants = roundParticipant.getValue();
-            for (VentureCapital participant : participants) {
-                roundParticipations.add(new RoundParticipation(participant, round));
+    private void validateRoundAndSave(Project project, Round round) {
+        roundRepository.save(round);
+        project.addRound(round);
+        Set<Round> rounds = project.getRounds();
+        for (Round projectRound : rounds) {
+            if (!projectRound.equals(round) && projectRound.hasSameAttributes(round)) {
+                throw new CryptoHowsException(project.getName() + round.getFundingStage() + "이 등록되어 있거나 파일 내 중복되어 있습니다.");
             }
+        }
+    }
+
+    private void uploadRoundParticipation(Round round, List<VentureCapital> participants) {
+        List<RoundParticipation> roundParticipations = new ArrayList<>();
+        for (VentureCapital participant : participants) {
+            roundParticipations.add(new RoundParticipation(participant, round));
         }
         roundParticipationRepository.saveAll(roundParticipations);
     }

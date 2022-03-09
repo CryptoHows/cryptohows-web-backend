@@ -18,6 +18,8 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
+import javax.persistence.EntityManager;
+import javax.swing.text.html.parser.Entity;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -46,6 +48,9 @@ class UploadServiceTest {
 
     @Autowired
     private RoundParticipationRepository roundParticipationRepository;
+
+    @Autowired
+    private EntityManager em;
 
     @DisplayName("벤처 캐피탈 정보를 담은 엑셀 파일을 업로드 할 수 있다.")
     @Test
@@ -139,7 +144,7 @@ class UploadServiceTest {
         // when & then
         assertThatThrownBy(() -> uploadService.uploadVentureCapitals(ventureCapitalsFile))
                 .isInstanceOf(CryptoHowsException.class)
-                .hasMessageContaining("은 이미 업로드 된 벤처캐피탈 입니다.");
+                .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 벤처캐피탈 입니다.");
     }
 
     @DisplayName("VC 이름이 한 파일에 중복되면 업로드 할 수 없다.")
@@ -151,7 +156,7 @@ class UploadServiceTest {
         // when & then
         assertThatThrownBy(() -> uploadService.uploadVentureCapitals(ventureCapitalsFile))
                 .isInstanceOf(CryptoHowsException.class)
-                .hasMessageContaining("은 이미 업로드 된 벤처캐피탈 입니다.");
+                .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 벤처캐피탈 입니다.");
     }
 
     @DisplayName("Project 이름이 중복되면 업로드 할 수 없다.")
@@ -165,7 +170,7 @@ class UploadServiceTest {
         // when & then
         assertThatThrownBy(() -> uploadService.uploadProjects(projectsFile))
                 .isInstanceOf(CryptoHowsException.class)
-                .hasMessageContaining("은 이미 업로드 된 프로젝트입니다.");
+                .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 프로젝트입니다.");
     }
 
     @DisplayName("Project 이름이 중복되면 업로드 할 수 없다.")
@@ -178,7 +183,7 @@ class UploadServiceTest {
         // when & then
         assertThatThrownBy(() -> uploadService.uploadProjects(projectsFile))
                 .isInstanceOf(CryptoHowsException.class)
-                .hasMessageContaining("은 이미 업로드 된 프로젝트입니다.");
+                .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 프로젝트입니다.");
     }
 
     @DisplayName("Round에 올라갈 프로젝트가 없다면 오류가 발생한다.")
@@ -191,5 +196,35 @@ class UploadServiceTest {
         assertThatThrownBy(() -> uploadService.uploadRounds(projectsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("은 업로드 되지 않은 프로젝트 입니다.");
+    }
+
+    @DisplayName("중복된 라운드 정보를 담은 엑셀 파일을 업로드 할 수 없다.")
+    @Test
+    void cannotUploadDuplicateRound() {
+        // given
+        uploadProjects();
+        MultipartFile roundsFile = ExcelFileFixture.getRounds();
+        uploadService.uploadRounds(roundsFile);
+
+        em.flush();
+        em.clear();
+
+        // when & then
+        assertThatThrownBy(() -> uploadService.uploadRounds(roundsFile))
+                .isInstanceOf(CryptoHowsException.class)
+                .hasMessageContaining("이 등록되어 있거나 파일 내 중복되어 있습니다.");
+    }
+
+    @DisplayName("중복된 라운드 정보를 담은 엑셀 파일을 업로드 할 수 없다.")
+    @Test
+    void cannotUploadDuplicateRoundSingleFile() {
+        // given
+        uploadProjects();
+        MultipartFile roundsFile = ExcelFileFixture.getRoundsDuplicated();
+
+        // when & then
+        assertThatThrownBy(() -> uploadService.uploadRounds(roundsFile))
+                .isInstanceOf(CryptoHowsException.class)
+                .hasMessageContaining("이 등록되어 있거나 파일 내 중복되어 있습니다.");
     }
 }

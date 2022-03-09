@@ -38,7 +38,7 @@ public class ProjectUploadService {
 
     private void checkExistenceAndUpload(Project project) {
         if (projectRepository.existsByName(project.getName())) {
-            throw new CryptoHowsException(project.getName() + "은 이미 업로드 되었거나 중복된 프로젝트입니다.");
+            throw new CryptoHowsException(project.getName() + "은 이미 업로드 되었거나, 파일 내 중복되어있는 프로젝트입니다.");
         }
         projectRepository.save(project);
     }
