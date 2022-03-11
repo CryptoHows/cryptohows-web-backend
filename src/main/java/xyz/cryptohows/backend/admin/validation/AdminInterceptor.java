@@ -18,7 +18,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        return adminTokenIsRequired(handler) && checkValidToken(request);
+        return adminTokenIsRequired(handler) || checkValidToken(request);
     }
 
     private boolean adminTokenIsRequired(Object handler) {

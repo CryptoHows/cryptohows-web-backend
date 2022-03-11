@@ -97,6 +97,7 @@ class RoundRepositoryTest {
             .newsArticle("https://news.com/funding")
             .fundingStage(FundingStage.SERIES_A)
             .build();
+
     @BeforeEach
     void setUp() {
         projectRepository.saveAll(Arrays.asList(EOS, axieInfinity));

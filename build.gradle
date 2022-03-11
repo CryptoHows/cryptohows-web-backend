@@ -60,6 +60,11 @@ dependencies {
 
     // restassured
     testImplementation 'io.rest-assured:rest-assured:3.3.0'
+
+    // TestContainers
+    testImplementation "org.testcontainers:testcontainers:1.15.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.15.3"
+    testImplementation "org.testcontainers:localstack:1.15.3"
 }
 
 tasks.named('test') {
