@@ -1,6 +1,7 @@
 package xyz.cryptohows.backend.admin.validation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import xyz.cryptohows.backend.admin.application.AdminService;
@@ -18,7 +19,11 @@ public class AdminInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        return adminTokenIsRequired(handler) || checkValidToken(request);
+        return isOptionsMethod(request) || adminTokenIsRequired(handler) || checkValidToken(request);
+    }
+
+    public boolean isOptionsMethod(HttpServletRequest request) {
+        return request.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS.name());
     }
 
     private boolean adminTokenIsRequired(Object handler) {
