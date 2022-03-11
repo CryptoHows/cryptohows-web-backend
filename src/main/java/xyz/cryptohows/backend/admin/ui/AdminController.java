@@ -6,12 +6,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.admin.application.AdminService;
 import xyz.cryptohows.backend.admin.application.ProjectAdminService;
+import xyz.cryptohows.backend.admin.application.RoundAdminService;
 import xyz.cryptohows.backend.admin.application.VentureCapitalAdminService;
 import xyz.cryptohows.backend.admin.ui.dto.AdminLoginRequest;
 import xyz.cryptohows.backend.admin.validation.AdminTokenRequired;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectSimpleResponse;
+import xyz.cryptohows.backend.round.ui.dto.RoundResponse;
+import xyz.cryptohows.backend.round.ui.dto.RoundSimpleResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
 
@@ -25,6 +28,7 @@ public class AdminController {
     private final AdminService adminService;
     private final VentureCapitalAdminService ventureCapitalAdminService;
     private final ProjectAdminService projectAdminService;
+    private final RoundAdminService roundAdminService;
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> loginAsAdmin(@RequestBody AdminLoginRequest adminLoginRequest) {
@@ -71,6 +75,27 @@ public class AdminController {
     @PostMapping("/projects/upload-excel")
     public ResponseEntity<Void> uploadProjects(@RequestParam MultipartFile file) {
         projectAdminService.uploadExcel(file);
+        return ResponseEntity.ok().build();
+    }
+
+    @AdminTokenRequired
+    @GetMapping("/rounds")
+    public ResponseEntity<List<RoundSimpleResponse>> findAllRounds() {
+        List<RoundSimpleResponse> roundSimpleResponses = roundAdminService.findAll();
+        return ResponseEntity.ok(roundSimpleResponses);
+    }
+
+    @AdminTokenRequired
+    @GetMapping("/rounds/{roundId:[\\d]+}")
+    public ResponseEntity<RoundResponse> findRound(@PathVariable Long roundId) {
+        RoundResponse roundResponse = roundAdminService.findById(roundId);
+        return ResponseEntity.ok(roundResponse);
+    }
+
+    @AdminTokenRequired
+    @PostMapping("/rounds/upload-excel")
+    public ResponseEntity<Void> uploadRound(@RequestParam MultipartFile file) {
+        roundAdminService.uploadExcel(file);
         return ResponseEntity.ok().build();
     }
 }
