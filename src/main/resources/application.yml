@@ -124,6 +124,15 @@ server:
   port: ${PORT:8080}
 swagger-docs:
   url: https://cryptohows.herokuapp.com
+admin:
+  id: ${ADMIN_ID}
+  password: ${ADMIN_PW}
+  payload: ${ADMIN_PAYLOAD}
+security:
+  jwt:
+    access-token:
+      secret-key: ${JWT_SECRET_KEY}
+      expire-length: ${JWT_EXPIRE_LENGTH}
 ---
 springdoc:
   version: 1.0.0
