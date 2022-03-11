@@ -34,6 +34,15 @@ upload:
   password: cryptohows
 swagger-docs:
   url: http://localhost:8080
+admin:
+  id: test
+  password: test
+  payload: test
+security:
+  jwt:
+    access-token:
+      secret-key: test
+      expire-length: 7200000
 ---
 spring:
   config:
@@ -64,6 +73,15 @@ upload:
   password: cryptohows
 swagger-docs:
   url: http://localhost:8080
+admin:
+  id: test
+  password: test
+  payload: test
+security:
+  jwt:
+    access-token:
+      secret-key: test
+      expire-length: 7200000
 ---
 spring:
   config:
