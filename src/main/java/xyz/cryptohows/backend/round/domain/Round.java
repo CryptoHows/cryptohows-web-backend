@@ -31,26 +31,28 @@ public class Round {
     private LocalDate announcedDate;
     private String moneyRaised;
     private String newsArticle;
+    private Integer totalParticipants;
 
     @Enumerated(EnumType.STRING)
     private FundingStage fundingStage;
 
     @OneToMany(mappedBy = "round", cascade = CascadeType.REMOVE)
-    private Set<RoundParticipation> participants = new HashSet<>();
+    private final Set<RoundParticipation> vcParticipants = new HashSet<>();
 
     @Builder
-    public Round(Long id, Project project, String announcedDate, String moneyRaised, String newsArticle, FundingStage fundingStage) {
+    public Round(Long id, Project project, String announcedDate, String moneyRaised, String newsArticle, Integer totalParticipants, FundingStage fundingStage) {
         this.id = id;
         this.project = project;
         this.announcedDate = LocalDateConverter.formatDate(announcedDate);
         this.moneyRaised = moneyRaised;
         this.newsArticle = newsArticle;
+        this.totalParticipants = totalParticipants;
         this.fundingStage = fundingStage;
     }
 
     public void makeParticipation(VentureCapital ventureCapital) {
         RoundParticipation roundParticipation = new RoundParticipation(ventureCapital, this);
-        participants.add(roundParticipation);
+        vcParticipants.add(roundParticipation);
     }
 
     public void makeParticipations(List<VentureCapital> ventureCapitals) {
@@ -60,7 +62,7 @@ public class Round {
     }
 
     public List<VentureCapital> getParticipatedVC() {
-        return participants.stream()
+        return vcParticipants.stream()
                 .map(RoundParticipation::getVentureCapital)
                 .collect(Collectors.toList());
     }

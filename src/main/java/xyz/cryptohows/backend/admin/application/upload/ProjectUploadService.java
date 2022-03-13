@@ -36,7 +36,7 @@ public class ProjectUploadService {
         uploadPartnerships(projectExcelFormats);
     }
 
-    private void checkExistenceAndUpload(Project project) {
+    public void checkExistenceAndUpload(Project project) {
         if (projectRepository.existsByName(project.getName())) {
             throw new CryptoHowsException(project.getName() + "은 이미 업로드 되었거나, 파일 내 중복되어있는 프로젝트입니다.");
         }
@@ -46,13 +46,12 @@ public class ProjectUploadService {
     private void uploadPartnerships(List<ProjectExcelFormat> projectExcelFormats) {
         projectExcelFormats.forEach(projectExcelFormat -> {
             Project project = projectRepository.findByNameIgnoreCase(projectExcelFormat.getName());
-            List<VentureCapital> ventureCapitals =
-                    ventureCapitalRepository.findAllByNameInIgnoreCase(projectExcelFormat.getInvestors());
-            savePartnerships(project, ventureCapitals);
+            savePartnerships(project, projectExcelFormat.getInvestors());
         });
     }
 
-    private void savePartnerships(Project project, List<VentureCapital> ventureCapitals) {
+    public void savePartnerships(Project project, List<String> investors) {
+        List<VentureCapital> ventureCapitals = ventureCapitalRepository.findAllByNameInIgnoreCase(investors);
         List<Partnership> projectPartnerships = ventureCapitals.stream()
                 .map(ventureCapital -> new Partnership(ventureCapital, project))
                 .collect(Collectors.toList());

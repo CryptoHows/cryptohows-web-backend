@@ -16,16 +16,20 @@ public class ProjectResponse {
     private final String about;
     private final String homepage;
     private final String logo;
+    private final String twitter;
+    private final String community;
     private final String round;
     private final List<VentureCapitalSimpleResponse> investors;
 
-    public ProjectResponse(Long id, String name, String about, String homepage, String logo, String round,
-                           List<VentureCapitalSimpleResponse> investors) {
+    public ProjectResponse(Long id, String name, String about, String homepage, String logo, String twitter, String community,
+                           String round, List<VentureCapitalSimpleResponse> investors) {
         this.id = id;
         this.name = name;
         this.about = about;
         this.homepage = homepage;
         this.logo = logo;
+        this.twitter = twitter;
+        this.community = community;
         this.round = round;
         this.investors = investors;
     }
@@ -37,6 +41,8 @@ public class ProjectResponse {
                 project.getAbout(),
                 project.getHomepage(),
                 project.getLogo(),
+                project.getTwitter(),
+                project.getCommunity(),
                 project.getCurrentRound().getFundingStage(),
                 VentureCapitalSimpleResponse.toList(project.getInvestors())
         );

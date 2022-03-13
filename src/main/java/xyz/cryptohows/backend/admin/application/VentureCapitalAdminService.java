@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.admin.application.upload.VentureCapitalUploadService;
+import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.domain.Projects;
+import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
@@ -21,6 +23,7 @@ public class VentureCapitalAdminService {
 
     private final VentureCapitalUploadService ventureCapitalUploadService;
     private final VentureCapitalRepository ventureCapitalRepository;
+    private final RoundParticipationRepository roundParticipationRepository;
 
     public List<VentureCapitalSimpleResponse> findAll() {
         List<VentureCapital> ventureCapitals = ventureCapitalRepository.findAll();
@@ -36,5 +39,33 @@ public class VentureCapitalAdminService {
 
     public void uploadExcel(MultipartFile file) {
         ventureCapitalUploadService.uploadVentureCapitals(file);
+    }
+
+    public void deleteById(Long vcId) {
+        VentureCapital ventureCapital = ventureCapitalRepository.findById(vcId)
+                .orElseThrow(() -> new CryptoHowsException("해당 id의 벤처캐피탈은 없습니다."));
+        roundParticipationRepository.deleteByVentureCapital(ventureCapital);
+        ventureCapitalRepository.deleteById(vcId);
+    }
+
+    public void create(VentureCapitalRequest ventureCapitalRequest) {
+        VentureCapital ventureCapital = VentureCapital.builder()
+                .name(ventureCapitalRequest.getName())
+                .about(ventureCapitalRequest.getAbout())
+                .homepage(ventureCapitalRequest.getHomepage())
+                .logo(ventureCapitalRequest.getLogo())
+                .build();
+        ventureCapitalUploadService.checkExistenceAndUpload(ventureCapital);
+    }
+
+    public void updateById(Long vcId, VentureCapitalRequest ventureCapitalRequest) {
+        VentureCapital ventureCapital = ventureCapitalRepository.findById(vcId)
+                .orElseThrow(() -> new CryptoHowsException("해당 id의 벤처캐피탈은 없습니다."));
+        ventureCapital.updateInformation(
+                ventureCapitalRequest.getName(),
+                ventureCapitalRequest.getAbout(),
+                ventureCapitalRequest.getHomepage(),
+                ventureCapitalRequest.getLogo()
+        );
     }
 }

@@ -27,6 +27,8 @@ public class Project {
     private String about;
     private String homepage;
     private String logo;
+    private String twitter;
+    private String community;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -41,12 +43,15 @@ public class Project {
     private Set<Round> rounds = new HashSet<>();
 
     @Builder
-    public Project(Long id, String name, String about, String homepage, String logo, Category category, Mainnet mainnet) {
+    public Project(Long id, String name, String about, String homepage, String logo, String twitter, String community,
+                   Category category, Mainnet mainnet) {
         this.id = id;
         this.name = name;
         this.about = about;
         this.homepage = homepage;
         this.logo = logo;
+        this.twitter = twitter;
+        this.community = community;
         this.category = category;
         this.mainnet = mainnet;
     }
@@ -76,6 +81,18 @@ public class Project {
                 .map(Round::getFundingStage)
                 .max(Comparator.comparing(Enum::ordinal))
                 .orElse(FundingStage.UNKNOWN);
+    }
+
+    public void updateInformation(String name, String about, String homepage, String logo, String twitter, String community,
+                                  String category, String mainnet) {
+        this.name = name;
+        this.about = about;
+        this.homepage = homepage;
+        this.logo = logo;
+        this.twitter = twitter;
+        this.community = community;
+        this.category = Category.of(category);
+        this.mainnet = Mainnet.of(mainnet);
     }
 
     @Override

@@ -27,19 +27,19 @@ public class AcceptanceTest {
     int port;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    protected ProjectRepository projectRepository;
 
     @Autowired
-    private VentureCapitalRepository ventureCapitalRepository;
+    protected VentureCapitalRepository ventureCapitalRepository;
 
     @Autowired
-    private PartnershipRepository partnershipRepository;
+    protected PartnershipRepository partnershipRepository;
 
     @Autowired
-    private RoundRepository roundRepository;
+    protected RoundRepository roundRepository;
 
     @Autowired
-    private RoundParticipationRepository roundParticipationRepository;
+    protected RoundParticipationRepository roundParticipationRepository;
 
     @Autowired
     private DatabaseCleanup databaseCleanup;

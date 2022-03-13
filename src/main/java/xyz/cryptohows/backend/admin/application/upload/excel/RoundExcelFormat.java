@@ -26,15 +26,17 @@ public class RoundExcelFormat {
     private final String moneyRaised;
     private final String fundingStage;
     private final String newsArticle;
+    private final Integer totalParticipants;
     private final List<String> participants;
 
     public RoundExcelFormat(String projectName, String announcedDate, String moneyRaised, String fundingStage,
-                            String newsArticle, List<String> participants) {
+                            String newsArticle, Integer totalParticipants, List<String> participants) {
         this.projectName = projectName;
         this.announcedDate = announcedDate;
         this.moneyRaised = moneyRaised;
         this.fundingStage = fundingStage;
         this.newsArticle = newsArticle;
+        this.totalParticipants = totalParticipants;
         this.participants = participants;
     }
 
@@ -55,6 +57,7 @@ public class RoundExcelFormat {
                     toDollar(checkNullAndGetDoubleCellValue(row.getCell(2))),
                     checkNullAndGetStringCellValue(row.getCell(3)),
                     checkNullAndGetStringCellValue(row.getCell(4)),
+                    Arrays.asList(row.getCell(5).getStringCellValue().split(", ")).size(),
                     Arrays.asList(row.getCell(5).getStringCellValue().split(", "))
             );
             roundExcelFormats.add(roundExcelFormat);
@@ -75,6 +78,7 @@ public class RoundExcelFormat {
                 .project(project)
                 .announcedDate(announcedDate)
                 .moneyRaised(moneyRaised)
+                .totalParticipants(totalParticipants)
                 .fundingStage(FundingStage.of(fundingStage))
                 .newsArticle(newsArticle)
                 .build();

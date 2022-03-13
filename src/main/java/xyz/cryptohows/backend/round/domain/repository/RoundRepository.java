@@ -16,7 +16,7 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
     @Query("select distinct round " +
             "from Round as round " +
             "join fetch round.project " +
-            "join fetch round.participants ")
+            "join fetch round.vcParticipants ")
     List<Round> findRecentRounds(Pageable pageable);
 
     @Query("select distinct round " +
@@ -27,7 +27,7 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
     @Query("select distinct round " +
             "from Round as round " +
             "join fetch round.project " +
-            "join fetch round.participants " +
+            "join fetch round.vcParticipants " +
             "where round.id = :roundId ")
     Optional<Round> findRoundByIdFetchJoinProjectAndParticipants(@Param("roundId") Long roundId);
 }
