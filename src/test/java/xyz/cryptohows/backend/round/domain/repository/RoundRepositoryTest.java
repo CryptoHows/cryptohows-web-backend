@@ -21,6 +21,7 @@ import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -97,6 +98,7 @@ class RoundRepositoryTest {
             .newsArticle("https://news.com/funding")
             .fundingStage(FundingStage.SERIES_A)
             .build();
+
     @BeforeEach
     void setUp() {
         projectRepository.saveAll(Arrays.asList(EOS, axieInfinity));
@@ -197,5 +199,16 @@ class RoundRepositoryTest {
 
         // then
         assertThat(count).isEqualTo(4L);
+    }
+
+    @Test
+    @DisplayName("id로 라운드를 받아볼 수 있다.")
+    void findByRound() {
+        // when
+        Optional<Round> roundById = roundRepository.findById(EOSSeed.getId());
+        Round round = roundById.get();
+
+        // then
+        assertThat(round).isEqualTo(EOSSeed);
     }
 }

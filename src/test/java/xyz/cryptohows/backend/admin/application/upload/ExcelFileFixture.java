@@ -1,4 +1,4 @@
-package xyz.cryptohows.backend.upload.application;
+package xyz.cryptohows.backend.admin.application.upload;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;

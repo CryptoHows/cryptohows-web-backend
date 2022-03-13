@@ -1,4 +1,4 @@
-package xyz.cryptohows.backend.upload.application;
+package xyz.cryptohows.backend.admin.application.upload;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import javax.persistence.EntityManager;
-import javax.swing.text.html.parser.Entity;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -32,7 +31,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class UploadServiceTest {
 
     @Autowired
-    private UploadService uploadService;
+    private VentureCapitalUploadService ventureCapitalUploadService;
+
+    @Autowired
+    private ProjectUploadService projectUploadService;
+
+    @Autowired
+    private RoundUploadService roundUploadService;
 
     @Autowired
     private VentureCapitalRepository ventureCapitalRepository;
@@ -59,7 +64,7 @@ class UploadServiceTest {
         MultipartFile ventureCapitalsFile = ExcelFileFixture.getVentureCapitalsFile();
 
         // when
-        uploadService.uploadVentureCapitals(ventureCapitalsFile);
+        ventureCapitalUploadService.uploadVentureCapitals(ventureCapitalsFile);
 
         // then
         List<VentureCapital> ventureCapitals = ventureCapitalRepository.findAll();
@@ -77,7 +82,7 @@ class UploadServiceTest {
         MultipartFile projectsFile = ExcelFileFixture.getProjects();
 
         // when
-        uploadService.uploadProjects(projectsFile);
+        projectUploadService.uploadProjects(projectsFile);
 
         // then
         List<Project> projects = projectRepository.findAll();
@@ -110,7 +115,7 @@ class UploadServiceTest {
         MultipartFile roundsFile = ExcelFileFixture.getRounds();
 
         // when
-        uploadService.uploadRounds(roundsFile);
+        roundUploadService.uploadRounds(roundsFile);
 
         // then
         List<Round> rounds = roundRepository.findAll();
@@ -139,10 +144,10 @@ class UploadServiceTest {
     void duplicateVCUpload() {
         // given
         MultipartFile ventureCapitalsFile = ExcelFileFixture.getVentureCapitalsFile();
-        uploadService.uploadVentureCapitals(ventureCapitalsFile);
+        ventureCapitalUploadService.uploadVentureCapitals(ventureCapitalsFile);
 
         // when & then
-        assertThatThrownBy(() -> uploadService.uploadVentureCapitals(ventureCapitalsFile))
+        assertThatThrownBy(() -> ventureCapitalUploadService.uploadVentureCapitals(ventureCapitalsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 벤처캐피탈 입니다.");
     }
@@ -154,7 +159,7 @@ class UploadServiceTest {
         MultipartFile ventureCapitalsFile = ExcelFileFixture.getVentureCapitalsDuplicatedFile();
 
         // when & then
-        assertThatThrownBy(() -> uploadService.uploadVentureCapitals(ventureCapitalsFile))
+        assertThatThrownBy(() -> ventureCapitalUploadService.uploadVentureCapitals(ventureCapitalsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 벤처캐피탈 입니다.");
     }
@@ -165,10 +170,10 @@ class UploadServiceTest {
         // given
         uploadVentureCapitals();
         MultipartFile projectsFile = ExcelFileFixture.getProjects();
-        uploadService.uploadProjects(projectsFile);
+        projectUploadService.uploadProjects(projectsFile);
 
         // when & then
-        assertThatThrownBy(() -> uploadService.uploadProjects(projectsFile))
+        assertThatThrownBy(() -> projectUploadService.uploadProjects(projectsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 프로젝트입니다.");
     }
@@ -181,7 +186,7 @@ class UploadServiceTest {
         MultipartFile projectsFile = ExcelFileFixture.getProjectsDuplicatedFile();
 
         // when & then
-        assertThatThrownBy(() -> uploadService.uploadProjects(projectsFile))
+        assertThatThrownBy(() -> projectUploadService.uploadProjects(projectsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("은 이미 업로드 되었거나, 파일 내 중복되어있는 프로젝트입니다.");
     }
@@ -193,7 +198,7 @@ class UploadServiceTest {
         MultipartFile projectsFile = ExcelFileFixture.getRoundsProjectNotUploadedFile();
 
         // when & then
-        assertThatThrownBy(() -> uploadService.uploadRounds(projectsFile))
+        assertThatThrownBy(() -> roundUploadService.uploadRounds(projectsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("은 업로드 되지 않은 프로젝트 입니다.");
     }
@@ -204,13 +209,13 @@ class UploadServiceTest {
         // given
         uploadProjects();
         MultipartFile roundsFile = ExcelFileFixture.getRounds();
-        uploadService.uploadRounds(roundsFile);
+        roundUploadService.uploadRounds(roundsFile);
 
         em.flush();
         em.clear();
 
         // when & then
-        assertThatThrownBy(() -> uploadService.uploadRounds(roundsFile))
+        assertThatThrownBy(() -> roundUploadService.uploadRounds(roundsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("이 등록되어 있거나 파일 내 중복되어 있습니다.");
     }
@@ -223,7 +228,7 @@ class UploadServiceTest {
         MultipartFile roundsFile = ExcelFileFixture.getRoundsDuplicated();
 
         // when & then
-        assertThatThrownBy(() -> uploadService.uploadRounds(roundsFile))
+        assertThatThrownBy(() -> roundUploadService.uploadRounds(roundsFile))
                 .isInstanceOf(CryptoHowsException.class)
                 .hasMessageContaining("이 등록되어 있거나 파일 내 중복되어 있습니다.");
     }

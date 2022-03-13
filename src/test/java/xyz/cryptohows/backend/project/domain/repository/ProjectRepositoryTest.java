@@ -24,6 +24,7 @@ import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -198,5 +199,16 @@ class ProjectRepositoryTest {
         assertThat(secondPageProject).hasSize(2);
         assertThat(secondPageProject.get(0)).isEqualTo(KLAYTN);
         assertThat(secondPageProject.get(1)).isEqualTo(axieInfinity);
+    }
+
+    @Test
+    @DisplayName("프로젝트의 Id를 통해 프로젝트를 받아볼 수 있다.")
+    void findById() {
+        // when
+        Optional<Project> byId = projectRepository.findByIdFetchJoinPartnerships(EOS.getId());
+        Project project = byId.get();
+
+        // then
+        assertThat(project).isEqualTo(EOS);
     }
 }

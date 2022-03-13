@@ -1,4 +1,4 @@
-package xyz.cryptohows.backend.upload.application;
+package xyz.cryptohows.backend.admin.application.upload;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
-import xyz.cryptohows.backend.upload.application.excel.ProjectExcelFormat;
+import xyz.cryptohows.backend.admin.application.upload.excel.ProjectExcelFormat;
 import xyz.cryptohows.backend.vc.domain.Partnership;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
