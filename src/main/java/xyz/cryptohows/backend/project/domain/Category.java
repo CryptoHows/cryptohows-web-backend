@@ -3,23 +3,25 @@ package xyz.cryptohows.backend.project.domain;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public enum Category {
-    NONE("none"),
-    EXCHANGES("exchanges"),
-    BLOCKCHAIN_INFRASTRUCTURE("blockchainInfrastructure"),
-    SECURITY_INFRASTRUCTURE("securityInfrastructure"),
-    WALLET("wallet"),
-    PAYMENTS("payments"),
-    DIGITAL_ASSETS("digitalAssets"),
-    SOCIAL_NETWORK("socialNetwork"),
-    GAMING("gaming"),
-    CEFI("cefi"),
-    DEFI("defi"),
-    INFRASTRUCTURE("infrastructure"),
-    NFTS("nfts"),
-    WEB3("web3");
+    NONE("None"),
+    EXCHANGES("Exchanges"),
+    BLOCKCHAIN_INFRASTRUCTURE("Blockchain Infrastructure"),
+    SECURITY_INFRASTRUCTURE("Security Infrastructure"),
+    WALLET("Wallet"),
+    PAYMENTS("Payments"),
+    DIGITAL_ASSETS("Digital Assets"),
+    SOCIAL_NETWORK("Social Network"),
+    GAMING("Gaming"),
+    CEFI("CeFi"),
+    DEFI("DeFi"),
+    INFRASTRUCTURE("Infrastructure"),
+    NFTS("NFTs"),
+    WEB3("Web3");
 
     private final String categoryName;
 
@@ -32,5 +34,11 @@ public enum Category {
                 .filter(category -> category.categoryName.equalsIgnoreCase(input))
                 .findAny()
                 .orElse(NONE);
+    }
+
+    public static List<String> getAllCategories() {
+        return Arrays.stream(values())
+                .map(Category::getCategoryName)
+                .collect(Collectors.toList());
     }
 }
