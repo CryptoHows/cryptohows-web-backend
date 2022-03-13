@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import xyz.cryptohows.backend.admin.ui.dto.AdminLoginRequest;
+import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
+import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
 
@@ -109,6 +111,28 @@ class AdminAcceptanceTest extends AcceptanceTest {
         assertThat(roundParticipationRepository.count()).isEqualTo(7);
     }
 
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 VC를 추가할 수 있다.")
+    @Test
+    void addVCAsAdmin() {
+        // when
+        VentureCapitalRequest ventureCapitalRequest = new VentureCapitalRequest("JOEL-VC", "joel's vc", "https://joel.vc", "https://joel.vc.img");
+        ExtractableResponse<Response> response = 어드민_VC_개별_추가_요청(어드민_토큰_발급(), ventureCapitalRequest);
+
+        // then
+        어드민_추가_응답_받음(response);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 VC를 수정할 수 있다.")
+    @Test
+    void updateVCAsAdmin() {
+        // when
+        VentureCapitalRequest ventureCapitalRequest = new VentureCapitalRequest("JOEL-VC", "joel's vc", "https://joel.vc", "https://joel.vc.img");
+        ExtractableResponse<Response> response = 어드민_VC_개별_수정_요청(어드민_토큰_발급(), 해시드.getId(), ventureCapitalRequest);
+
+        // then
+        어드민_성공_응답_받음(response);
+    }
+
     private String 어드민_토큰_발급() {
         ExtractableResponse<Response> response = 어드민_로그인_요청(어드민_로그인_양식);
         TokenResponse adminLoginResponse = response.as(TokenResponse.class);
@@ -153,6 +177,26 @@ class AdminAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
+    private ExtractableResponse<Response> 어드민_VC_개별_추가_요청(String 어드민_토큰, VentureCapitalRequest ventureCapitalRequest) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(어드민_토큰)
+                .body(ventureCapitalRequest)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/admin/venture-capitals")
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 어드민_VC_개별_수정_요청(String 어드민_토큰, Long VC_ID, VentureCapitalRequest ventureCapitalRequest) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(어드민_토큰)
+                .body(ventureCapitalRequest)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put("/admin/venture-capitals/{vcId}", VC_ID)
+                .then().log().all()
+                .extract();
+    }
+
     private ExtractableResponse<Response> 어드민_VC_개별_삭제_요청(String 어드민_토큰, Long VC_ID) {
         return RestAssured.given().log().all()
                 .when()
@@ -192,7 +236,15 @@ class AdminAcceptanceTest extends AcceptanceTest {
         assertThat(vcResponse).isNotNull();
     }
 
+    private void 어드민_추가_응답_받음(ExtractableResponse<Response> response) {
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
     private void 어드민_삭제_응답_받음(ExtractableResponse<Response> response) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    private void 어드민_성공_응답_받음(ExtractableResponse<Response> response) {
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

@@ -1,6 +1,7 @@
 package xyz.cryptohows.backend.admin.ui;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +10,7 @@ import xyz.cryptohows.backend.admin.application.ProjectAdminService;
 import xyz.cryptohows.backend.admin.application.RoundAdminService;
 import xyz.cryptohows.backend.admin.application.VentureCapitalAdminService;
 import xyz.cryptohows.backend.admin.ui.dto.AdminLoginRequest;
+import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.admin.validation.AdminTokenRequired;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
@@ -44,10 +46,25 @@ public class AdminController {
     }
 
     @AdminTokenRequired
+    @PostMapping("/venture-capitals")
+    public ResponseEntity<Void> createVentureCapital(@RequestBody VentureCapitalRequest ventureCapitalRequest) {
+        ventureCapitalAdminService.create(ventureCapitalRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @AdminTokenRequired
     @GetMapping("/venture-capitals/{vcId:[\\d]+}")
     public ResponseEntity<VentureCapitalResponse> findVentureCapital(@PathVariable Long vcId) {
         VentureCapitalResponse ventureCapitalResponse = ventureCapitalAdminService.findById(vcId);
         return ResponseEntity.ok(ventureCapitalResponse);
+    }
+
+    @AdminTokenRequired
+    @PutMapping("/venture-capitals/{vcId:[\\d]+}")
+    public ResponseEntity<Void> updateVentureCapital(@PathVariable Long vcId,
+                                                     @RequestBody VentureCapitalRequest ventureCapitalRequest) {
+        ventureCapitalAdminService.updateById(vcId, ventureCapitalRequest);
+        return ResponseEntity.ok().build();
     }
 
     @AdminTokenRequired

@@ -57,6 +57,13 @@ public class VentureCapital {
                 .collect(Collectors.toList());
     }
 
+    public void updateInformation(String name, String about, String homepage, String logo) {
+        this.name = name;
+        this.about = about;
+        this.homepage = homepage;
+        this.logo = logo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
