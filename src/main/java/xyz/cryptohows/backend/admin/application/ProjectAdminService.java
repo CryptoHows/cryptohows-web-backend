@@ -35,4 +35,10 @@ public class ProjectAdminService {
     public void uploadExcel(MultipartFile file) {
         projectUploadService.uploadProjects(file);
     }
+
+    public void deleteById(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CryptoHowsException("해당 id의 프로젝트는 없습니다."));
+        projectRepository.delete(project);
+    }
 }

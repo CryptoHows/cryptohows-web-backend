@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.admin.application.upload.RoundUploadService;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
-import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 import xyz.cryptohows.backend.round.ui.dto.RoundResponse;
@@ -35,5 +34,11 @@ public class RoundAdminService {
 
     public void uploadExcel(MultipartFile file) {
         roundUploadService.uploadRounds(file);
+    }
+
+    public void deleteById(Long roundId) {
+        Round round = roundRepository.findById(roundId)
+                .orElseThrow(() -> new CryptoHowsException("해당 id의 라운드는 없습니다."));
+        roundRepository.delete(round);
     }
 }

@@ -51,6 +51,13 @@ public class AdminController {
     }
 
     @AdminTokenRequired
+    @DeleteMapping("/venture-capitals/{vcId:[\\d]+}")
+    public ResponseEntity<Void> deleteVentureCapital(@PathVariable Long vcId) {
+        ventureCapitalAdminService.deleteById(vcId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @AdminTokenRequired
     @PostMapping("/venture-capitals/upload-excel")
     public ResponseEntity<Void> uploadVentureCapitals(@RequestParam MultipartFile file) {
         ventureCapitalAdminService.uploadExcel(file);
@@ -72,6 +79,13 @@ public class AdminController {
     }
 
     @AdminTokenRequired
+    @DeleteMapping("/projects/{projectId:[\\d]+}")
+    public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {
+        projectAdminService.deleteById(projectId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @AdminTokenRequired
     @PostMapping("/projects/upload-excel")
     public ResponseEntity<Void> uploadProjects(@RequestParam MultipartFile file) {
         projectAdminService.uploadExcel(file);
@@ -90,6 +104,13 @@ public class AdminController {
     public ResponseEntity<RoundResponse> findRound(@PathVariable Long roundId) {
         RoundResponse roundResponse = roundAdminService.findById(roundId);
         return ResponseEntity.ok(roundResponse);
+    }
+
+    @AdminTokenRequired
+    @DeleteMapping("/rounds/{roundId:[\\d]+}")
+    public ResponseEntity<Void> deleteRound(@PathVariable Long roundId) {
+        roundAdminService.deleteById(roundId);
+        return ResponseEntity.noContent().build();
     }
 
     @AdminTokenRequired

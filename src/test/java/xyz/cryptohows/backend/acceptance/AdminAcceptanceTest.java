@@ -13,6 +13,7 @@ import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static xyz.cryptohows.backend.acceptance.util.AcceptanceFixture.*;
 
 @DisplayName("어드민 관련 기능")
 class AdminAcceptanceTest extends AcceptanceTest {
@@ -63,10 +64,49 @@ class AdminAcceptanceTest extends AcceptanceTest {
     @Test
     void getSingleVCAsAdmin() {
         // when
-        ExtractableResponse<Response> response = 어드민_VC_개별_조회_요청(어드민_토큰_발급(), 1L);
+        ExtractableResponse<Response> response = 어드민_VC_개별_조회_요청(어드민_토큰_발급(), 해시드.getId());
 
         // then
         어드민_VC_개별_응답_받음(response);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 VC를 삭제할 수 있다.")
+    @Test
+    void deleteVCAsAdmin() {
+        // when
+        ExtractableResponse<Response> response = 어드민_VC_개별_삭제_요청(어드민_토큰_발급(), 해시드.getId());
+
+        // then
+        어드민_삭제_응답_받음(response);
+        assertThat(ventureCapitalRepository.count()).isOne();
+        assertThat(partnershipRepository.count()).isEqualTo(2);
+        assertThat(roundParticipationRepository.count()).isEqualTo(4);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 프로젝트를 삭제할 수 있다.")
+    @Test
+    void deleteProjectAsAdmin() {
+        // when
+        ExtractableResponse<Response> response = 어드민_프로젝트_개별_삭제_요청(어드민_토큰_발급(), 이더리움.getId());
+
+        // then
+        어드민_삭제_응답_받음(response);
+        assertThat(projectRepository.count()).isEqualTo(2);
+        assertThat(partnershipRepository.count()).isEqualTo(3);
+        assertThat(roundRepository.count()).isEqualTo(4);
+        assertThat(roundParticipationRepository.count()).isEqualTo(5);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 라운드를 삭제할 수 있다.")
+    @Test
+    void deleteRoundAsAdmin() {
+        // when
+        ExtractableResponse<Response> response = 어드민_라운드_개별_삭제_요청(어드민_토큰_발급(), 이더리움_시드.getId());
+
+        // then
+        어드민_삭제_응답_받음(response);
+        assertThat(roundRepository.count()).isEqualTo(5);
+        assertThat(roundParticipationRepository.count()).isEqualTo(7);
     }
 
     private String 어드민_토큰_발급() {
@@ -113,6 +153,33 @@ class AdminAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
+    private ExtractableResponse<Response> 어드민_VC_개별_삭제_요청(String 어드민_토큰, Long VC_ID) {
+        return RestAssured.given().log().all()
+                .when()
+                .auth().oauth2(어드민_토큰)
+                .delete("/admin/venture-capitals/{vcId}", VC_ID)
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 어드민_프로젝트_개별_삭제_요청(String 어드민_토큰, Long PROJECT_ID) {
+        return RestAssured.given().log().all()
+                .when()
+                .auth().oauth2(어드민_토큰)
+                .delete("/admin/projects/{projectId}", PROJECT_ID)
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 어드민_라운드_개별_삭제_요청(String 어드민_토큰, Long ROUND_ID) {
+        return RestAssured.given().log().all()
+                .when()
+                .auth().oauth2(어드민_토큰)
+                .delete("/admin/rounds/{roundId}", ROUND_ID)
+                .then().log().all()
+                .extract();
+    }
+
     private void 어드민_VC_조회_응답_받음(ExtractableResponse<Response> response) {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         VentureCapitalSimpleResponse[] vcResponses = response.as(VentureCapitalSimpleResponse[].class);
@@ -123,5 +190,9 @@ class AdminAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         VentureCapitalResponse vcResponse = response.as(VentureCapitalResponse.class);
         assertThat(vcResponse).isNotNull();
+    }
+
+    private void 어드민_삭제_응답_받음(ExtractableResponse<Response> response) {
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }

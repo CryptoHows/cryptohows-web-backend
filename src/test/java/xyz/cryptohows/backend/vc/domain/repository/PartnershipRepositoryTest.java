@@ -82,4 +82,21 @@ class PartnershipRepositoryTest {
         assertThat(savedHashed.getPartnerships()).hasSize(2);
         assertThat(savedEOS.getPartnerships()).hasSize(1);
     }
+
+    @Test
+    @DisplayName("VentureCapital의 Partnership을 삭제할 수 있다.")
+    void deleteByVC() {
+        // given
+        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
+        partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedAxieInfinity));
+        tem.flush();
+        tem.clear();
+
+        // when
+        partnershipRepository.deleteByVentureCapital(hashed);
+
+        // when
+        assertThat(partnershipRepository.count()).isZero();
+    }
 }

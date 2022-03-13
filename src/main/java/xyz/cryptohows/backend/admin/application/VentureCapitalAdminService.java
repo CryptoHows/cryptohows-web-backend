@@ -7,7 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.admin.application.upload.VentureCapitalUploadService;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.domain.Projects;
+import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
+import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
@@ -21,6 +23,7 @@ public class VentureCapitalAdminService {
 
     private final VentureCapitalUploadService ventureCapitalUploadService;
     private final VentureCapitalRepository ventureCapitalRepository;
+    private final RoundParticipationRepository roundParticipationRepository;
 
     public List<VentureCapitalSimpleResponse> findAll() {
         List<VentureCapital> ventureCapitals = ventureCapitalRepository.findAll();
@@ -36,5 +39,12 @@ public class VentureCapitalAdminService {
 
     public void uploadExcel(MultipartFile file) {
         ventureCapitalUploadService.uploadVentureCapitals(file);
+    }
+
+    public void deleteById(Long vcId) {
+        VentureCapital ventureCapital = ventureCapitalRepository.findById(vcId)
+                .orElseThrow(() -> new CryptoHowsException("해당 id의 벤처캐피탈은 없습니다."));
+        roundParticipationRepository.deleteByVentureCapital(ventureCapital);
+        ventureCapitalRepository.deleteById(vcId);
     }
 }
