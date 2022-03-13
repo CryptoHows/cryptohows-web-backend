@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import xyz.cryptohows.backend.admin.ui.dto.AdminLoginRequest;
+import xyz.cryptohows.backend.admin.ui.dto.ProjectRequest;
+import xyz.cryptohows.backend.admin.ui.dto.RoundRequest;
 import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
-import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
 
@@ -21,6 +22,15 @@ import static xyz.cryptohows.backend.acceptance.util.AcceptanceFixture.*;
 class AdminAcceptanceTest extends AcceptanceTest {
 
     private static final AdminLoginRequest 어드민_로그인_양식 = new AdminLoginRequest("test", "test");
+
+    private static final VentureCapitalRequest 벤처_캐피탈_요청_양식 = new VentureCapitalRequest("JOEL-VC", "joel's vc", "https://joel.vc", "https://joel.vc.img");
+
+    private static final ProjectRequest 프로젝트_요청_양식 = new ProjectRequest("Joel-Project", "joel's project", "https://joel-project.com",
+            "https://joel.image", "https://twitter-joel.com", "https://discord.joel",
+            "DeFi", "ETHEREUM", "A16Z, 해시드, 조엘투자사");
+
+    private static final RoundRequest 라운드_요청_양식 = new RoundRequest("ETHEREUM", "2022-03-13",
+            "100000000", "https://news.com", "SERIES_D", "A16Z, 해시드, 조엘 투자사");
 
     @DisplayName("어드민 계정의 ID, PW를 통해 어드민 유저의 토큰을 발급받을 수 있다.")
     @Test
@@ -115,8 +125,7 @@ class AdminAcceptanceTest extends AcceptanceTest {
     @Test
     void addVCAsAdmin() {
         // when
-        VentureCapitalRequest ventureCapitalRequest = new VentureCapitalRequest("JOEL-VC", "joel's vc", "https://joel.vc", "https://joel.vc.img");
-        ExtractableResponse<Response> response = 어드민_VC_개별_추가_요청(어드민_토큰_발급(), ventureCapitalRequest);
+        ExtractableResponse<Response> response = 어드민_VC_개별_추가_요청(어드민_토큰_발급(), 벤처_캐피탈_요청_양식);
 
         // then
         어드민_추가_응답_받음(response);
@@ -126,8 +135,47 @@ class AdminAcceptanceTest extends AcceptanceTest {
     @Test
     void updateVCAsAdmin() {
         // when
-        VentureCapitalRequest ventureCapitalRequest = new VentureCapitalRequest("JOEL-VC", "joel's vc", "https://joel.vc", "https://joel.vc.img");
-        ExtractableResponse<Response> response = 어드민_VC_개별_수정_요청(어드민_토큰_발급(), 해시드.getId(), ventureCapitalRequest);
+        ExtractableResponse<Response> response = 어드민_VC_개별_수정_요청(어드민_토큰_발급(), 해시드.getId(), 벤처_캐피탈_요청_양식);
+
+        // then
+        어드민_성공_응답_받음(response);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 프로젝트를 등록할 수 있다.")
+    @Test
+    void createProjectAsAdmin() {
+        // given
+        ExtractableResponse<Response> response = 어드민_프로젝트_개별_추가_요청(어드민_토큰_발급(), 프로젝트_요청_양식);
+
+        // then
+        어드민_추가_응답_받음(response);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 프로젝트를 수정할 수 있다.")
+    @Test
+    void updateProjectAsAdmin() {
+        // given
+        ExtractableResponse<Response> response = 어드민_프로젝트_개별_수정_요청(어드민_토큰_발급(), 이더리움.getId(), 프로젝트_요청_양식);
+
+        // then
+        어드민_성공_응답_받음(response);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 라운드를 등록할 수 있다.")
+    @Test
+    void createRoundAsAdmin() {
+        // given
+        ExtractableResponse<Response> response = 어드민_라운드_개별_추가_요청(어드민_토큰_발급(), 라운드_요청_양식);
+
+        // then
+        어드민_추가_응답_받음(response);
+    }
+
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 라운드를 수정할 수 있다.")
+    @Test
+    void updateRoundAsAdmin() {
+        // given
+        ExtractableResponse<Response> response = 어드민_라운드_개별_수정_요청(어드민_토큰_발급(), 이더리움_시드.getId(), 라운드_요청_양식);
 
         // then
         어드민_성공_응답_받음(response);
@@ -187,12 +235,52 @@ class AdminAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
+    private ExtractableResponse<Response> 어드민_프로젝트_개별_추가_요청(String 어드민_토큰, ProjectRequest projectRequest) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(어드민_토큰)
+                .body(projectRequest)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/admin/projects")
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 어드민_라운드_개별_추가_요청(String 어드민_토큰, RoundRequest roundRequest) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(어드민_토큰)
+                .body(roundRequest)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/admin/rounds")
+                .then().log().all()
+                .extract();
+    }
+
     private ExtractableResponse<Response> 어드민_VC_개별_수정_요청(String 어드민_토큰, Long VC_ID, VentureCapitalRequest ventureCapitalRequest) {
         return RestAssured.given().log().all()
                 .auth().oauth2(어드민_토큰)
                 .body(ventureCapitalRequest)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().put("/admin/venture-capitals/{vcId}", VC_ID)
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 어드민_프로젝트_개별_수정_요청(String 어드민_토큰, Long PROJECT_ID, ProjectRequest projectRequest) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(어드민_토큰)
+                .body(projectRequest)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put("/admin/projects/{projectId}", PROJECT_ID)
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 어드민_라운드_개별_수정_요청(String 어드민_토큰, Long ROUND_ID, RoundRequest roundRequest) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(어드민_토큰)
+                .body(roundRequest)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put("/admin/rounds/{roundId}", ROUND_ID)
                 .then().log().all()
                 .extract();
     }

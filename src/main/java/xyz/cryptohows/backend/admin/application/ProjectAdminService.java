@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.admin.application.upload.ProjectUploadService;
+import xyz.cryptohows.backend.admin.ui.dto.ProjectRequest;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
+import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
@@ -37,8 +40,41 @@ public class ProjectAdminService {
     }
 
     public void deleteById(Long projectId) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new CryptoHowsException("해당 id의 프로젝트는 없습니다."));
+        Project project = findByIdIfPossible(projectId);
         projectRepository.delete(project);
+    }
+
+    private Project findByIdIfPossible(Long projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new CryptoHowsException("해당 id의 프로젝트는 없습니다."));
+    }
+
+    public void create(ProjectRequest projectRequest) {
+        Project project = Project.builder()
+                .name(projectRequest.getName())
+                .about(projectRequest.getAbout())
+                .homepage(projectRequest.getHomepage())
+                .logo(projectRequest.getLogo())
+                .twitter(projectRequest.getTwitter())
+                .community(projectRequest.getCommunity())
+                .category(Category.of(projectRequest.getCategory()))
+                .mainnet(Mainnet.of(projectRequest.getMainnet()))
+                .build();
+        projectUploadService.checkExistenceAndUpload(project);
+        projectUploadService.savePartnerships(project, projectRequest.generateInvestors());
+    }
+
+    public void updateById(Long projectId, ProjectRequest projectRequest) {
+        Project project = findByIdIfPossible(projectId);
+        project.updateInformation(
+                projectRequest.getName(),
+                projectRequest.getAbout(),
+                projectRequest.getHomepage(),
+                projectRequest.getLogo(),
+                projectRequest.getTwitter(),
+                projectRequest.getCommunity(),
+                projectRequest.getCategory(),
+                projectRequest.getMainnet()
+        );
     }
 }

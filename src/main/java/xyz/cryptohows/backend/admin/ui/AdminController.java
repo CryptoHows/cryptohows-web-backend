@@ -10,6 +10,8 @@ import xyz.cryptohows.backend.admin.application.ProjectAdminService;
 import xyz.cryptohows.backend.admin.application.RoundAdminService;
 import xyz.cryptohows.backend.admin.application.VentureCapitalAdminService;
 import xyz.cryptohows.backend.admin.ui.dto.AdminLoginRequest;
+import xyz.cryptohows.backend.admin.ui.dto.ProjectRequest;
+import xyz.cryptohows.backend.admin.ui.dto.RoundRequest;
 import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.admin.validation.AdminTokenRequired;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
@@ -89,10 +91,25 @@ public class AdminController {
     }
 
     @AdminTokenRequired
+    @PostMapping("/projects")
+    public ResponseEntity<Void> createProjects(@RequestBody ProjectRequest projectRequest) {
+        projectAdminService.create(projectRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @AdminTokenRequired
     @GetMapping("/projects/{projectId:[\\d]+}")
     public ResponseEntity<ProjectResponse> findProject(@PathVariable Long projectId) {
         ProjectResponse projectResponse = projectAdminService.findById(projectId);
         return ResponseEntity.ok(projectResponse);
+    }
+
+    @AdminTokenRequired
+    @PutMapping("/projects/{projectId:[\\d]+}")
+    public ResponseEntity<Void> updateProject(@PathVariable Long projectId,
+                                              @RequestBody ProjectRequest projectRequest) {
+        projectAdminService.updateById(projectId, projectRequest);
+        return ResponseEntity.ok().build();
     }
 
     @AdminTokenRequired
@@ -117,10 +134,25 @@ public class AdminController {
     }
 
     @AdminTokenRequired
+    @PostMapping("/rounds")
+    public ResponseEntity<Void> createRounds(@RequestBody RoundRequest roundRequest) {
+        roundAdminService.create(roundRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @AdminTokenRequired
     @GetMapping("/rounds/{roundId:[\\d]+}")
     public ResponseEntity<RoundResponse> findRound(@PathVariable Long roundId) {
         RoundResponse roundResponse = roundAdminService.findById(roundId);
         return ResponseEntity.ok(roundResponse);
+    }
+
+    @AdminTokenRequired
+    @PutMapping("/rounds/{roundId:[\\d]+}")
+    public ResponseEntity<Void> updateRound(@PathVariable Long roundId,
+                                              @RequestBody RoundRequest roundRequest) {
+        roundAdminService.updateById(roundId, roundRequest);
+        return ResponseEntity.ok().build();
     }
 
     @AdminTokenRequired

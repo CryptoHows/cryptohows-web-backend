@@ -29,7 +29,7 @@ public class VentureCapitalUploadService {
         }
     }
 
-    private void checkExistenceAndUpload(VentureCapital ventureCapital) {
+    public void checkExistenceAndUpload(VentureCapital ventureCapital) {
         if (ventureCapitalRepository.existsByName(ventureCapital.getName())) {
             throw new CryptoHowsException(ventureCapital.getName() + "은 이미 업로드 되었거나, 파일 내 중복되어있는 벤처캐피탈 입니다.");
         }

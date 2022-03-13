@@ -139,7 +139,7 @@ class RoundRepositoryTest {
     void vcJoinsRound() {
         Round round = roundRepository.findById(EOSSeed.getId())
                 .orElseThrow(IllegalArgumentException::new);
-        assertThat(round.getParticipants()).hasSize(1);
+        assertThat(round.getVcParticipants()).hasSize(1);
     }
 
     @Test

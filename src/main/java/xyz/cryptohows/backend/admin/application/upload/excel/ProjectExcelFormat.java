@@ -23,12 +23,14 @@ public class ProjectExcelFormat {
     private final String about;
     private final String homepage;
     private final String logo;
+    private final String twitter;
+    private final String community;
     private final String category;
     private final String mainnet;
     private final List<String> investors;
 
     public ProjectExcelFormat(String name, String about, String homepage, String logo, String category, String mainnet,
-                              List<String> investors) {
+                              List<String> investors, String twitter, String community) {
         this.name = name;
         this.about = about;
         this.homepage = homepage;
@@ -36,6 +38,8 @@ public class ProjectExcelFormat {
         this.category = category;
         this.mainnet = mainnet;
         this.investors = investors;
+        this.twitter = twitter;
+        this.community = community;
     }
 
     public static List<ProjectExcelFormat> toList(MultipartFile file) {
@@ -56,7 +60,9 @@ public class ProjectExcelFormat {
                     checkNullAndGetStringCellValue(row.getCell(3)),
                     checkNullAndGetStringCellValue(row.getCell(4)),
                     checkNullAndGetStringCellValue(row.getCell(5)),
-                    Arrays.asList(row.getCell(6).getStringCellValue().split(", "))
+                    Arrays.asList(row.getCell(6).getStringCellValue().split(", ")),
+                    checkNullAndGetStringCellValue(row.getCell(9)),
+                    checkNullAndGetStringCellValue(row.getCell(10))
             );
             projectExcelFormats.add(projectExcelFormat);
         }
@@ -70,6 +76,8 @@ public class ProjectExcelFormat {
                 .about(about)
                 .homepage(homepage)
                 .logo(logo)
+                .twitter(twitter)
+                .community(community)
                 .category(Category.of(category))
                 .mainnet(Mainnet.of(mainnet))
                 .build();

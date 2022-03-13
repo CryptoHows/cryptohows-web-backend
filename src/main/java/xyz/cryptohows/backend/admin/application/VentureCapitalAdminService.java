@@ -55,7 +55,7 @@ public class VentureCapitalAdminService {
                 .homepage(ventureCapitalRequest.getHomepage())
                 .logo(ventureCapitalRequest.getLogo())
                 .build();
-        ventureCapitalRepository.save(ventureCapital);
+        ventureCapitalUploadService.checkExistenceAndUpload(ventureCapital);
     }
 
     public void updateById(Long vcId, VentureCapitalRequest ventureCapitalRequest) {

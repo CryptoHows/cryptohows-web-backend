@@ -33,23 +33,18 @@ public class RoundUploadService {
             Project project = findProject(roundExcelFormat.getProjectName());
             Round round = roundExcelFormat.toRound(project);
             validateRoundAndSave(project, round);
-            List<VentureCapital> participants = findRoundParticipants(roundExcelFormat.getParticipants());
-            uploadRoundParticipation(round, participants);
+            uploadRoundParticipation(round, roundExcelFormat.getParticipants());
         }
     }
 
-    private Project findProject(String projectName) {
+    public Project findProject(String projectName) {
         if (!projectRepository.existsByName(projectName)) {
             throw new CryptoHowsException(projectName + "은 업로드 되지 않은 프로젝트 입니다.");
         }
         return projectRepository.findByNameIgnoreCase(projectName);
     }
 
-    private List<VentureCapital> findRoundParticipants(List<String> roundParticipants) {
-        return ventureCapitalRepository.findAllByNameInIgnoreCase(roundParticipants);
-    }
-
-    private void validateRoundAndSave(Project project, Round round) {
+    public void validateRoundAndSave(Project project, Round round) {
         roundRepository.save(round);
         project.addRound(round);
         Set<Round> rounds = project.getRounds();
@@ -60,7 +55,8 @@ public class RoundUploadService {
         }
     }
 
-    private void uploadRoundParticipation(Round round, List<VentureCapital> participants) {
+    public void uploadRoundParticipation(Round round, List<String> roundParticipants) {
+        List<VentureCapital> participants = ventureCapitalRepository.findAllByNameInIgnoreCase(roundParticipants);
         List<RoundParticipation> roundParticipations = new ArrayList<>();
         for (VentureCapital participant : participants) {
             roundParticipations.add(new RoundParticipation(participant, round));

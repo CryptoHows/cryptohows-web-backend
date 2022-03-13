@@ -16,15 +16,17 @@ public class RoundSimpleResponse {
     private final String moneyRaised;
     private final String newsArticle;
     private final String fundingStage;
+    private final Integer totalParticipants;
 
     public RoundSimpleResponse(Long id, ProjectSimpleResponse project, String announcedDate, String moneyRaised,
-                         String newsArticle, String fundingStage) {
+                         String newsArticle, String fundingStage, Integer totalParticipants) {
         this.id = id;
         this.project = project;
         this.announcedDate = announcedDate;
         this.moneyRaised = moneyRaised;
         this.newsArticle = newsArticle;
         this.fundingStage = fundingStage;
+        this.totalParticipants = totalParticipants;
     }
 
     public static RoundSimpleResponse of(Round round) {
@@ -34,7 +36,8 @@ public class RoundSimpleResponse {
                 round.getAnnouncedDate().toString(),
                 round.getMoneyRaised(),
                 round.getNewsArticle(),
-                round.getFundingStage().getFundingStage()
+                round.getFundingStage().getFundingStage(),
+                round.getTotalParticipants()
         );
     }
 
