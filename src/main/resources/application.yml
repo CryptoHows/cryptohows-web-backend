@@ -99,7 +99,7 @@ spring:
       on-profile: dev
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: ${JPA_DDL_AUTO}
     properties:
       hibernate:
         format_sql: true
