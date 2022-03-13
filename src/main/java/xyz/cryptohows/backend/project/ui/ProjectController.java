@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.cryptohows.backend.project.application.ProjectService;
+import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.ui.dto.ProjectCountResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 
@@ -34,5 +36,17 @@ public class ProjectController {
     public ResponseEntity<ProjectCountResponse> countProjects() {
         ProjectCountResponse projectCounts = projectService.countProjects();
         return ResponseEntity.ok(projectCounts);
+    }
+
+    @GetMapping("/projects/categories")
+    public ResponseEntity<List<String>> getAllCategories() {
+        List<String> categories = Category.getAllCategories();
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/projects/mainnets")
+    public ResponseEntity<List<String>> getAllMainnets() {
+        List<String> mainnets = Mainnet.getAllMainnets();
+        return ResponseEntity.ok(mainnets);
     }
 }

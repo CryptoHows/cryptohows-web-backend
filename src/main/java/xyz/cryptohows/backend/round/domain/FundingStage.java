@@ -3,6 +3,8 @@ package xyz.cryptohows.backend.round.domain;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public enum FundingStage {
@@ -35,5 +37,11 @@ public enum FundingStage {
                 .filter(stage -> stage.getFundingStage().equalsIgnoreCase(input))
                 .findAny()
                 .orElse(UNKNOWN);
+    }
+
+    public static List<String> getAllFundingStages() {
+        return Arrays.stream(values())
+                .map(FundingStage::getFundingStage)
+                .collect(Collectors.toList());
     }
 }

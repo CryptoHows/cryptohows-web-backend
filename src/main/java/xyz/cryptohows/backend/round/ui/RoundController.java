@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.cryptohows.backend.round.application.RoundService;
+import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.ui.dto.RoundCountResponse;
 import xyz.cryptohows.backend.round.ui.dto.RoundResponse;
 
@@ -35,5 +36,11 @@ public class RoundController {
     public ResponseEntity<RoundCountResponse> countRounds() {
         RoundCountResponse roundCounts = roundService.countRounds();
         return ResponseEntity.ok(roundCounts);
+    }
+
+    @GetMapping("/rounds/funding-stages")
+    public ResponseEntity<List<String>> findFundingStages() {
+        List<String> fundingStages = FundingStage.getAllFundingStages();
+        return ResponseEntity.ok(fundingStages);
     }
 }
