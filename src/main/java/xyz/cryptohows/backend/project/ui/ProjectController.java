@@ -11,7 +11,6 @@ import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.ui.dto.ProjectDetailResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectPageResponse;
-import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 
 import java.util.List;
 

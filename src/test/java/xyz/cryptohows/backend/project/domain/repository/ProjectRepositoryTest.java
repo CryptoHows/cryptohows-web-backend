@@ -183,7 +183,7 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    @DisplayName("프로젝트를 페이지네이션을 통해 구할 수 있다.")
+    @DisplayName("프로젝트를 페이지네이션을 통해 구할 수 있으며, id 역순으로 반환한다.")
     void findProjects() {
         // when
         List<Project> firstPageProject =
@@ -193,12 +193,12 @@ class ProjectRepositoryTest {
 
         // then
         assertThat(firstPageProject).hasSize(2);
-        assertThat(firstPageProject.get(0)).isEqualTo(EOS);
-        assertThat(firstPageProject.get(1)).isEqualTo(ETHEREUM);
+        assertThat(firstPageProject.get(0)).isEqualTo(axieInfinity);
+        assertThat(firstPageProject.get(1)).isEqualTo(KLAYTN);
 
         assertThat(secondPageProject).hasSize(2);
-        assertThat(secondPageProject.get(0)).isEqualTo(KLAYTN);
-        assertThat(secondPageProject.get(1)).isEqualTo(axieInfinity);
+        assertThat(secondPageProject.get(0)).isEqualTo(ETHEREUM);
+        assertThat(secondPageProject.get(1)).isEqualTo(EOS);
     }
 
     @Test

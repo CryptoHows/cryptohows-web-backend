@@ -16,7 +16,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Query("select distinct project " +
             "from Project as project " +
-            "left join fetch project.partnerships")
+            "left join fetch project.partnerships " +
+            "order by project.id desc")
     List<Project> findProjectsFetchJoinPartnerships(Pageable pageable);
 
     @Query("select project " +
