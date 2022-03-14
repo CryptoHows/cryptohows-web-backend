@@ -99,6 +99,14 @@ public class DataLoader implements ApplicationRunner {
                 .fundingStage(FundingStage.SEED)
                 .build();
 
+        Round klaytnSeriesA = Round.builder()
+                .project(klaytn)
+                .announcedDate("2020-03")
+                .moneyRaised("$100M")
+                .newsArticle("https://www.finyear.com/Klaytn-raises-90-million-in-seed-funding-to-drive-the-mainstream-adoption-of-blockchain_a41034.html")
+                .fundingStage(FundingStage.SERIES_A)
+                .build();
+
         Round EOSICO = Round.builder()
                 .project(EOS)
                 .announcedDate("2019-09")
@@ -114,15 +122,17 @@ public class DataLoader implements ApplicationRunner {
                 .newsArticle("https://www.coindesk.com/business/2021/10/04/axie-infinity-to-raise-150m-series-b-at-3b-valuation-report/")
                 .fundingStage(FundingStage.SERIES_B)
                 .build();
-        roundRepository.saveAll(Arrays.asList(klaytnSeed, EOSICO, axieInfinitySeriesB));
+        roundRepository.saveAll(Arrays.asList(klaytnSeed, klaytnSeriesA, EOSICO, axieInfinitySeriesB));
 
 
         RoundParticipation hashedKlaytnSeed = new RoundParticipation(hashed, klaytnSeed);
+        RoundParticipation hashedKlaytnSeriesA = new RoundParticipation(hashed, klaytnSeriesA);
         RoundParticipation hashedEOSICO = new RoundParticipation(hashed, EOSICO);
         RoundParticipation hashedaxieInfinitySeriesB = new RoundParticipation(hashed, axieInfinitySeriesB);
 
         RoundParticipation a16zEOSICO = new RoundParticipation(a16z, EOSICO);
         RoundParticipation a16zaxieInfinitySeriesB = new RoundParticipation(a16z, axieInfinitySeriesB);
-        roundParticipationRepository.saveAll(Arrays.asList(hashedKlaytnSeed, hashedEOSICO, hashedaxieInfinitySeriesB, a16zEOSICO, a16zaxieInfinitySeriesB));
+        roundParticipationRepository.saveAll(Arrays.asList(hashedKlaytnSeed, hashedKlaytnSeriesA, hashedEOSICO,
+                hashedaxieInfinitySeriesB, a16zEOSICO, a16zaxieInfinitySeriesB));
     }
 }

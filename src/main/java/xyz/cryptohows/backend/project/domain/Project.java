@@ -95,6 +95,12 @@ public class Project {
         this.mainnet = Mainnet.of(mainnet);
     }
 
+    public List<Round> getRoundAsRecentOrder() {
+        return rounds.stream()
+                .sorted(Comparator.comparing(Round::getAnnouncedDate).reversed())
+                .collect(Collectors.toList());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

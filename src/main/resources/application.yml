@@ -138,3 +138,5 @@ springdoc:
   version: 1.0.0
   swagger-ui:
     path: index.html
+  paths-to-exclude:
+    - /admin/**
