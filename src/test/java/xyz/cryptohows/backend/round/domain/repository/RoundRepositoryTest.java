@@ -160,10 +160,10 @@ class RoundRepositoryTest {
     void recentRounds() {
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").descending());
-        List<Round> recentRounds1 = roundRepository.findRecentRounds(pageable1);
+        List<Round> recentRounds1 = roundRepository.findRounds(pageable1);
 
         Pageable pageable2 = PageRequest.of(1, 2, Sort.by("announcedDate").descending());
-        List<Round> recentRounds2 = roundRepository.findRecentRounds(pageable2);
+        List<Round> recentRounds2 = roundRepository.findRounds(pageable2);
 
         // then
         assertThat(recentRounds1.get(0)).isEqualTo(axieSeriesA);
@@ -178,10 +178,10 @@ class RoundRepositoryTest {
     void recentRoundsASC() {
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").ascending());
-        List<Round> oldRounds1 = roundRepository.findRecentRounds(pageable1);
+        List<Round> oldRounds1 = roundRepository.findRounds(pageable1);
 
         Pageable pageable2 = PageRequest.of(1, 2, Sort.by("announcedDate").ascending());
-        List<Round> oldRounds2 = roundRepository.findRecentRounds(pageable2);
+        List<Round> oldRounds2 = roundRepository.findRounds(pageable2);
 
         // then
         assertThat(oldRounds1.get(0)).isEqualTo(EOSSeed);

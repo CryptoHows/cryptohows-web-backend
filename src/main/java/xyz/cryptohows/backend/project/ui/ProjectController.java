@@ -11,7 +11,6 @@ import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.ui.dto.ProjectDetailResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectPageResponse;
-import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping("/projects")
-    public ResponseEntity<ProjectPageResponse> findProjects(@RequestParam Integer page,
+    public ResponseEntity<ProjectPageResponse> findProjects(@RequestParam(defaultValue = "0") Integer page,
                                                             @RequestParam(defaultValue = "10") Integer projectsPerPage) {
         ProjectPageResponse projectPageResponse = projectService.findProjects(page, projectsPerPage);
         return ResponseEntity.ok(projectPageResponse);
