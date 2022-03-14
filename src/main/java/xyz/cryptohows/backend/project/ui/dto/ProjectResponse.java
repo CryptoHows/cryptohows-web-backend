@@ -19,10 +19,12 @@ public class ProjectResponse {
     private final String twitter;
     private final String community;
     private final String round;
+    private final String category;
+    private final String mainnet;
     private final List<VentureCapitalSimpleResponse> investors;
 
     public ProjectResponse(Long id, String name, String about, String homepage, String logo, String twitter, String community,
-                           String round, List<VentureCapitalSimpleResponse> investors) {
+                           String round, String category, String mainnet, List<VentureCapitalSimpleResponse> investors) {
         this.id = id;
         this.name = name;
         this.about = about;
@@ -31,6 +33,8 @@ public class ProjectResponse {
         this.twitter = twitter;
         this.community = community;
         this.round = round;
+        this.category = category;
+        this.mainnet = mainnet;
         this.investors = investors;
     }
 
@@ -44,6 +48,8 @@ public class ProjectResponse {
                 project.getTwitter(),
                 project.getCommunity(),
                 project.getCurrentRound().getFundingStage(),
+                project.getCategory().getCategoryName(),
+                project.getMainnet().toString(),
                 VentureCapitalSimpleResponse.toList(project.getInvestors())
         );
     }
