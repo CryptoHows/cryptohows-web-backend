@@ -8,7 +8,7 @@ import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.project.ui.dto.ProjectDetailResponse;
-import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
+import xyz.cryptohows.backend.project.ui.dto.ProjectPageResponse;
 
 import java.util.List;
 
@@ -18,10 +18,11 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public List<ProjectResponse> findProjects(Integer page, Integer projectPerPage) {
+    public ProjectPageResponse findProjects(Integer page, Integer projectPerPage) {
         Pageable pageable = PageRequest.of(page, projectPerPage);
         List<Project> projects = projectRepository.findProjectsFetchJoinPartnerships(pageable);
-        return ProjectResponse.toList(projects);
+        long totalProjectCount = projectRepository.count();
+        return ProjectPageResponse.of(totalProjectCount, projects);
     }
 
     public ProjectDetailResponse findById(Long projectId) {
