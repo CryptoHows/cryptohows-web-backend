@@ -75,7 +75,7 @@ class ProjectRepositoryTest {
             .about("EOS 프로젝트")
             .homepage("https://EOS.io/")
             .logo("https://EOS.io/logo.png")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.EOS)
             .build();
 
@@ -84,7 +84,7 @@ class ProjectRepositoryTest {
             .about("ETHEREUM 프로젝트")
             .homepage("https://ETHEREUM.io/")
             .logo("https://ETHEREUM.io/logo.png")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
@@ -93,7 +93,7 @@ class ProjectRepositoryTest {
             .about("KLAYTN 프로젝트")
             .homepage("https://KLAYTN.io/")
             .logo("https://KLAYTN.io/logo.png")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.KLAYTN)
             .build();
 
@@ -101,7 +101,7 @@ class ProjectRepositoryTest {
             .name("axieInfinity")
             .about("엑시 인피니티")
             .homepage("https://axieInfinity.xyz/")
-            .category(Category.GAMING)
+            .category(Category.WEB3)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 

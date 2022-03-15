@@ -55,7 +55,7 @@ class RoundRepositoryTest {
             .name("EOS")
             .about("EOS 프로젝트")
             .homepage("https://EOS.io/")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.EOS)
             .build();
 
@@ -63,7 +63,7 @@ class RoundRepositoryTest {
             .name("axieInfinity")
             .about("엑시 인피니티")
             .homepage("https://axieInfinity.xyz/")
-            .category(Category.GAMING)
+            .category(Category.WEB3)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 

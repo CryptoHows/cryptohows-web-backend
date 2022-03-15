@@ -58,7 +58,7 @@ public class DataLoader implements ApplicationRunner {
                 .about("클레이튼(Klaytn)은 ㈜카카오의 자회사인 그라운드엑스가 개발한 디앱(dApp·분산애플리케이션)을 위한 블록체인 플랫폼이다")
                 .homepage("https://www.klaytn.com/")
                 .logo("https://www.theguru.co.kr/data/photos/20220102/art_16420309738883_e42c48.png")
-                .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+                .category(Category.INFRASTRUCTURE)
                 .mainnet(Mainnet.KLAYTN)
                 .build();
 
@@ -67,7 +67,7 @@ public class DataLoader implements ApplicationRunner {
                 .about("위임지분증명(DPoS) 방식, 이더리움의 느린/비싼 처리 해결 대안")
                 .homepage("https://EOS.io/")
                 .logo("https://t1.daumcdn.net/cfile/tistory/99913D455B351BD601")
-                .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+                .category(Category.INFRASTRUCTURE)
                 .mainnet(Mainnet.EOS)
                 .build();
 
@@ -76,7 +76,7 @@ public class DataLoader implements ApplicationRunner {
                 .about("베트남 스카이마비스에서 개발한 엑시 인피니티 게임")
                 .homepage("https://axieinfinity.com/")
                 .logo("https://techvodoo.com/wp-content/uploads/2021/08/Axie-Infinity-1.jpg")
-                .category(Category.GAMING)
+                .category(Category.WEB3)
                 .mainnet(Mainnet.ETHEREUM)
                 .build();
         projectRepository.saveAll(Arrays.asList(klaytn, EOS, axieInfinity));

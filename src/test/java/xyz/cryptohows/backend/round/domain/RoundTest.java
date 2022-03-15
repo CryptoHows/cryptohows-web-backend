@@ -23,7 +23,7 @@ class RoundTest {
             .about("크립토하우스입니다.")
             .homepage("크립토하우스.com")
             .logo("크립토하우스.png")
-            .category(Category.SOCIAL_NETWORK)
+            .category(Category.WEB3)
             .mainnet(Mainnet.NONE)
             .build();
 

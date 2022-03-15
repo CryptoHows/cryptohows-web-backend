@@ -31,7 +31,7 @@ public class AcceptanceFixture {
             .about("ETHEREUM 프로젝트")
             .homepage("https://ETHEREUM.io/")
             .logo("https://ETHEREUM.io/logo.png")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
@@ -39,7 +39,7 @@ public class AcceptanceFixture {
             .name("EOS")
             .about("EOS 프로젝트")
             .homepage("https://EOS.io/")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.EOS)
             .build();
 
@@ -47,7 +47,7 @@ public class AcceptanceFixture {
             .name("axieInfinity")
             .about("엑시 인피니티")
             .homepage("https://axieInfinity.xyz/")
-            .category(Category.GAMING)
+            .category(Category.WEB3)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
