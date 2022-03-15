@@ -46,7 +46,12 @@ public enum Mainnet {
 
     public static List<String> getAllMainnets() {
         return Arrays.stream(values())
+                .filter(Mainnet::isNotNone)
                 .map(Enum::toString)
                 .collect(Collectors.toList());
+    }
+
+    private static boolean isNotNone(Mainnet mainnet) {
+        return mainnet != Mainnet.NONE;
     }
 }
