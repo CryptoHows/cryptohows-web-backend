@@ -42,7 +42,12 @@ public enum Category {
 
     public static List<String> getAllCategories() {
         return Arrays.stream(values())
+                .filter(Category::isNotNone)
                 .map(Category::getCategoryName)
                 .collect(Collectors.toList());
+    }
+
+    private static boolean isNotNone(Category category) {
+        return category != Category.NONE;
     }
 }
