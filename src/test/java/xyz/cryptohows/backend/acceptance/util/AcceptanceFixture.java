@@ -40,7 +40,7 @@ public class AcceptanceFixture {
             .about("EOS 프로젝트")
             .homepage("https://EOS.io/")
             .category(Category.INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+            .mainnet(Mainnet.ETHEREUM)
             .build();
 
     public static final Project 엑시인피니티 = Project.builder()

@@ -39,12 +39,12 @@ class PartnershipRepositoryTest {
             .logo("hashed.png")
             .build();
 
-    private final Project EOS = Project.builder()
-            .name("EOS")
-            .about("EOS 프로젝트")
-            .homepage("https://EOS.io/")
+    private final Project SOLANA = Project.builder()
+            .name("SOLANA")
+            .about("SOLANA 프로젝트")
+            .homepage("https://SOLANA.io/")
             .category(Category.INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+            .mainnet(Mainnet.SOLANA)
             .build();
 
     private final Project axieInfinity = Project.builder()
@@ -57,7 +57,7 @@ class PartnershipRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        projectRepository.save(EOS);
+        projectRepository.save(SOLANA);
         projectRepository.save(axieInfinity);
         ventureCapitalRepository.save(hashed);
     }
@@ -66,7 +66,7 @@ class PartnershipRepositoryTest {
     @DisplayName("Partnership을 저장하면 VentureCapital과 Project에서 이를 조회할 수 있다")
     void checkPartnership() {
         // given
-        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedEOS = new Partnership(hashed, SOLANA);
         Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
         partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedAxieInfinity));
         tem.flush();
@@ -75,7 +75,7 @@ class PartnershipRepositoryTest {
         // when
         VentureCapital savedHashed = ventureCapitalRepository.findById(hashed.getId())
                 .orElseThrow(IllegalArgumentException::new);
-        Project savedEOS = projectRepository.findById(EOS.getId())
+        Project savedEOS = projectRepository.findById(SOLANA.getId())
                 .orElseThrow(IllegalArgumentException::new);
 
         // then
@@ -87,7 +87,7 @@ class PartnershipRepositoryTest {
     @DisplayName("VentureCapital의 Partnership을 삭제할 수 있다.")
     void deleteByVC() {
         // given
-        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedEOS = new Partnership(hashed, SOLANA);
         Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
         partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedAxieInfinity));
         tem.flush();

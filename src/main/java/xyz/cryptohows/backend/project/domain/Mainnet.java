@@ -5,11 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum Mainnet {
-    ETHEREUM,
-    SOLANA,
-    AVALANCHE,
-    KLAYTN,
-    EOS,
     ALGORAND,
     ARWEAVE,
     BITCOIN,
@@ -17,11 +12,14 @@ public enum Mainnet {
     CELO,
     COSMOS,
     DESO,
+    ETHEREUM,
     FLOW,
     HELIUM,
+    KLAYTN,
     NEAR,
     POLKADOT,
     RONIN,
+    SOLANA,
     TERRA,
     THUNDERCORE,
     NONE;

@@ -19,7 +19,6 @@ import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class RoundParticipationRepositoryTest {
@@ -46,12 +45,12 @@ class RoundParticipationRepositoryTest {
             .logo("hashed.png")
             .build();
 
-    private final Project EOS = Project.builder()
-            .name("EOS")
-            .about("EOS 프로젝트")
-            .homepage("https://EOS.io/")
+    private final Project SOLANA = Project.builder()
+            .name("SOLANA")
+            .about("SOLANA 프로젝트")
+            .homepage("https://SOLANA.io/")
             .category(Category.INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+            .mainnet(Mainnet.SOLANA)
             .build();
 
     private final Project axieInfinity = Project.builder()
@@ -63,7 +62,7 @@ class RoundParticipationRepositoryTest {
             .build();
 
     private final Round EOSSeed = Round.builder()
-            .project(EOS)
+            .project(SOLANA)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -79,7 +78,7 @@ class RoundParticipationRepositoryTest {
             .build();
 
     private final Round EOSSeriesA = Round.builder()
-            .project(EOS)
+            .project(SOLANA)
             .announcedDate("2020-02")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -96,7 +95,7 @@ class RoundParticipationRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        projectRepository.saveAll(Arrays.asList(EOS, axieInfinity));
+        projectRepository.saveAll(Arrays.asList(SOLANA, axieInfinity));
         ventureCapitalRepository.save(hashed);
 
         roundRepository.save(EOSSeed);

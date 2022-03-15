@@ -62,13 +62,13 @@ public class DataLoader implements ApplicationRunner {
                 .mainnet(Mainnet.KLAYTN)
                 .build();
 
-        Project EOS = Project.builder()
-                .name("EOS")
-                .about("위임지분증명(DPoS) 방식, 이더리움의 느린/비싼 처리 해결 대안")
-                .homepage("https://EOS.io/")
+        Project ETHEREUM = Project.builder()
+                .name("ETHEREUM")
+                .about("이더리움")
+                .homepage("https://ETHEREUM.io/")
                 .logo("https://t1.daumcdn.net/cfile/tistory/99913D455B351BD601")
                 .category(Category.INFRASTRUCTURE)
-                .mainnet(Mainnet.EOS)
+                .mainnet(Mainnet.ETHEREUM)
                 .build();
 
         Project axieInfinity = Project.builder()
@@ -79,16 +79,16 @@ public class DataLoader implements ApplicationRunner {
                 .category(Category.WEB3)
                 .mainnet(Mainnet.ETHEREUM)
                 .build();
-        projectRepository.saveAll(Arrays.asList(klaytn, EOS, axieInfinity));
+        projectRepository.saveAll(Arrays.asList(klaytn, ETHEREUM, axieInfinity));
 
 
         Partnership hashedKlaytn = new Partnership(hashed, klaytn);
-        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedETHEREUM = new Partnership(hashed, ETHEREUM);
         Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
 
-        Partnership a16zEOS = new Partnership(a16z, EOS);
+        Partnership a16zETHEREUM = new Partnership(a16z, ETHEREUM);
         Partnership a16zAxieInfinity = new Partnership(a16z, axieInfinity);
-        partnershipRepository.saveAll(Arrays.asList(hashedKlaytn, hashedEOS, hashedAxieInfinity, a16zEOS, a16zAxieInfinity));
+        partnershipRepository.saveAll(Arrays.asList(hashedKlaytn, hashedETHEREUM, hashedAxieInfinity, a16zETHEREUM, a16zAxieInfinity));
 
 
         Round klaytnSeed = Round.builder()
@@ -107,8 +107,8 @@ public class DataLoader implements ApplicationRunner {
                 .fundingStage(FundingStage.SERIES_A)
                 .build();
 
-        Round EOSICO = Round.builder()
-                .project(EOS)
+        Round ETHEREUMICO = Round.builder()
+                .project(ETHEREUM)
                 .announcedDate("2019-09")
                 .moneyRaised("$4B")
                 .newsArticle("https://www.coindesk.com/markets/2019/09/17/the-first-yearlong-ico-for-eos-raised-4-billion-the-second-just-28-million/")
@@ -122,17 +122,17 @@ public class DataLoader implements ApplicationRunner {
                 .newsArticle("https://www.coindesk.com/business/2021/10/04/axie-infinity-to-raise-150m-series-b-at-3b-valuation-report/")
                 .fundingStage(FundingStage.SERIES_B)
                 .build();
-        roundRepository.saveAll(Arrays.asList(klaytnSeed, klaytnSeriesA, EOSICO, axieInfinitySeriesB));
+        roundRepository.saveAll(Arrays.asList(klaytnSeed, klaytnSeriesA, ETHEREUMICO, axieInfinitySeriesB));
 
 
         RoundParticipation hashedKlaytnSeed = new RoundParticipation(hashed, klaytnSeed);
         RoundParticipation hashedKlaytnSeriesA = new RoundParticipation(hashed, klaytnSeriesA);
-        RoundParticipation hashedEOSICO = new RoundParticipation(hashed, EOSICO);
+        RoundParticipation hashedETHEREUMICO = new RoundParticipation(hashed, ETHEREUMICO);
         RoundParticipation hashedaxieInfinitySeriesB = new RoundParticipation(hashed, axieInfinitySeriesB);
 
-        RoundParticipation a16zEOSICO = new RoundParticipation(a16z, EOSICO);
+        RoundParticipation a16zETHEREUMICO = new RoundParticipation(a16z, ETHEREUMICO);
         RoundParticipation a16zaxieInfinitySeriesB = new RoundParticipation(a16z, axieInfinitySeriesB);
-        roundParticipationRepository.saveAll(Arrays.asList(hashedKlaytnSeed, hashedKlaytnSeriesA, hashedEOSICO,
-                hashedaxieInfinitySeriesB, a16zEOSICO, a16zaxieInfinitySeriesB));
+        roundParticipationRepository.saveAll(Arrays.asList(hashedKlaytnSeed, hashedKlaytnSeriesA, hashedETHEREUMICO,
+                hashedaxieInfinitySeriesB, a16zETHEREUMICO, a16zaxieInfinitySeriesB));
     }
 }

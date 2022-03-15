@@ -47,12 +47,12 @@ class VentureCapitalRepositoryTest {
             .logo("a16z.png")
             .build();
 
-    private final Project EOS = Project.builder()
-            .name("EOS")
-            .about("EOS 프로젝트")
-            .homepage("https://EOS.io/")
+    private final Project SOLANA = Project.builder()
+            .name("SOLANA")
+            .about("SOLANA 프로젝트")
+            .homepage("https://SOLANA.io/")
             .category(Category.INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+            .mainnet(Mainnet.SOLANA)
             .build();
 
     private final Project axieInfinity = Project.builder()
@@ -65,7 +65,7 @@ class VentureCapitalRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        projectRepository.save(EOS);
+        projectRepository.save(SOLANA);
         projectRepository.save(axieInfinity);
         ventureCapitalRepository.save(hashed);
         ventureCapitalRepository.save(a16z);
@@ -78,7 +78,7 @@ class VentureCapitalRepositoryTest {
     @DisplayName("VentureCapital이 없어지면, 해당 회사에서 투자한 Partnership 내역은 사라진다.")
     void deleteVentureCapital() {
         // given
-        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedEOS = new Partnership(hashed, SOLANA);
         Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
         partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedAxieInfinity));
         tem.flush();
