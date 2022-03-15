@@ -17,7 +17,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
     void findRoundsMainnetAndCategoryRecent() {
         // given
         String mainnet = "terra";
-        String category = "blockchain infrastructure";
+        String category = "infrastructure";
         String order = "recent";
 
         // when
@@ -35,7 +35,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
     void findRoundsMainnetAndCategoryOld() {
         // given
         String mainnet = "terra";
-        String category = "blockchain infrastructure";
+        String category = "infrastructure";
         String order = "old";
 
         // when
@@ -53,7 +53,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
     void findRoundsCategoryOnly() {
         // given
         String mainnet = "";
-        String category = "blockchain infrastructure";
+        String category = "infrastructure";
         String order = "recent";
 
         // when

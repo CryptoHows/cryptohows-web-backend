@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
@@ -70,13 +69,13 @@ class ProjectRepositoryTest {
             .logo("kakaoVentures.png")
             .build();
 
-    private final Project EOS = Project.builder()
-            .name("EOS")
-            .about("EOS 프로젝트")
-            .homepage("https://EOS.io/")
-            .logo("https://EOS.io/logo.png")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+    private final Project SOLANA = Project.builder()
+            .name("SOLANA")
+            .about("SOLANA 프로젝트")
+            .homepage("https://SOLANA.io/")
+            .logo("https://SOLANA.io/logo.png")
+            .category(Category.INFRASTRUCTURE)
+            .mainnet(Mainnet.SOLANA)
             .build();
 
     private final Project ETHEREUM = Project.builder()
@@ -84,7 +83,7 @@ class ProjectRepositoryTest {
             .about("ETHEREUM 프로젝트")
             .homepage("https://ETHEREUM.io/")
             .logo("https://ETHEREUM.io/logo.png")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
@@ -93,7 +92,7 @@ class ProjectRepositoryTest {
             .about("KLAYTN 프로젝트")
             .homepage("https://KLAYTN.io/")
             .logo("https://KLAYTN.io/logo.png")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+            .category(Category.INFRASTRUCTURE)
             .mainnet(Mainnet.KLAYTN)
             .build();
 
@@ -101,12 +100,12 @@ class ProjectRepositoryTest {
             .name("axieInfinity")
             .about("엑시 인피니티")
             .homepage("https://axieInfinity.xyz/")
-            .category(Category.GAMING)
+            .category(Category.WEB3)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
     private final Round EOSSeed = Round.builder()
-            .project(EOS)
+            .project(SOLANA)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -115,9 +114,9 @@ class ProjectRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        projectRepository.saveAll(Arrays.asList(EOS, ETHEREUM, KLAYTN, axieInfinity));
+        projectRepository.saveAll(Arrays.asList(SOLANA, ETHEREUM, KLAYTN, axieInfinity));
         partnershipRepository.saveAll(Arrays.asList(
-                new Partnership(hashed, EOS),
+                new Partnership(hashed, SOLANA),
                 new Partnership(hashed, ETHEREUM),
                 new Partnership(hashed, KLAYTN),
                 new Partnership(hashed, axieInfinity)
@@ -131,7 +130,7 @@ class ProjectRepositoryTest {
     @DisplayName("해당 Project 삭제되면 VentureCapital에서 체결했던 파트너쉽이 삭제된다.")
     void deleteProjectPartnershipDeleted() {
         // when
-        projectRepository.deleteById(EOS.getId());
+        projectRepository.deleteById(SOLANA.getId());
 
         // then
         List<Partnership> partnerships = partnershipRepository.findAll();
@@ -148,7 +147,7 @@ class ProjectRepositoryTest {
         tem.clear();
 
         // when
-        projectRepository.deleteById(EOS.getId());
+        projectRepository.deleteById(SOLANA.getId());
 
         // then
         assertThat(roundRepository.count()).isZero();
@@ -160,14 +159,14 @@ class ProjectRepositoryTest {
     void findProjectsByNumberOfPartnerships() {
         // given
         partnershipRepository.deleteAll();
-        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedEOS = new Partnership(hashed, SOLANA);
         Partnership hashedETHEREUM = new Partnership(hashed, ETHEREUM);
         Partnership hashedKLAYTN = new Partnership(hashed, KLAYTN);
 
-        Partnership a16zEOS = new Partnership(a16z, EOS);
+        Partnership a16zEOS = new Partnership(a16z, SOLANA);
         Partnership a16zETHEREUM = new Partnership(a16z, ETHEREUM);
 
-        Partnership kakaoVenturesEOS = new Partnership(kakaoVentures, EOS);
+        Partnership kakaoVenturesEOS = new Partnership(kakaoVentures, SOLANA);
 
         partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedETHEREUM, hashedKLAYTN,
                 a16zEOS, a16zETHEREUM, kakaoVenturesEOS));
@@ -179,7 +178,7 @@ class ProjectRepositoryTest {
         LinkedHashSet<Project> projectsByNumberOfPartnerships = projectRepository.findAllProjectsOrderByNumberOfPartnerships();
 
         // then
-        assertThat(projectsByNumberOfPartnerships).containsExactly(EOS, ETHEREUM, KLAYTN);
+        assertThat(projectsByNumberOfPartnerships).containsExactly(SOLANA, ETHEREUM, KLAYTN);
     }
 
     @Test
@@ -198,17 +197,17 @@ class ProjectRepositoryTest {
 
         assertThat(secondPageProject).hasSize(2);
         assertThat(secondPageProject.get(0)).isEqualTo(ETHEREUM);
-        assertThat(secondPageProject.get(1)).isEqualTo(EOS);
+        assertThat(secondPageProject.get(1)).isEqualTo(SOLANA);
     }
 
     @Test
     @DisplayName("프로젝트의 Id를 통해 프로젝트를 받아볼 수 있다.")
     void findById() {
         // when
-        Optional<Project> byId = projectRepository.findByIdFetchJoinPartnerships(EOS.getId());
+        Optional<Project> byId = projectRepository.findByIdFetchJoinPartnerships(SOLANA.getId());
         Project project = byId.get();
 
         // then
-        assertThat(project).isEqualTo(EOS);
+        assertThat(project).isEqualTo(SOLANA);
     }
 }

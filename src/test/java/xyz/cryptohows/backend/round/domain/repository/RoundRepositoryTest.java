@@ -51,24 +51,24 @@ class RoundRepositoryTest {
             .logo("hashed.png")
             .build();
 
-    private final Project EOS = Project.builder()
-            .name("EOS")
-            .about("EOS 프로젝트")
-            .homepage("https://EOS.io/")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+    private final Project SOLANA = Project.builder()
+            .name("SOLANA")
+            .about("SOLANA 프로젝트")
+            .homepage("https://SOLANA.io/")
+            .category(Category.INFRASTRUCTURE)
+            .mainnet(Mainnet.SOLANA)
             .build();
 
     private final Project axieInfinity = Project.builder()
             .name("axieInfinity")
             .about("엑시 인피니티")
             .homepage("https://axieInfinity.xyz/")
-            .category(Category.GAMING)
+            .category(Category.WEB3)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
     private final Round EOSSeed = Round.builder()
-            .project(EOS)
+            .project(SOLANA)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -84,7 +84,7 @@ class RoundRepositoryTest {
             .build();
 
     private final Round EOSSeriesA = Round.builder()
-            .project(EOS)
+            .project(SOLANA)
             .announcedDate("2020-02")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -101,7 +101,7 @@ class RoundRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        projectRepository.saveAll(Arrays.asList(EOS, axieInfinity));
+        projectRepository.saveAll(Arrays.asList(SOLANA, axieInfinity));
         ventureCapitalRepository.save(hashed);
 
         roundRepository.save(EOSSeed);

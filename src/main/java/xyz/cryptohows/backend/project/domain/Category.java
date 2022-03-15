@@ -1,6 +1,7 @@
 package xyz.cryptohows.backend.project.domain;
 
 import lombok.Getter;
+import xyz.cryptohows.backend.exception.CryptoHowsException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +27,17 @@ public enum Category {
                 .filter(category -> category.categoryName.equalsIgnoreCase(input))
                 .findAny()
                 .orElse(NONE);
+    }
+
+    public static Category ofRegister(String input) {
+        String inputCategory = input.trim();
+        if (inputCategory.isEmpty()) {
+            return NONE;
+        }
+        return Arrays.stream(values())
+                .filter(category -> category.categoryName.equalsIgnoreCase(inputCategory))
+                .findAny()
+                .orElseThrow(() -> new CryptoHowsException(inputCategory + "은 카테고리에 저장되어 있지 않습니다."));
     }
 
     public static List<String> getAllCategories() {

@@ -78,8 +78,8 @@ public class ProjectExcelFormat {
                 .logo(logo)
                 .twitter(twitter)
                 .community(community)
-                .category(Category.of(category))
-                .mainnet(Mainnet.of(mainnet))
+                .category(Category.ofRegister(category))
+                .mainnet(Mainnet.ofRegister(mainnet))
                 .build();
     }
 }

@@ -23,7 +23,7 @@ class ProjectTest {
             .name("크립토하우스")
             .about("크립토하우스입니다.")
             .homepage("크립토하우스.com")
-            .category(Category.SOCIAL_NETWORK)
+            .category(Category.WEB3)
             .mainnet(Mainnet.NONE)
             .build();
 
@@ -50,7 +50,7 @@ class ProjectTest {
                 .about("클레이튼(Klaytn)은 ㈜카카오의 자회사인 그라운드엑스가 개발한 디앱(dApp·분산애플리케이션)을 위한 블록체인 플랫폼이다")
                 .homepage("https://www.klaytn.com/")
                 .logo("https://www.klaytn.com/logo.png")
-                .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+                .category(Category.INFRASTRUCTURE)
                 .mainnet(Mainnet.KLAYTN)
                 .build();
     }

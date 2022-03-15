@@ -27,7 +27,7 @@ class VentureCapitalTest {
             .name("cryptoHows")
             .about("VC가 투자한 프로젝트를 한눈에 볼 수 있어요")
             .homepage("https://cryptohows.xyz/")
-            .category(Category.SOCIAL_NETWORK)
+            .category(Category.WEB3)
             .mainnet(Mainnet.NONE)
             .build();
 
@@ -36,7 +36,7 @@ class VentureCapitalTest {
             .name("cryptoWhys")
             .about("VC가 투자한 프로젝트를 한눈에 볼 수 있어요")
             .homepage("https://cryptoWhys.xyz/")
-            .category(Category.SOCIAL_NETWORK)
+            .category(Category.WEB3)
             .mainnet(Mainnet.NONE)
             .build();
 
