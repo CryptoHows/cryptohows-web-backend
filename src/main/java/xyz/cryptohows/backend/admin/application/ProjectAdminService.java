@@ -57,8 +57,8 @@ public class ProjectAdminService {
                 .logo(projectRequest.getLogo())
                 .twitter(projectRequest.getTwitter())
                 .community(projectRequest.getCommunity())
-                .category(Category.of(projectRequest.getCategory()))
-                .mainnet(Mainnet.of(projectRequest.getMainnet()))
+                .category(Category.ofRegister(projectRequest.getCategory()))
+                .mainnet(Mainnet.ofRegister(projectRequest.getMainnet()))
                 .build();
         projectUploadService.checkExistenceAndUpload(project);
         projectUploadService.savePartnerships(project, projectRequest.generateInvestors());
