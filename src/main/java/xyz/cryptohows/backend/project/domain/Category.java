@@ -9,14 +9,6 @@ import java.util.stream.Collectors;
 @Getter
 public enum Category {
     NONE("None"),
-    EXCHANGES("Exchanges"),
-    BLOCKCHAIN_INFRASTRUCTURE("Blockchain Infrastructure"),
-    SECURITY_INFRASTRUCTURE("Security Infrastructure"),
-    WALLET("Wallet"),
-    PAYMENTS("Payments"),
-    DIGITAL_ASSETS("Digital Assets"),
-    SOCIAL_NETWORK("Social Network"),
-    GAMING("Gaming"),
     CEFI("CeFi"),
     DEFI("DeFi"),
     INFRASTRUCTURE("Infrastructure"),
