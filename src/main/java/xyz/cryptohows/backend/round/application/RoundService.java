@@ -17,7 +17,7 @@ public class RoundService {
 
     public RoundPageResponse findRounds(String mainnet, String category, String order, Integer page, Integer roundsPerPage) {
         FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category).findStrategy();
-        Long count = filterStrategy.countAllRound(Mainnet.of(mainnet), Category.of(category));
+        Long count = filterStrategy.countAllRounds(Mainnet.of(mainnet), Category.of(category));
         List<Round> rounds = filterStrategy.findRounds(order, page, roundsPerPage, Mainnet.of(mainnet), Category.of(category));
         return RoundPageResponse.of(count, rounds);
     }

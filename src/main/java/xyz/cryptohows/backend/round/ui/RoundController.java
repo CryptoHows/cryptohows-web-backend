@@ -18,8 +18,8 @@ public class RoundController {
     private final RoundService roundService;
 
     @GetMapping("/rounds")
-    public ResponseEntity<RoundPageResponse> findRounds(@RequestParam(defaultValue = "") String category,
-                                                        @RequestParam(defaultValue = "") String mainnet,
+    public ResponseEntity<RoundPageResponse> findRounds(@RequestParam(defaultValue = "") String mainnet,
+                                                        @RequestParam(defaultValue = "") String category,
                                                         @RequestParam(defaultValue = "recent") String order,
                                                         @RequestParam(defaultValue = "0") Integer page,
                                                         @RequestParam(defaultValue = "10") Integer roundsPerPage) {

@@ -22,7 +22,7 @@ public class CategoryFilterStrategy extends FilterStrategy {
     }
 
     @Override
-    public Long countAllRound(Mainnet mainnet, Category category) {
+    public Long countAllRounds(Mainnet mainnet, Category category) {
         return roundRepository.countRoundsFilterCategory(category);
     }
 }

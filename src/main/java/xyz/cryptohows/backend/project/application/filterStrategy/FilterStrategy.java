@@ -30,5 +30,5 @@ public abstract class FilterStrategy {
 
     public abstract List<Round> findRounds(String order, Integer page, Integer roundsPerPage, Mainnet mainnet, Category category);
 
-    public abstract Long countAllRound(Mainnet mainnet, Category category);
+    public abstract Long countAllRounds(Mainnet mainnet, Category category);
 }

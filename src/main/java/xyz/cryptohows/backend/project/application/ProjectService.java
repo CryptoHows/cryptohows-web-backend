@@ -5,6 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
+import xyz.cryptohows.backend.project.application.filterStrategy.FilterStrategy;
+import xyz.cryptohows.backend.project.application.filterStrategy.FilterStrategyFactory;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.project.ui.dto.ProjectDetailResponse;
@@ -18,7 +20,8 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectPageResponse findProjects(Integer page, Integer projectPerPage) {
+    public ProjectPageResponse findProjects(String mainnet, String category, Integer page, Integer projectPerPage) {
+        FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category).findStrategy();
         Pageable pageable = PageRequest.of(page, projectPerPage);
         List<Project> projects = projectRepository.findProjectsFetchJoinPartnerships(pageable);
         long totalProjectCount = projectRepository.count();
