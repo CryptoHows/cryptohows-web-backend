@@ -16,13 +16,13 @@ public class CategoryFilterStrategy extends FilterStrategy {
     }
 
     @Override
-    public List<Round> findRounds(String order, Integer page, Integer roundsPerPage, Mainnet mainnet, Category category) {
+    public List<Round> findRounds(String order, Integer page, Integer roundsPerPage, List<Mainnet> mainnets, List<Category> categories) {
         Pageable pageable = generatePageable(order, page, roundsPerPage);
-        return roundRepository.findRoundsFilterCategory(pageable, category);
+        return roundRepository.findRoundsFilterCategory(pageable, categories);
     }
 
     @Override
-    public Long countAllRounds(Mainnet mainnet, Category category) {
-        return roundRepository.countRoundsFilterCategory(category);
+    public Long countAllRounds(List<Mainnet> mainnets, List<Category> categories) {
+        return roundRepository.countRoundsFilterCategory(categories);
     }
 }

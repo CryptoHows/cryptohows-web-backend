@@ -78,7 +78,7 @@ public class RoundServiceTestFixture {
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
-    protected final Round EOSSeed = Round.builder()
+    protected final Round SolanaSeed = Round.builder()
             .project(SOLANA)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
@@ -94,7 +94,7 @@ public class RoundServiceTestFixture {
             .fundingStage(FundingStage.SEED)
             .build();
 
-    protected final Round EOSSeriesA = Round.builder()
+    protected final Round SolanaSeriesA = Round.builder()
             .project(SOLANA)
             .announcedDate("2020-02")
             .moneyRaised("$20M")
@@ -131,17 +131,17 @@ public class RoundServiceTestFixture {
         projectRepository.saveAll(Arrays.asList(SOLANA, LUNA, axieInfinity));
         ventureCapitalRepository.saveAll(Arrays.asList(hashed, a16z));
 
-        roundRepository.save(EOSSeed);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
-        roundParticipationRepository.save(new RoundParticipation(a16z, EOSSeed));
+        roundRepository.save(SolanaSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, SolanaSeed));
+        roundParticipationRepository.save(new RoundParticipation(a16z, SolanaSeed));
 
         roundRepository.save(axieSeed);
         roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
         roundParticipationRepository.save(new RoundParticipation(a16z, axieSeed));
 
-        roundRepository.save(EOSSeriesA);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
-        roundParticipationRepository.save(new RoundParticipation(a16z, EOSSeriesA));
+        roundRepository.save(SolanaSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, SolanaSeriesA));
+        roundParticipationRepository.save(new RoundParticipation(a16z, SolanaSeriesA));
 
         roundRepository.save(axieSeriesA);
         roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));

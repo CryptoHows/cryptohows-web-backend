@@ -16,7 +16,7 @@ public abstract class FilterStrategy {
     protected final ProjectRepository projectRepository;
     protected final RoundRepository roundRepository;
 
-    public FilterStrategy(ProjectRepository projectRepository, RoundRepository roundRepository) {
+    protected FilterStrategy(ProjectRepository projectRepository, RoundRepository roundRepository) {
         this.projectRepository = projectRepository;
         this.roundRepository = roundRepository;
     }
@@ -28,7 +28,7 @@ public abstract class FilterStrategy {
         return PageRequest.of(page, roundsPerPage, Sort.by("announcedDate").descending());
     }
 
-    public abstract List<Round> findRounds(String order, Integer page, Integer roundsPerPage, Mainnet mainnet, Category category);
+    public abstract List<Round> findRounds(String order, Integer page, Integer roundsPerPage, List<Mainnet> mainnets, List<Category> categories);
 
-    public abstract Long countAllRounds(Mainnet mainnet, Category category);
+    public abstract Long countAllRounds(List<Mainnet> mainnets, List<Category> categories);
 }
