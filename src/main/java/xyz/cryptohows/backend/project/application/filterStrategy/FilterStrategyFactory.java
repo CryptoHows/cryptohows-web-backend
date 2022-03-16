@@ -1,4 +1,4 @@
-package xyz.cryptohows.backend.round.application.filterStrategy;
+package xyz.cryptohows.backend.project.application.filterStrategy;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
-public enum RoundFilterStrategyFactory {
+public enum FilterStrategyFactory {
 
     NO_FILTER(true, true),
     MAINNET_ONLY(false, true),
@@ -15,27 +15,27 @@ public enum RoundFilterStrategyFactory {
 
     private final boolean isMainnetEmpty;
     private final boolean isCategoryEmpty;
-    private RoundFilterStrategy roundFilterStrategy;
+    private FilterStrategy filterStrategy;
 
-    RoundFilterStrategyFactory(boolean isMainnetEmpty, boolean isCategoryEmpty) {
+    FilterStrategyFactory(boolean isMainnetEmpty, boolean isCategoryEmpty) {
         this.isMainnetEmpty = isMainnetEmpty;
         this.isCategoryEmpty = isCategoryEmpty;
     }
 
-    private void setRoundFilterStrategy(RoundFilterStrategy roundFilterStrategy) {
-        this.roundFilterStrategy = roundFilterStrategy;
-    }
-
-    public RoundFilterStrategy findStrategy() {
-        return this.roundFilterStrategy;
-    }
-
-    public static RoundFilterStrategyFactory of(String mainnet, String category) {
+    public static FilterStrategyFactory of(String mainnet, String category) {
         return Arrays.stream(values())
                 .filter(strategy -> strategy.isMainnetEmpty == mainnet.isEmpty())
                 .filter(strategy -> strategy.isCategoryEmpty == category.isEmpty())
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("발생할 수 없는 로직입니다."));
+    }
+
+    private void setRoundFilterStrategy(FilterStrategy filterStrategy) {
+        this.filterStrategy = filterStrategy;
+    }
+
+    public FilterStrategy findStrategy() {
+        return this.filterStrategy;
     }
 
     @Component

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public enum Category {
+
     NONE("None"),
     CEFI("CeFi"),
     DEFI("DeFi"),
@@ -24,9 +25,17 @@ public enum Category {
 
     public static Category of(String input) {
         return Arrays.stream(values())
-                .filter(category -> category.categoryName.equalsIgnoreCase(input))
+                .filter(category -> category.categoryName.equalsIgnoreCase(input.trim()))
                 .findAny()
                 .orElse(NONE);
+    }
+
+    public static List<Category> parseIn(String input) {
+        String[] inputs = input.split(",");
+        return Arrays.stream(inputs)
+                .map(Category::of)
+                .filter(Category::isNotNone)
+                .collect(Collectors.toList());
     }
 
     public static Category ofRegister(String input) {

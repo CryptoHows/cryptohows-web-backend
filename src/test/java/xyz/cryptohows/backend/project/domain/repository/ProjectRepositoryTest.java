@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
@@ -186,9 +187,9 @@ class ProjectRepositoryTest {
     void findProjects() {
         // when
         List<Project> firstPageProject =
-                projectRepository.findProjectsFetchJoinPartnerships(PageRequest.of(0, 2));
+                projectRepository.findProjects(PageRequest.of(0, 2, Sort.by("id").descending()));
         List<Project> secondPageProject =
-                projectRepository.findProjectsFetchJoinPartnerships(PageRequest.of(1, 2));
+                projectRepository.findProjects(PageRequest.of(1, 2, Sort.by("id").descending()));
 
         // then
         assertThat(firstPageProject).hasSize(2);

@@ -48,6 +48,26 @@ class RoundServiceTest extends RoundServiceTestFixture {
         assertThat(response.getTotalRounds()).isEqualTo(2L);
     }
 
+    @DisplayName("여러개의 mainnet, category, 페이지네이션, 오래된 순으로 라운드를 구할 수 있다")
+    @Test
+    void findRoundsMultipleMainnetAndCategoryOld() {
+        // given
+        String mainnet = "terra, solana";
+        String category = "infrastructure";
+        String order = "old";
+
+        // when
+        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+
+        // then
+        assertThat(response.getRounds()).hasSize(4);
+        assertThat(response.getRounds().get(0).getId()).isEqualTo(lunaSeriesB.getId());
+        assertThat(response.getRounds().get(1).getId()).isEqualTo(lunaSeriesC.getId());
+        assertThat(response.getRounds().get(2).getId()).isEqualTo(SolanaSeed.getId());
+        assertThat(response.getRounds().get(3).getId()).isEqualTo(SolanaSeriesA.getId());
+        assertThat(response.getTotalRounds()).isEqualTo(4L);
+    }
+
     @DisplayName("category, 페이지네이션으로 라운드를 구할 수 있다")
     @Test
     void findRoundsCategoryOnly() {
@@ -61,11 +81,33 @@ class RoundServiceTest extends RoundServiceTestFixture {
 
         // then
         assertThat(response.getRounds()).hasSize(4);
-        assertThat(response.getRounds().get(0).getId()).isEqualTo(EOSSeriesA.getId());
-        assertThat(response.getRounds().get(1).getId()).isEqualTo(EOSSeed.getId());
+        assertThat(response.getRounds().get(0).getId()).isEqualTo(SolanaSeriesA.getId());
+        assertThat(response.getRounds().get(1).getId()).isEqualTo(SolanaSeed.getId());
         assertThat(response.getRounds().get(2).getId()).isEqualTo(lunaSeriesC.getId());
         assertThat(response.getRounds().get(3).getId()).isEqualTo(lunaSeriesB.getId());
         assertThat(response.getTotalRounds()).isEqualTo(4L);
+    }
+
+    @DisplayName("여러개의 category, 페이지네이션으로 라운드를 구할 수 있다")
+    @Test
+    void findRoundsMultipleCategoryOnly() {
+        // given
+        String mainnet = "";
+        String category = "infrastructure, web3";
+        String order = "recent";
+
+        // when
+        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+
+        // then
+        assertThat(response.getRounds()).hasSize(6);
+        assertThat(response.getRounds().get(0).getId()).isEqualTo(axieSeriesA.getId());
+        assertThat(response.getRounds().get(1).getId()).isEqualTo(SolanaSeriesA.getId());
+        assertThat(response.getRounds().get(2).getId()).isEqualTo(axieSeed.getId());
+        assertThat(response.getRounds().get(3).getId()).isEqualTo(SolanaSeed.getId());
+        assertThat(response.getRounds().get(4).getId()).isEqualTo(lunaSeriesC.getId());
+        assertThat(response.getRounds().get(5).getId()).isEqualTo(lunaSeriesB.getId());
+        assertThat(response.getTotalRounds()).isEqualTo(6L);
     }
 
     @DisplayName("mainnet, 페이지네이션, 오래된 순으로 라운드를 구할 수 있다")
@@ -86,7 +128,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         assertThat(response.getTotalRounds()).isEqualTo(2L);
     }
 
-    @DisplayName("mainnet, 페이지네이션, 오래된 순으로 라운드를 구할 수 있다")
+    @DisplayName("최신 순으로 라운드를 구할 수 있다")
     @Test
     void findRounds() {
         // given
@@ -100,9 +142,9 @@ class RoundServiceTest extends RoundServiceTestFixture {
         // then
         assertThat(response.getRounds()).hasSize(6);
         assertThat(response.getRounds().get(0).getId()).isEqualTo(axieSeriesA.getId());
-        assertThat(response.getRounds().get(1).getId()).isEqualTo(EOSSeriesA.getId());
+        assertThat(response.getRounds().get(1).getId()).isEqualTo(SolanaSeriesA.getId());
         assertThat(response.getRounds().get(2).getId()).isEqualTo(axieSeed.getId());
-        assertThat(response.getRounds().get(3).getId()).isEqualTo(EOSSeed.getId());
+        assertThat(response.getRounds().get(3).getId()).isEqualTo(SolanaSeed.getId());
         assertThat(response.getRounds().get(4).getId()).isEqualTo(lunaSeriesC.getId());
         assertThat(response.getRounds().get(5).getId()).isEqualTo(lunaSeriesB.getId());
         assertThat(response.getTotalRounds()).isEqualTo(6L);

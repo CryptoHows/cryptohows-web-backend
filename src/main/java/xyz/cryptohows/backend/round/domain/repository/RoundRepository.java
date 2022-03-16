@@ -25,39 +25,40 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
             "from Round as round " +
             "join fetch round.project " +
             "join fetch round.vcParticipants " +
-            "where round.project.mainnet = :mainnet")
-    List<Round> findRoundsFilterMainnet(Pageable pageable, @Param("mainnet") Mainnet mainnet);
+            "where round.project.mainnet in (:mainnets)")
+    List<Round> findRoundsFilterMainnet(Pageable pageable, @Param("mainnets") List<Mainnet> mainnets);
 
     @Query("select count(distinct round) " +
             "from Round as round " +
-            "where round.project.mainnet = :mainnet")
-    Long countRoundsFilterMainnet(@Param("mainnet") Mainnet mainnet);
+            "where round.project.mainnet in (:mainnets)")
+    Long countRoundsFilterMainnet(@Param("mainnets") List<Mainnet> mainnets);
 
     @Query("select distinct round " +
             "from Round as round " +
             "join fetch round.project " +
             "join fetch round.vcParticipants " +
-            "where round.project.category = :category")
-    List<Round> findRoundsFilterCategory(Pageable pageable, @Param("category") Category category);
+            "where round.project.category in (:categories)")
+    List<Round> findRoundsFilterCategory(Pageable pageable, @Param("categories") List<Category> categories);
 
     @Query("select count(distinct round) " +
             "from Round as round " +
-            "where round.project.category = :category")
-    Long countRoundsFilterCategory(@Param("category") Category category);
+            "where round.project.category in (:categories)")
+    Long countRoundsFilterCategory(@Param("categories") List<Category> categories);
 
     @Query("select distinct round " +
             "from Round as round " +
             "join fetch round.project " +
             "join fetch round.vcParticipants " +
-            "where round.project.category = :category " +
-            "and round.project.mainnet = :mainnet")
-    List<Round> findRoundsFilterMainnetAndCategory(Pageable pageable, @Param("mainnet") Mainnet mainnet, @Param("category") Category category);
+            "where round.project.category in (:categories) " +
+            "and round.project.mainnet in (:mainnets)")
+    List<Round> findRoundsFilterMainnetAndCategory(Pageable pageable, @Param("mainnets") List<Mainnet> mainnet,
+                                                   @Param("categories") List<Category> category);
 
     @Query("select count(distinct round)  " +
             "from Round as round " +
-            "where round.project.category = :category " +
-            "and round.project.mainnet = :mainnet")
-    Long countRoundsFilterMainnetAndCategory(@Param("mainnet") Mainnet mainnet, @Param("category") Category category);
+            "where round.project.category in (:categories) " +
+            "and round.project.mainnet in (:mainnets)")
+    Long countRoundsFilterMainnetAndCategory(@Param("mainnets") List<Mainnet> mainnets, @Param("categories") List<Category> categories);
 
     @Query("select distinct round " +
             "from Round as round " +
