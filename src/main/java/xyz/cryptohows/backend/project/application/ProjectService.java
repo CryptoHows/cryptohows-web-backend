@@ -1,12 +1,12 @@
 package xyz.cryptohows.backend.project.application;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.application.filterStrategy.FilterStrategy;
 import xyz.cryptohows.backend.project.application.filterStrategy.FilterStrategyFactory;
+import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.project.ui.dto.ProjectDetailResponse;
@@ -20,12 +20,13 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectPageResponse findProjects(String mainnet, String category, Integer page, Integer projectPerPage) {
+    public ProjectPageResponse findProjects(String mainnet, String category, Integer page, Integer projectsPerPage) {
         FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category).findStrategy();
-        Pageable pageable = PageRequest.of(page, projectPerPage);
-        List<Project> projects = projectRepository.findProjectsFetchJoinPartnerships(pageable);
-        long totalProjectCount = projectRepository.count();
-        return ProjectPageResponse.of(totalProjectCount, projects);
+        List<Mainnet> mainnets = Mainnet.parseIn(mainnet);
+        List<Category> categories = Category.parseIn(category);
+        Long count = filterStrategy.countAllProjects(mainnets, categories);
+        List<Project> projects = filterStrategy.findProjects(page, projectsPerPage, mainnets, categories);
+        return ProjectPageResponse.of(count, projects);
     }
 
     public ProjectDetailResponse findById(Long projectId) {
