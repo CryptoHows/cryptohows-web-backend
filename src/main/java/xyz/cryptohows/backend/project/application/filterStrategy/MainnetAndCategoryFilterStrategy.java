@@ -1,17 +1,18 @@
-package xyz.cryptohows.backend.round.application.filterStrategy;
+package xyz.cryptohows.backend.project.application.filterStrategy;
 
 import org.springframework.data.domain.Pageable;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
+import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 
 import java.util.List;
 
-public class MainnetAndCategoryFilterStrategy extends RoundFilterStrategy {
+public class MainnetAndCategoryFilterStrategy extends FilterStrategy {
 
-    public MainnetAndCategoryFilterStrategy(RoundRepository roundRepository) {
-        super(roundRepository);
+    public MainnetAndCategoryFilterStrategy(ProjectRepository projectRepository, RoundRepository roundRepository) {
+        super(projectRepository, roundRepository);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class MainnetAndCategoryFilterStrategy extends RoundFilterStrategy {
     }
 
     @Override
-    public Long count(Mainnet mainnet, Category category) {
+    public Long countAllRound(Mainnet mainnet, Category category) {
         return roundRepository.countRoundsFilterMainnetAndCategory(mainnet, category);
     }
 }

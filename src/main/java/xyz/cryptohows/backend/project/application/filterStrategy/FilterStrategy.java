@@ -1,20 +1,23 @@
-package xyz.cryptohows.backend.round.application.filterStrategy;
+package xyz.cryptohows.backend.project.application.filterStrategy;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
+import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 
 import java.util.List;
 
-public abstract class RoundFilterStrategy {
+public abstract class FilterStrategy {
 
+    protected final ProjectRepository projectRepository;
     protected final RoundRepository roundRepository;
 
-    protected RoundFilterStrategy(RoundRepository roundRepository) {
+    public FilterStrategy(ProjectRepository projectRepository, RoundRepository roundRepository) {
+        this.projectRepository = projectRepository;
         this.roundRepository = roundRepository;
     }
 
@@ -27,5 +30,5 @@ public abstract class RoundFilterStrategy {
 
     public abstract List<Round> findRounds(String order, Integer page, Integer roundsPerPage, Mainnet mainnet, Category category);
 
-    public abstract Long count(Mainnet mainnet, Category category);
+    public abstract Long countAllRound(Mainnet mainnet, Category category);
 }
