@@ -211,4 +211,13 @@ class ProjectRepositoryTest {
         // then
         assertThat(project).isEqualTo(SOLANA);
     }
+
+    @Test
+    @DisplayName("프로젝트 이름에 포함된 단어로 프로젝트를 검색할 수 있다.")
+    void search() {
+        List<Project> projects = projectRepository.findTop5ByNameStartsWithIgnoreCase("A");
+
+        assertThat(projects).hasSize(1);
+        assertThat(projects.get(0)).isEqualTo(axieInfinity);
+    }
 }
