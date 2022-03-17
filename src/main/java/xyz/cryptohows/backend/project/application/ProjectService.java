@@ -11,6 +11,7 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.project.ui.dto.ProjectDetailResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectPageResponse;
+import xyz.cryptohows.backend.project.ui.dto.ProjectSearchResponse;
 
 import java.util.List;
 
@@ -33,5 +34,10 @@ public class ProjectService {
         Project project = projectRepository.findByIdFetchJoinPartnerships(projectId)
                 .orElseThrow(() -> new CryptoHowsException("해당 id의 프로젝트는 없습니다."));
         return ProjectDetailResponse.of(project);
+    }
+
+    public List<ProjectSearchResponse> searchProjectContains(String searchWord) {
+        List<Project> projects = projectRepository.findTop5ByNameStartsWithIgnoreCase(searchWord);
+        return ProjectSearchResponse.toList(projects);
     }
 }

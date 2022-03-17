@@ -72,4 +72,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "join fetch project.partnerships " +
             "where project.id = :projectId ")
     Optional<Project> findByIdFetchJoinPartnerships(@Param("projectId") Long projectId);
+
+    List<Project> findTop5ByNameStartsWithIgnoreCase(String searchWord);
 }

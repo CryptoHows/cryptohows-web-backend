@@ -56,7 +56,7 @@ public class RoundAdminService {
         Round round = Round.builder()
                 .project(project)
                 .announcedDate(roundRequest.getAnnouncedDate())
-                .moneyRaised(roundRequest.getMoneyRaised())
+                .moneyRaised(roundRequest.formatMoneyRaised())
                 .totalParticipants(participants.size())
                 .fundingStage(FundingStage.of(roundRequest.getFundingStage()))
                 .newsArticle(roundRequest.getNewsArticle())
