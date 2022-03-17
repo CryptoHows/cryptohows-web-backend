@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +28,14 @@ public class RoundRequest {
         this.newsArticle = newsArticle;
         this.fundingStage = fundingStage;
         this.participants = participants;
+    }
+
+    public String formatMoneyRaised() {
+        String trimmedMoneyRaised = moneyRaised.trim();
+        if (trimmedMoneyRaised.isEmpty()) {
+            return "";
+        }
+        return "$" + NumberFormat.getInstance().format(Double.valueOf(trimmedMoneyRaised));
     }
 
     public List<String> generateParticipants() {
