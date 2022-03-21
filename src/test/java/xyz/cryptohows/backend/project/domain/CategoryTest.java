@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,5 +49,15 @@ class CategoryTest {
 
         // then
         assertThat(categories).containsExactly(Category.CEFI, Category.DEFI, Category.WEB3);
+    }
+
+    @DisplayName("toStringList를 통해 None을 제외한 카테고리를 알파벳 순서로 받아볼 수 있다.")
+    @Test
+    void toStringList() {
+        List<Category> categories = Arrays.asList(Category.CEFI, Category.NFTS, Category.NONE, Category.DEFI, Category.INFRASTRUCTURE, Category.WEB3);
+
+        List<String> strings = Category.toStringList(categories);
+
+        assertThat(strings).containsExactly("CeFi", "DeFi", "Infrastructure", "NFTs", "Web3");
     }
 }

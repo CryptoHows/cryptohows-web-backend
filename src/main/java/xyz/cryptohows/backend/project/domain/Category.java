@@ -64,6 +64,7 @@ public enum Category {
         return categories.stream()
                 .filter(Category::isNotNone)
                 .map(Category::getCategoryName)
+                .sorted()
                 .collect(Collectors.toList());
     }
 }
