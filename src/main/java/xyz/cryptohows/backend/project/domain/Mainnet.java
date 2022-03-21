@@ -25,6 +25,7 @@ public enum Mainnet {
     SOLANA,
     TERRA,
     THUNDERCORE,
+    FANTOM,
     NONE;
 
     public static Mainnet of(String input) {
