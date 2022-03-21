@@ -82,7 +82,8 @@ class AdminAcceptanceTest extends AcceptanceTest {
         어드민_VC_개별_응답_받음(response);
     }
 
-    @DisplayName("어드민 로그인 후, 어드민 권한으로 VC를 삭제할 수 있다.")
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 VC를 삭제할 수 있다. " +
+            "삭제 시 해당 VC가 유일한 파트너사인 프로젝트와 라운드 참여 주체 VC라면 프로젝트와 라운드도 각각 삭제된다.")
     @Test
     void deleteVCAsAdmin() {
         // when
@@ -93,6 +94,8 @@ class AdminAcceptanceTest extends AcceptanceTest {
         assertThat(ventureCapitalRepository.count()).isOne();
         assertThat(partnershipRepository.count()).isEqualTo(2);
         assertThat(roundParticipationRepository.count()).isEqualTo(4);
+        assertThat(projectRepository.count()).isEqualTo(2);
+        assertThat(roundRepository.count()).isEqualTo(4);
     }
 
     @DisplayName("어드민 로그인 후, 어드민 권한으로 프로젝트를 삭제할 수 있다.")
