@@ -7,14 +7,19 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.admin.application.upload.VentureCapitalUploadService;
 import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
+import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.Projects;
+import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
+import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
+import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -23,7 +28,8 @@ public class VentureCapitalAdminService {
 
     private final VentureCapitalUploadService ventureCapitalUploadService;
     private final VentureCapitalRepository ventureCapitalRepository;
-    private final RoundParticipationRepository roundParticipationRepository;
+    private final ProjectRepository projectRepository;
+    private final RoundRepository roundRepository;
 
     public List<VentureCapitalSimpleResponse> findAll() {
         List<VentureCapital> ventureCapitals = ventureCapitalRepository.findAll();
@@ -44,8 +50,25 @@ public class VentureCapitalAdminService {
     public void deleteById(Long vcId) {
         VentureCapital ventureCapital = ventureCapitalRepository.findById(vcId)
                 .orElseThrow(() -> new CryptoHowsException("해당 id의 벤처캐피탈은 없습니다."));
-        roundParticipationRepository.deleteByVentureCapital(ventureCapital);
+        deleteProjectOnlyHasOnlyPartner(ventureCapital);
+        deleteRoundOnlyHasOnlyParticipant(ventureCapital);
         ventureCapitalRepository.deleteById(vcId);
+    }
+
+    private void deleteProjectOnlyHasOnlyPartner(VentureCapital ventureCapital) {
+        List<Project> projects = ventureCapital.getPortfolio()
+                .stream()
+                .filter(project -> project.getNumberOfPartnerships() == 1)
+                .collect(Collectors.toList());
+        projectRepository.deleteAll(projects);
+    }
+
+    private void deleteRoundOnlyHasOnlyParticipant(VentureCapital ventureCapital) {
+        List<Round> rounds = ventureCapital.getParticipatedRounds()
+                .stream()
+                .filter(round -> round.getNumberOfVcParticipants() == 1)
+                .collect(Collectors.toList());
+        roundRepository.deleteAll(rounds);
     }
 
     public void create(VentureCapitalRequest ventureCapitalRequest) {

@@ -101,6 +101,10 @@ public class Project {
                 .collect(Collectors.toList());
     }
 
+    public int getNumberOfPartnerships() {
+        return this.partnerships.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

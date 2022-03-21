@@ -76,6 +76,10 @@ public class Round {
                 && (this.newsArticle.equals(round.newsArticle)) && (this.fundingStage == round.fundingStage);
     }
 
+    public int getNumberOfVcParticipants() {
+        return vcParticipants.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
