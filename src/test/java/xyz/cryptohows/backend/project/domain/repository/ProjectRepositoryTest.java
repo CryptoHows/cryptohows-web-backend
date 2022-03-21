@@ -220,4 +220,20 @@ class ProjectRepositoryTest {
         assertThat(projects).hasSize(1);
         assertThat(projects.get(0)).isEqualTo(axieInfinity);
     }
+
+    @Test
+    @DisplayName("현재 프로젝트에 쓰인 카테고리들을 반환할 수 있다.")
+    void findAllCategories() {
+        List<Category> categories = projectRepository.findAllCategories();
+
+        assertThat(categories).containsExactlyInAnyOrder(Category.INFRASTRUCTURE, Category.WEB3);
+    }
+
+    @Test
+    @DisplayName("현재 프로젝트에 쓰인 메인넷들을 반환할 수 있다.")
+    void findAllMainnets() {
+        List<Mainnet> categories = projectRepository.findAllMainnets();
+
+        assertThat(categories).containsExactlyInAnyOrder(Mainnet.SOLANA, Mainnet.ETHEREUM, Mainnet.KLAYTN);
+    }
 }

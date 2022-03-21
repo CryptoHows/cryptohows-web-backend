@@ -64,4 +64,11 @@ public enum Mainnet {
     private static boolean isNotNone(Mainnet mainnet) {
         return mainnet != Mainnet.NONE;
     }
+
+    public static List<String> toStringList(List<Mainnet> mainnets) {
+        return mainnets.stream()
+                .filter(Mainnet::isNotNone)
+                .map(Mainnet::name)
+                .collect(Collectors.toList());
+    }
 }

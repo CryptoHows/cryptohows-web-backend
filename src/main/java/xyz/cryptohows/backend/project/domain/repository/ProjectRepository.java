@@ -74,4 +74,12 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findByIdFetchJoinPartnerships(@Param("projectId") Long projectId);
 
     List<Project> findTop5ByNameStartsWithIgnoreCase(String searchWord);
+
+    @Query("select distinct project.category " +
+            "from Project as project ")
+    List<Category> findAllCategories();
+
+    @Query("select distinct project.mainnet " +
+            "from Project as project ")
+    List<Mainnet> findAllMainnets();
 }

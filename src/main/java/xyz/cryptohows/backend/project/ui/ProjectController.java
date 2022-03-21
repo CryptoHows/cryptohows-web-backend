@@ -41,13 +41,13 @@ public class ProjectController {
 
     @GetMapping("/projects/categories")
     public ResponseEntity<List<String>> getAllCategories() {
-        List<String> categories = Category.getAllCategories();
+        List<String> categories = projectService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 
     @GetMapping("/projects/mainnets")
     public ResponseEntity<List<String>> getAllMainnets() {
-        List<String> mainnets = Mainnet.getAllMainnets();
+        List<String> mainnets = projectService.getAllMainnets();
         return ResponseEntity.ok(mainnets);
     }
 }
