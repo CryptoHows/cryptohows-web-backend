@@ -69,6 +69,7 @@ public enum Mainnet {
         return mainnets.stream()
                 .filter(Mainnet::isNotNone)
                 .map(Mainnet::name)
+                .sorted()
                 .collect(Collectors.toList());
     }
 }
