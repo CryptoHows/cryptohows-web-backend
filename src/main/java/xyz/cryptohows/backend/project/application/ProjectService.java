@@ -40,4 +40,14 @@ public class ProjectService {
         List<Project> projects = projectRepository.findTop5ByNameStartsWithIgnoreCase(searchWord);
         return ProjectSearchResponse.toList(projects);
     }
+
+    public List<String> getAllCategories() {
+        List<Category> categories = projectRepository.findAllCategories();
+        return Category.toStringList(categories);
+    }
+
+    public List<String> getAllMainnets() {
+        List<Mainnet> mainnets = projectRepository.findAllMainnets();
+        return Mainnet.toStringList(mainnets);
+    }
 }

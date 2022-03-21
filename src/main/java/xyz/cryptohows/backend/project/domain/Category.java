@@ -59,4 +59,11 @@ public enum Category {
     private static boolean isNotNone(Category category) {
         return category != Category.NONE;
     }
+
+    public static List<String> toStringList(List<Category> categories) {
+        return categories.stream()
+                .filter(Category::isNotNone)
+                .map(Category::getCategoryName)
+                .collect(Collectors.toList());
+    }
 }
