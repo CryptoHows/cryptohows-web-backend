@@ -62,7 +62,8 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
 
     @Query("select distinct round " +
             "from Round as round " +
-            "join fetch round.project ")
+            "join fetch round.project " +
+            "order by round.announcedDate desc ")
     List<Round> findAllFetchJoinProject();
 
     @Query("select distinct round " +
