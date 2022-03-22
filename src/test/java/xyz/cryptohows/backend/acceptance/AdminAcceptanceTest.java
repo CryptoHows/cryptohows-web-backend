@@ -12,10 +12,17 @@ import xyz.cryptohows.backend.admin.ui.dto.ProjectRequest;
 import xyz.cryptohows.backend.admin.ui.dto.RoundRequest;
 import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
+import xyz.cryptohows.backend.round.ui.dto.RoundSimpleResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalResponse;
 import xyz.cryptohows.backend.vc.ui.dto.VentureCapitalSimpleResponse;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static xyz.cryptohows.backend.acceptance.util.AcceptanceFixture.*;
 
 @DisplayName("어드민 관련 기능")
@@ -184,6 +191,16 @@ class AdminAcceptanceTest extends AcceptanceTest {
         어드민_성공_응답_받음(response);
     }
 
+    @DisplayName("어드민 로그인 후, 어드민 권한으로 라운드를 시간 순으로 받아올 수 있다.")
+    @Test
+    void getAdminRounds() {
+        // given
+        ExtractableResponse<Response> response = 어드민_라운드_전체_조회_요청(어드민_토큰_발급());
+
+        // then
+        어드민_라운드_조회_응답_받음(response);
+    }
+
     private String 어드민_토큰_발급() {
         ExtractableResponse<Response> response = 어드민_로그인_요청(어드민_로그인_양식);
         TokenResponse adminLoginResponse = response.as(TokenResponse.class);
@@ -215,6 +232,15 @@ class AdminAcceptanceTest extends AcceptanceTest {
                 .when()
                 .auth().oauth2(어드민_토큰)
                 .get("/admin/venture-capitals")
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 어드민_라운드_전체_조회_요청(String 어드민_토큰) {
+        return RestAssured.given().log().all()
+                .when()
+                .auth().oauth2(어드민_토큰)
+                .get("/admin/rounds")
                 .then().log().all()
                 .extract();
     }
@@ -319,6 +345,20 @@ class AdminAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         VentureCapitalSimpleResponse[] vcResponses = response.as(VentureCapitalSimpleResponse[].class);
         assertThat(vcResponses).isNotEmpty();
+    }
+
+    private void 어드민_라운드_조회_응답_받음(ExtractableResponse<Response> response) {
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        RoundSimpleResponse[] roundResponses = response.as(RoundSimpleResponse[].class);
+        assertThat(roundResponses).isNotEmpty();
+        List<String> responseAnnouncedDate = Arrays.stream(roundResponses)
+                .map(RoundSimpleResponse::getAnnouncedDate)
+                .collect(Collectors.toList());
+        List<String> sortedAnnouncedDate = Arrays.stream(roundResponses)
+                .map(RoundSimpleResponse::getAnnouncedDate)
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
+        assertEquals(responseAnnouncedDate, sortedAnnouncedDate);
     }
 
     private void 어드민_VC_개별_응답_받음(ExtractableResponse<Response> response) {
