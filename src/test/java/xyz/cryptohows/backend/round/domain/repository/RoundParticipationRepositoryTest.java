@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
@@ -17,6 +19,7 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,10 +42,17 @@ class RoundParticipationRepositoryTest {
     private TestEntityManager tem;
 
     private final VentureCapital hashed = VentureCapital.builder()
-            .name("해시드")
+            .name("hashed")
             .about("한국의 VC")
             .homepage("hashed.com")
             .logo("hashed.png")
+            .build();
+
+    private final VentureCapital a16z = VentureCapital.builder()
+            .name("a16z")
+            .about("미국의 VC")
+            .homepage("a16z.com")
+            .logo("a16z.png")
             .build();
 
     private final Project SOLANA = Project.builder()
@@ -97,18 +107,20 @@ class RoundParticipationRepositoryTest {
     void setUp() {
         projectRepository.saveAll(Arrays.asList(SOLANA, axieInfinity));
         ventureCapitalRepository.save(hashed);
+        ventureCapitalRepository.save(a16z);
 
         roundRepository.save(EOSSeed);
         roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
 
         roundRepository.save(axieSeed);
         roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
+        roundParticipationRepository.save(new RoundParticipation(a16z, axieSeed));
 
         roundRepository.save(EOSSeriesA);
         roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
 
         roundRepository.save(axieSeriesA);
-        roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
+        roundParticipationRepository.save(new RoundParticipation(a16z, axieSeriesA));
 
         tem.flush();
         tem.clear();
@@ -121,6 +133,37 @@ class RoundParticipationRepositoryTest {
         roundParticipationRepository.deleteByVentureCapital(hashed);
 
         // then
-        assertThat(roundParticipationRepository.count()).isZero();
+        assertThat(roundParticipationRepository.count()).isEqualTo(2L);
+    }
+
+    @DisplayName("벤처캐피탈이 투자한 라운드가 몇갠지 반환받을 수 있다.")
+    @Test
+    void countRoundsFilterVentureCapital() {
+        // when
+        Long count = roundParticipationRepository.countRoundsFilterVentureCapitals(Arrays.asList("hashed"));
+
+        // then
+        assertThat(count).isEqualTo(3L);
+    }
+
+    @DisplayName("여러개의 벤처캐피탈이 투자한 라운드가 몇갠지 반환받을 수 있다.")
+    @Test
+    void countRoundsFilterVentureCapitals() {
+        // when
+        Long count = roundParticipationRepository.countRoundsFilterVentureCapitals(Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(count).isEqualTo(4L);
+    }
+
+    @DisplayName("여러개의 벤처캐피탈이 투자한 라운드를 반환받을 수 있다.")
+    @Test
+    void findRoundsFilterVentureCapitals() {
+        // when
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Round> rounds = roundParticipationRepository.findRoundsFilterVentureCapitalsOrderByRecentRound(pageable, Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(rounds).containsExactly(axieSeriesA, EOSSeriesA, axieSeed, EOSSeed);
     }
 }

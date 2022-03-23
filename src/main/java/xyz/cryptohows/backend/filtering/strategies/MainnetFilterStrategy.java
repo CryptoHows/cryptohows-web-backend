@@ -7,35 +7,38 @@ import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.Round;
+import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
+import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 
 import java.util.List;
 
 public class MainnetFilterStrategy extends FilterStrategy {
 
-    public MainnetFilterStrategy(ProjectRepository projectRepository, RoundRepository roundRepository) {
-        super(projectRepository, roundRepository);
+    public MainnetFilterStrategy(ProjectRepository projectRepository, PartnershipRepository partnershipRepository,
+                                 RoundRepository roundRepository, RoundParticipationRepository roundParticipationRepository) {
+        super(projectRepository, partnershipRepository, roundRepository, roundParticipationRepository);
     }
 
     @Override
-    public List<Round> findRounds(String order, Integer page, Integer roundsPerPage, List<Mainnet> mainnets, List<Category> categories) {
-        Pageable pageable = generateRoundPageable(order, page, roundsPerPage);
+    public List<Round> findRounds(String order, Integer page, Integer roundsPerPage, List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput) {
+        Pageable pageable = generatePageableSortByAnnouncedDate(order, page, roundsPerPage);
         return roundRepository.findRoundsFilterMainnet(pageable, mainnets);
     }
 
     @Override
-    public Long countAllRounds(List<Mainnet> mainnets, List<Category> categories) {
+    public Long countAllRounds(List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput) {
         return roundRepository.countRoundsFilterMainnet(mainnets);
     }
 
     @Override
-    public List<Project> findProjects(Integer page, Integer projectsPerPage, List<Mainnet> mainnets, List<Category> categories) {
-        Pageable pageable = generateProjectPageable(page, projectsPerPage);
+    public List<Project> findProjects(Integer page, Integer projectsPerPage, List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput) {
+        Pageable pageable = generatePageableSortById(page, projectsPerPage);
         return projectRepository.findProjectsFilterMainnet(pageable, mainnets);
     }
 
     @Override
-    public Long countAllProjects(List<Mainnet> mainnets, List<Category> categories) {
+    public Long countAllProjects(List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput) {
         return projectRepository.countProjectsFilterMainnet(mainnets);
     }
 }

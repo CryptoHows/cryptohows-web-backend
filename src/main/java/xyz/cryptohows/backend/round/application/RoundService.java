@@ -19,8 +19,8 @@ public class RoundService {
         FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category, "").findStrategy();
         List<Mainnet> mainnets = Mainnet.parseIn(mainnet);
         List<Category> categories = Category.parseIn(category);
-        Long count = filterStrategy.countAllRounds(mainnets, categories);
-        List<Round> rounds = filterStrategy.findRounds(order, page, roundsPerPage, mainnets, categories);
+        Long count = filterStrategy.countAllRounds(mainnets, categories, "");
+        List<Round> rounds = filterStrategy.findRounds(order, page, roundsPerPage, mainnets, categories, "");
         return RoundPageResponse.of(count, rounds);
     }
 }
