@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.RoundParticipation;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
@@ -26,4 +27,18 @@ public interface RoundParticipationRepository extends JpaRepository<RoundPartici
             "where roundParticipation.ventureCapital.name in (:ventureCapitalNames) " +
             "order by roundParticipation.round.announcedDate desc")
     List<Round> findRoundsFilterVentureCapitalsOrderByRecentRound(Pageable pageable, @Param("ventureCapitalNames") List<String> ventureCapitalNames);
+
+    @Query("select count(distinct roundParticipation.round) " +
+            "from RoundParticipation as roundParticipation " +
+            "where roundParticipation.ventureCapital.name in (:ventureCapitalNames) " +
+            "and roundParticipation.round.project.mainnet in (:mainnets)")
+    Long countRoundsFilterMainnetAndVentureCapitals(@Param("mainnets") List<Mainnet> mainnets, @Param("ventureCapitalNames") List<String> ventureCapitals);
+
+    @Query("select distinct roundParticipation.round " +
+            "from RoundParticipation as roundParticipation " +
+            "where roundParticipation.ventureCapital.name in (:ventureCapitalNames) " +
+            "and roundParticipation.round.project.mainnet in (:mainnets) " +
+            "order by roundParticipation.round.announcedDate desc")
+    List<Round> findRoundsFilterMainnetAndVentureCapitalsOrderByRecentRound(Pageable pageable, @Param("mainnets") List<Mainnet> mainnets,
+                                                                            @Param("ventureCapitalNames") List<String> ventureCapitals);
 }

@@ -138,15 +138,35 @@ class PartnershipRepositoryTest {
         assertThat(count).isEqualTo(3L);
     }
 
-
     @DisplayName("ventureCapital 여러 이름으로 검색시, 해당 VC와 파트너쉽 맺은 프로젝트 반환한다. ")
     @Test
-    void findProjectsFilterMulitpleVentureCapitalsInvalid() {
+    void findProjectsFilterMulitpleVentureCapitals() {
         // when
         Pageable pageable = PageRequest.of(0, 10);
         List<Project> projects = partnershipRepository.findProjectsFilterVentureCapitalsOrderByIdDesc(pageable, Arrays.asList("hashed", "a16z"));
 
         // then
         assertThat(projects).containsExactly(axieInfinity, KLAYTN, SOLANA);
+    }
+
+    @DisplayName("ventureCapital 여러개의 이름과 메인넷으로 검색시, 연관 맺은 프로젝트의 갯수가 반환된다.")
+    @Test
+    void countProjectWithVCNameAndMainnet() {
+        // when
+        Long count = partnershipRepository.countProjectFilterMainnetAndVentureCapitals(Arrays.asList(Mainnet.SOLANA, Mainnet.KLAYTN), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(count).isEqualTo(2L);
+    }
+
+    @DisplayName("ventureCapital 여러 이름으로 검색시, 해당 VC와 파트너쉽 맺은 프로젝트 반환한다. ")
+    @Test
+    void findProjectsFilterMulitpleVentureCapitalAndMainnet() {
+        // when
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Project> projects = partnershipRepository.findProjectsFilterMainnetAndVentureCapitalsOrderByIdDesc(pageable, Arrays.asList(Mainnet.SOLANA, Mainnet.KLAYTN), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(projects).containsExactly(KLAYTN, SOLANA);
     }
 }

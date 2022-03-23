@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.vc.domain.Partnership;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
@@ -28,4 +29,20 @@ public interface PartnershipRepository extends JpaRepository<Partnership, Long> 
             "where partnership.ventureCapital.name in (:ventureCapitalNames) " +
             "order by project.id desc")
     List<Project> findProjectsFilterVentureCapitalsOrderByIdDesc(Pageable pageable, @Param("ventureCapitalNames") List<String> ventureCapitalNames);
+
+    @Query("select count(distinct partnership.project) " +
+            "from Partnership as partnership " +
+            "where partnership.ventureCapital.name in (:ventureCapitalNames) " +
+            "and partnership.project.mainnet in (:mainnets) ")
+    Long countProjectFilterMainnetAndVentureCapitals(@Param("mainnets") List<Mainnet> mainnets, @Param("ventureCapitalNames") List<String> ventureCapitalNames);
+
+    @Query("select distinct project " +
+            "from Partnership as partnership " +
+            "join Project as project " +
+            "on project = partnership.project " +
+            "where partnership.ventureCapital.name in (:ventureCapitalNames) " +
+            "and project.mainnet in (:mainnets) " +
+            "order by project.id desc")
+    List<Project> findProjectsFilterMainnetAndVentureCapitalsOrderByIdDesc(Pageable pageable, @Param("mainnets") List<Mainnet> mainnets,
+                                                                           @Param("ventureCapitalNames") List<String> ventureCapitalNames);
 }

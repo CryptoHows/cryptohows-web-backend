@@ -71,7 +71,7 @@ class RoundParticipationRepositoryTest {
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
-    private final Round EOSSeed = Round.builder()
+    private final Round SolanaSeed = Round.builder()
             .project(SOLANA)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
@@ -87,7 +87,7 @@ class RoundParticipationRepositoryTest {
             .fundingStage(FundingStage.SEED)
             .build();
 
-    private final Round EOSSeriesA = Round.builder()
+    private final Round SolanaSeriesA = Round.builder()
             .project(SOLANA)
             .announcedDate("2020-02")
             .moneyRaised("$20M")
@@ -109,15 +109,15 @@ class RoundParticipationRepositoryTest {
         ventureCapitalRepository.save(hashed);
         ventureCapitalRepository.save(a16z);
 
-        roundRepository.save(EOSSeed);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeed));
+        roundRepository.save(SolanaSeed);
+        roundParticipationRepository.save(new RoundParticipation(hashed, SolanaSeed));
 
         roundRepository.save(axieSeed);
         roundParticipationRepository.save(new RoundParticipation(hashed, axieSeed));
         roundParticipationRepository.save(new RoundParticipation(a16z, axieSeed));
 
-        roundRepository.save(EOSSeriesA);
-        roundParticipationRepository.save(new RoundParticipation(hashed, EOSSeriesA));
+        roundRepository.save(SolanaSeriesA);
+        roundParticipationRepository.save(new RoundParticipation(hashed, SolanaSeriesA));
 
         roundRepository.save(axieSeriesA);
         roundParticipationRepository.save(new RoundParticipation(a16z, axieSeriesA));
@@ -164,6 +164,27 @@ class RoundParticipationRepositoryTest {
         List<Round> rounds = roundParticipationRepository.findRoundsFilterVentureCapitalsOrderByRecentRound(pageable, Arrays.asList("hashed", "a16z"));
 
         // then
-        assertThat(rounds).containsExactly(axieSeriesA, EOSSeriesA, axieSeed, EOSSeed);
+        assertThat(rounds).containsExactly(axieSeriesA, SolanaSeriesA, axieSeed, SolanaSeed);
+    }
+
+    @DisplayName("여러개의 벤처캐피탈과 메인넷으로 투자한 라운드가 몇갠지 반환받을 수 있다.")
+    @Test
+    void countRoundsFilterVentureCapitalsAndMainnet() {
+        // when
+        Long count = roundParticipationRepository.countRoundsFilterMainnetAndVentureCapitals(Arrays.asList(Mainnet.SOLANA), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(count).isEqualTo(2L);
+    }
+
+    @DisplayName("여러개의 벤처캐피탈이 투자한 라운드를 반환받을 수 있다.")
+    @Test
+    void findRoundsFilterMainnetAndVentureCapitalsOrderByRecentRound() {
+        // when
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Round> rounds = roundParticipationRepository.findRoundsFilterMainnetAndVentureCapitalsOrderByRecentRound(pageable, Arrays.asList(Mainnet.SOLANA), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(rounds).containsExactly(SolanaSeriesA, SolanaSeed);
     }
 }
