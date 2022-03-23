@@ -30,6 +30,9 @@ public class VentureCapitalFilterStrategy extends FilterStrategy {
     public List<Round> findRounds(String order, Integer page, Integer roundsPerPage, List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput) {
         List<String> ventureCapitals = parseVentureCapitalInput(ventureCapitalInput);
         Pageable pageable = generatePageable(page, roundsPerPage);
+        if ("old".equals(order)) {
+            return roundParticipationRepository.findRoundsFilterVentureCapitalsOrderByOlderRound(pageable, ventureCapitals);
+        }
         return roundParticipationRepository.findRoundsFilterVentureCapitalsOrderByRecentRound(pageable, ventureCapitals);
     }
 

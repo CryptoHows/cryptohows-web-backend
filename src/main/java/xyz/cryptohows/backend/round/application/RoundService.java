@@ -15,12 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoundService {
 
-    public RoundPageResponse findRounds(String mainnet, String category, String order, Integer page, Integer roundsPerPage) {
-        FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category, "").findStrategy();
+    public RoundPageResponse findRounds(String mainnet, String category, String ventureCapitals, String order, Integer page, Integer roundsPerPage) {
+        FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category, ventureCapitals).findStrategy();
         List<Mainnet> mainnets = Mainnet.parseIn(mainnet);
         List<Category> categories = Category.parseIn(category);
-        Long count = filterStrategy.countAllRounds(mainnets, categories, "");
-        List<Round> rounds = filterStrategy.findRounds(order, page, roundsPerPage, mainnets, categories, "");
+        Long count = filterStrategy.countAllRounds(mainnets, categories, ventureCapitals);
+        List<Round> rounds = filterStrategy.findRounds(order, page, roundsPerPage, mainnets, categories, ventureCapitals);
         return RoundPageResponse.of(count, rounds);
     }
 }

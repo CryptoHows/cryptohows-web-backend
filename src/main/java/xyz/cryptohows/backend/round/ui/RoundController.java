@@ -20,10 +20,11 @@ public class RoundController {
     @GetMapping("/rounds")
     public ResponseEntity<RoundPageResponse> findRounds(@RequestParam(defaultValue = "") String mainnet,
                                                         @RequestParam(defaultValue = "") String category,
+                                                        @RequestParam(defaultValue = "") String ventureCapitals,
                                                         @RequestParam(defaultValue = "recent") String order,
                                                         @RequestParam(defaultValue = "0") Integer page,
                                                         @RequestParam(defaultValue = "10") Integer roundsPerPage) {
-        RoundPageResponse roundPageResponse = roundService.findRounds(mainnet, category, order, page, roundsPerPage);
+        RoundPageResponse roundPageResponse = roundService.findRounds(mainnet, category, ventureCapitals, order, page, roundsPerPage);
         return ResponseEntity.ok(roundPageResponse);
     }
 

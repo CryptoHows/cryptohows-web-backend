@@ -21,7 +21,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         String order = "recent";
 
         // when
-        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+        RoundPageResponse response = roundService.findRounds(mainnet, category, "", order, 0, 10);
 
         // then
         assertThat(response.getRounds()).hasSize(2);
@@ -39,7 +39,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         String order = "old";
 
         // when
-        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+        RoundPageResponse response = roundService.findRounds(mainnet, category, "", order, 0, 10);
 
         // then
         assertThat(response.getRounds()).hasSize(2);
@@ -57,7 +57,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         String order = "old";
 
         // when
-        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+        RoundPageResponse response = roundService.findRounds(mainnet, category, "", order, 0, 10);
 
         // then
         assertThat(response.getRounds()).hasSize(4);
@@ -77,7 +77,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         String order = "recent";
 
         // when
-        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+        RoundPageResponse response = roundService.findRounds(mainnet, category, "", order, 0, 10);
 
         // then
         assertThat(response.getRounds()).hasSize(4);
@@ -97,7 +97,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         String order = "recent";
 
         // when
-        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+        RoundPageResponse response = roundService.findRounds(mainnet, category, "", order, 0, 10);
 
         // then
         assertThat(response.getRounds()).hasSize(6);
@@ -119,7 +119,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         String order = "recent";
 
         // when
-        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+        RoundPageResponse response = roundService.findRounds(mainnet, category, "", order, 0, 10);
 
         // then
         assertThat(response.getRounds()).hasSize(2);
@@ -137,7 +137,7 @@ class RoundServiceTest extends RoundServiceTestFixture {
         String order = "recent";
 
         // when
-        RoundPageResponse response = roundService.findRounds(mainnet, category, order, 0, 10);
+        RoundPageResponse response = roundService.findRounds(mainnet, category, "", order, 0, 10);
 
         // then
         assertThat(response.getRounds()).hasSize(6);
