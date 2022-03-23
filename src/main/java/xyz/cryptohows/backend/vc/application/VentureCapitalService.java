@@ -28,4 +28,8 @@ public class VentureCapitalService {
         Projects portfolio = new Projects(ventureCapital.getPortfolio());
         return VentureCapitalResponse.of(ventureCapital, portfolio.sortProjectsByCategory());
     }
+
+    public List<String> findAllVentureCapitalNames() {
+        return ventureCapitalRepository.findAllNames();
+    }
 }

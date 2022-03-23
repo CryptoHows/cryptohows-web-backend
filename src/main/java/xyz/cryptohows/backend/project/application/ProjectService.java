@@ -3,8 +3,8 @@ package xyz.cryptohows.backend.project.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
-import xyz.cryptohows.backend.project.application.filterStrategy.FilterStrategy;
-import xyz.cryptohows.backend.project.application.filterStrategy.FilterStrategyFactory;
+import xyz.cryptohows.backend.filtering.FilterStrategy;
+import xyz.cryptohows.backend.filtering.FilterStrategyFactory;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
@@ -21,12 +21,12 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectPageResponse findProjects(String mainnet, String category, Integer page, Integer projectsPerPage) {
-        FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category).findStrategy();
+    public ProjectPageResponse findProjects(String mainnet, String category, String ventureCapitals, Integer page, Integer projectsPerPage) {
+        FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category, ventureCapitals).findStrategy();
         List<Mainnet> mainnets = Mainnet.parseIn(mainnet);
         List<Category> categories = Category.parseIn(category);
-        Long count = filterStrategy.countAllProjects(mainnets, categories);
-        List<Project> projects = filterStrategy.findProjects(page, projectsPerPage, mainnets, categories);
+        Long count = filterStrategy.countAllProjects(mainnets, categories, ventureCapitals);
+        List<Project> projects = filterStrategy.findProjects(page, projectsPerPage, mainnets, categories, ventureCapitals);
         return ProjectPageResponse.of(count, projects);
     }
 

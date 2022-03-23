@@ -21,4 +21,9 @@ public interface VentureCapitalRepository extends JpaRepository<VentureCapital, 
     List<VentureCapital> findAllByNameInIgnoreCase(List<String> ventureCapitalNames);
 
     boolean existsByName(String name);
+
+    @Query("select distinct ventureCapital.name " +
+            "from VentureCapital as ventureCapital " +
+            "order by ventureCapital.name asc ")
+    List<String> findAllNames();
 }
