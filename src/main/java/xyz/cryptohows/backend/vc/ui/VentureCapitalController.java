@@ -28,4 +28,10 @@ public class VentureCapitalController {
         VentureCapitalResponse ventureCapitalResponse = ventureCapitalService.findVentureCapitalByName(vcId);
         return ResponseEntity.ok(ventureCapitalResponse);
     }
+
+    @GetMapping("/venture-capitals/names")
+    public ResponseEntity<List<String>> findVentureCapitalNames() {
+        List<String> ventureCapitalNames = ventureCapitalService.findAllVentureCapitalNames();
+        return ResponseEntity.ok(ventureCapitalNames);
+    }
 }
