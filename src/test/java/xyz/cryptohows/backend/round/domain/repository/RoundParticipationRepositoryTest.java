@@ -177,6 +177,16 @@ class RoundParticipationRepositoryTest {
         assertThat(count).isEqualTo(2L);
     }
 
+    @DisplayName("여러개의 벤처캐피탈과 카테고리로 투자한 라운드가 몇갠지 반환받을 수 있다.")
+    @Test
+    void countRoundsFilterVentureCapitalsAndCategory() {
+        // when
+        Long count = roundParticipationRepository.countRoundsFilterCategoryAndVentureCapitals(Arrays.asList(Category.INFRASTRUCTURE), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(count).isEqualTo(2L);
+    }
+
     @DisplayName("여러개의 벤처캐피탈이 투자한 라운드를 반환받을 수 있다.")
     @Test
     void findRoundsFilterMainnetAndVentureCapitalsOrderByRecentRound() {
@@ -186,5 +196,16 @@ class RoundParticipationRepositoryTest {
 
         // then
         assertThat(rounds).containsExactly(SolanaSeriesA, SolanaSeed);
+    }
+
+    @DisplayName("여러개의 벤처캐피탈이 투자한 라운드를 반환받을 수 있다.")
+    @Test
+    void findRoundsFilterCategoryAndVentureCapitalsOrderByRecentRound() {
+        // when
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Round> rounds = roundParticipationRepository.findRoundsFilterCategoryAndVentureCapitalsOrderByRecentRound(pageable, Arrays.asList(Category.INFRASTRUCTURE, Category.WEB3), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(rounds).containsExactly(axieSeriesA, SolanaSeriesA, axieSeed, SolanaSeed);
     }
 }
