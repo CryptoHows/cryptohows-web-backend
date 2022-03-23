@@ -1,6 +1,7 @@
-package xyz.cryptohows.backend.project.application.filterStrategy;
+package xyz.cryptohows.backend.filtering.strategies;
 
 import org.springframework.data.domain.Pageable;
+import xyz.cryptohows.backend.filtering.FilterStrategy;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;

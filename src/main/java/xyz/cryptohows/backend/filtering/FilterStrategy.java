@@ -1,4 +1,4 @@
-package xyz.cryptohows.backend.project.application.filterStrategy;
+package xyz.cryptohows.backend.filtering;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +10,7 @@ import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class FilterStrategy {
@@ -31,6 +32,11 @@ public abstract class FilterStrategy {
 
     protected Pageable generateProjectPageable(Integer page, Integer projectsPerPage) {
         return PageRequest.of(page, projectsPerPage, Sort.by("id").descending());
+    }
+
+    protected List<String> parseVentureCapitalInput(String ventureCapitalInput) {
+        String[] ventureCapitals = ventureCapitalInput.split(",");
+        return Arrays.asList(ventureCapitals);
     }
 
     public abstract Long countAllRounds(List<Mainnet> mainnets, List<Category> categories);

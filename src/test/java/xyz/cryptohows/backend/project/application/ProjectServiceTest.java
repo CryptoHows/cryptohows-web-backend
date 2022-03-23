@@ -20,7 +20,7 @@ class ProjectServiceTest extends ProjectServiceTestFixture {
         String category = "";
 
         // when
-        ProjectPageResponse response = projectService.findProjects(mainnet, category, 0, 10);
+        ProjectPageResponse response = projectService.findProjects(mainnet, category, "", 0, 10);
 
         // then
         assertThat(response.getProjects()).hasSize(2);
@@ -37,7 +37,7 @@ class ProjectServiceTest extends ProjectServiceTestFixture {
         String category = "infrastructure";
 
         // when
-        ProjectPageResponse response = projectService.findProjects(mainnet, category, 0, 10);
+        ProjectPageResponse response = projectService.findProjects(mainnet, category, "", 0, 10);
 
         // then
         assertThat(response.getProjects()).hasSize(2);
@@ -54,7 +54,7 @@ class ProjectServiceTest extends ProjectServiceTestFixture {
         String category = "infrastructure, web3";
 
         // when
-        ProjectPageResponse response = projectService.findProjects(mainnet, category, 0, 10);
+        ProjectPageResponse response = projectService.findProjects(mainnet, category, "", 0, 10);
 
         // then
         assertThat(response.getProjects()).hasSize(3);
@@ -72,7 +72,7 @@ class ProjectServiceTest extends ProjectServiceTestFixture {
         String category = "infrastructure, web3";
 
         // when
-        ProjectPageResponse response = projectService.findProjects(mainnet, category, 0, 10);
+        ProjectPageResponse response = projectService.findProjects(mainnet, category, "", 0, 10);
 
         // then
         assertThat(response.getProjects()).hasSize(1);
@@ -88,7 +88,7 @@ class ProjectServiceTest extends ProjectServiceTestFixture {
         String category = "";
 
         // when
-        ProjectPageResponse response = projectService.findProjects(mainnet, category, 0, 10);
+        ProjectPageResponse response = projectService.findProjects(mainnet, category, "", 0, 10);
 
         // then
         assertThat(response.getProjects()).hasSize(3);

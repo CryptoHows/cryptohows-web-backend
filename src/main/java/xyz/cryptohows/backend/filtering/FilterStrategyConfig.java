@@ -1,8 +1,9 @@
-package xyz.cryptohows.backend.project.application.filterStrategy;
+package xyz.cryptohows.backend.filtering;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import xyz.cryptohows.backend.filtering.strategies.*;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 
@@ -29,7 +30,27 @@ public class FilterStrategyConfig {
     }
 
     @Bean
+    public VentureCapitalFilterStrategy createVentureCapitalFilterStrategy() {
+        return new VentureCapitalFilterStrategy(projectRepository, roundRepository);
+    }
+
+    @Bean
     public MainnetAndCategoryFilterStrategy createMainnetAndCategoryFilterStrategy() {
         return new MainnetAndCategoryFilterStrategy(projectRepository, roundRepository);
+    }
+
+    @Bean
+    public MainnetAndVentureCapitalFilterStrategy createMainnetAndVentureCapitalFilterStrategy() {
+        return new MainnetAndVentureCapitalFilterStrategy(projectRepository, roundRepository);
+    }
+
+    @Bean
+    public CategoryAndVentureCapitalFilterStrategy createCategoryAndVentureCapitalFilterStrategy() {
+        return new CategoryAndVentureCapitalFilterStrategy(projectRepository, roundRepository);
+    }
+
+    @Bean
+    public MainnetAndCategoryAndVentureCapitalFilterStrategy createMainnetAndCategoryAndVentureCapitalFilterStrategy() {
+        return new MainnetAndCategoryAndVentureCapitalFilterStrategy(projectRepository, roundRepository);
     }
 }

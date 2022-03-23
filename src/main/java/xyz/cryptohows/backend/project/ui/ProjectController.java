@@ -21,9 +21,10 @@ public class ProjectController {
     @GetMapping("/projects")
     public ResponseEntity<ProjectPageResponse> findProjects(@RequestParam(defaultValue = "") String mainnet,
                                                             @RequestParam(defaultValue = "") String category,
+                                                            @RequestParam(defaultValue = "") String ventureCapitals,
                                                             @RequestParam(defaultValue = "0") Integer page,
                                                             @RequestParam(defaultValue = "10") Integer projectsPerPage) {
-        ProjectPageResponse projectPageResponse = projectService.findProjects(mainnet, category, page, projectsPerPage);
+        ProjectPageResponse projectPageResponse = projectService.findProjects(mainnet, category, ventureCapitals, page, projectsPerPage);
         return ResponseEntity.ok(projectPageResponse);
     }
 
