@@ -169,6 +169,16 @@ class PartnershipRepositoryTest {
         assertThat(count).isEqualTo(2L);
     }
 
+    @DisplayName("ventureCapital 여러개의 이름과 메인넷과 카테고리로 검색시, 연관 맺은 프로젝트의 갯수가 반환된다.")
+    @Test
+    void countProjectFilterMainnetAndCategoryAndVentureCapitals() {
+        // when
+        Long count = partnershipRepository.countProjectFilterMainnetAndCategoryAndVentureCapitals(Arrays.asList(Mainnet.SOLANA), Arrays.asList(Category.INFRASTRUCTURE), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(count).isEqualTo(1L);
+    }
+
     @DisplayName("ventureCapital과 메인넷으로 검색시, 해당 VC와 파트너쉽 맺은 프로젝트 반환한다. ")
     @Test
     void findProjectsFilterMulitpleVentureCapitalAndMainnet() {
@@ -189,5 +199,16 @@ class PartnershipRepositoryTest {
 
         // then
         assertThat(projects).containsExactly(KLAYTN, SOLANA);
+    }
+
+    @DisplayName("ventureCapital과 카테고리로 메인넷으로 검색시, 해당 VC와 파트너쉽 맺은 프로젝트 반환한다. ")
+    @Test
+    void findProjectsFilterMainnetAndCategoryAndVentureCapitalsOrderByIdDesc() {
+        // when
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Project> projects = partnershipRepository.findProjectsFilterMainnetAndCategoryAndVentureCapitalsOrderByIdDesc(pageable, Arrays.asList(Mainnet.KLAYTN), Arrays.asList(Category.INFRASTRUCTURE), Arrays.asList("hashed", "a16z"));
+
+        // then
+        assertThat(projects).containsExactly(KLAYTN);
     }
 }

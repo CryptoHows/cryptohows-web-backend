@@ -62,4 +62,23 @@ public interface PartnershipRepository extends JpaRepository<Partnership, Long> 
             "order by project.id desc")
     List<Project> findProjectsFilterCategoryAndVentureCapitalsOrderByIdDesc(Pageable pageable, @Param("categories") List<Category> categories,
                                                                             @Param("ventureCapitalNames") List<String> ventureCapitals);
+
+    @Query("select count(distinct partnership.project) " +
+            "from Partnership as partnership " +
+            "where partnership.ventureCapital.name in (:ventureCapitalNames) " +
+            "and partnership.project.category in (:categories) " +
+            "and partnership.project.mainnet in (:mainnets) ")
+    Long countProjectFilterMainnetAndCategoryAndVentureCapitals(@Param("mainnets") List<Mainnet> mainnets, @Param("categories") List<Category> categories,
+                                                                @Param("ventureCapitalNames") List<String> ventureCapitals);
+
+    @Query("select distinct project " +
+            "from Partnership as partnership " +
+            "join Project as project " +
+            "on project = partnership.project " +
+            "where partnership.ventureCapital.name in (:ventureCapitalNames) " +
+            "and project.category in (:categories) " +
+            "and project.mainnet in (:mainnets) " +
+            "order by project.id desc")
+    List<Project> findProjectsFilterMainnetAndCategoryAndVentureCapitalsOrderByIdDesc(Pageable pageable, @Param("mainnets") List<Mainnet> mainnets,
+                                                                                      @Param("categories") List<Category> categories, @Param("ventureCapitalNames") List<String> ventureCapitals);
 }

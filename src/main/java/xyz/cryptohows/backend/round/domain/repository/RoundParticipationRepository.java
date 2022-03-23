@@ -33,7 +33,7 @@ public interface RoundParticipationRepository extends JpaRepository<RoundPartici
             "from RoundParticipation as roundParticipation " +
             "where roundParticipation.ventureCapital.name in (:ventureCapitalNames) " +
             "and roundParticipation.round.project.mainnet in (:mainnets)")
-    Long countRoundsFilterMainnetAndVentureCapitals(@Param("mainnets") List<Mainnet> mainnets, @Param("ventureCapitalNames") List<String> ventureCapitals);
+    Long countRoundsFilterMainnetAndVentureCapitals(@Param("mainnets") List<Mainnet> mainnets, @Param("ventureCapitalNames") List<String> ventureCaptialNames);
 
     @Query("select distinct roundParticipation.round " +
             "from RoundParticipation as roundParticipation " +
@@ -41,13 +41,13 @@ public interface RoundParticipationRepository extends JpaRepository<RoundPartici
             "and roundParticipation.round.project.mainnet in (:mainnets) " +
             "order by roundParticipation.round.announcedDate desc")
     List<Round> findRoundsFilterMainnetAndVentureCapitalsOrderByRecentRound(Pageable pageable, @Param("mainnets") List<Mainnet> mainnets,
-                                                                            @Param("ventureCapitalNames") List<String> ventureCapitals);
+                                                                            @Param("ventureCapitalNames") List<String> ventureCaptialNames);
 
     @Query("select count(distinct roundParticipation.round) " +
             "from RoundParticipation as roundParticipation " +
             "where roundParticipation.ventureCapital.name in (:ventureCapitalNames) " +
             "and roundParticipation.round.project.category in (:categories)")
-    Long countRoundsFilterCategoryAndVentureCapitals(@Param("categories") List<Category> categories, @Param("ventureCapitalNames") List<String> ventureCapitals);
+    Long countRoundsFilterCategoryAndVentureCapitals(@Param("categories") List<Category> categories, @Param("ventureCapitalNames") List<String> ventureCaptialNames);
 
     @Query("select distinct roundParticipation.round " +
             "from RoundParticipation as roundParticipation " +
@@ -55,5 +55,22 @@ public interface RoundParticipationRepository extends JpaRepository<RoundPartici
             "and roundParticipation.round.project.category in (:categories) " +
             "order by roundParticipation.round.announcedDate desc")
     List<Round> findRoundsFilterCategoryAndVentureCapitalsOrderByRecentRound(Pageable pageable, @Param("categories") List<Category> categories,
-                                                                             @Param("ventureCapitalNames") List<String> ventureCapitals);
+                                                                             @Param("ventureCapitalNames") List<String> ventureCaptialNames);
+
+    @Query("select count(distinct roundParticipation.round) " +
+            "from RoundParticipation as roundParticipation " +
+            "where roundParticipation.ventureCapital.name in (:ventureCapitalNames) " +
+            "and roundParticipation.round.project.category in (:categories) " +
+            "and roundParticipation.round.project.mainnet in (:mainnets)")
+    Long countRoundsFilterMainnetAndCategoryAndVentureCapitals(@Param("mainnets") List<Mainnet> mainnets, @Param("categories") List<Category> categories,
+                                                               @Param("ventureCapitalNames") List<String> ventureCapitalNames);
+
+    @Query("select distinct roundParticipation.round " +
+            "from RoundParticipation as roundParticipation " +
+            "where roundParticipation.ventureCapital.name in (:ventureCapitalNames) " +
+            "and roundParticipation.round.project.category in (:categories) " +
+            "and roundParticipation.round.project.mainnet in (:mainnets) " +
+            "order by roundParticipation.round.announcedDate desc")
+    List<Round> findRoundsFilterMainnetAndCategoryAndVentureCapitalsOrderByRecentRound(Pageable pageable, @Param("mainnets") List<Mainnet> mainnets, @Param("categories") List<Category> categories,
+                                                                                       @Param("ventureCapitalNames") List<String> ventureCapitalNames);
 }
