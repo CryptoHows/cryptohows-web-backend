@@ -3,11 +3,7 @@ package xyz.cryptohows.backend.filtering;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import xyz.cryptohows.backend.project.domain.Category;
-import xyz.cryptohows.backend.project.domain.Mainnet;
-import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
-import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
@@ -15,7 +11,7 @@ import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class FilterStrategy {
+public abstract class FilterStrategy implements FilterRound, FilterProject {
 
     protected final ProjectRepository projectRepository;
     protected final PartnershipRepository partnershipRepository;
@@ -49,12 +45,4 @@ public abstract class FilterStrategy {
         String[] ventureCapitals = ventureCapitalInput.split(",");
         return Arrays.asList(ventureCapitals);
     }
-
-    public abstract Long countAllRounds(List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput);
-
-    public abstract List<Round> findRounds(String order, Integer page, Integer roundsPerPage, List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput);
-
-    public abstract Long countAllProjects(List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput);
-
-    public abstract List<Project> findProjects(Integer page, Integer projectsPerPage, List<Mainnet> mainnets, List<Category> categories, String ventureCapitalInput);
 }
