@@ -5,16 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.cryptohows.backend.admin.application.AdminService;
-import xyz.cryptohows.backend.admin.application.ProjectAdminService;
-import xyz.cryptohows.backend.admin.application.RoundAdminService;
-import xyz.cryptohows.backend.admin.application.VentureCapitalAdminService;
-import xyz.cryptohows.backend.admin.ui.dto.AdminLoginRequest;
-import xyz.cryptohows.backend.admin.ui.dto.ProjectRequest;
-import xyz.cryptohows.backend.admin.ui.dto.RoundRequest;
-import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
+import xyz.cryptohows.backend.admin.application.*;
+import xyz.cryptohows.backend.admin.ui.dto.*;
 import xyz.cryptohows.backend.admin.validation.AdminTokenRequired;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
+import xyz.cryptohows.backend.project.ui.dto.CoinFullResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectSimpleResponse;
 import xyz.cryptohows.backend.round.ui.dto.RoundResponse;
@@ -33,6 +28,7 @@ public class AdminController {
     private final VentureCapitalAdminService ventureCapitalAdminService;
     private final ProjectAdminService projectAdminService;
     private final RoundAdminService roundAdminService;
+    private final CoinAdminService coinAdminService;
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> loginAsAdmin(@RequestBody AdminLoginRequest adminLoginRequest) {
@@ -166,6 +162,42 @@ public class AdminController {
     @PostMapping("/rounds/upload-excel")
     public ResponseEntity<Void> uploadRound(@RequestParam MultipartFile file) {
         roundAdminService.uploadExcel(file);
+        return ResponseEntity.ok().build();
+    }
+
+    @AdminTokenRequired
+    @GetMapping("/coins")
+    public ResponseEntity<List<CoinFullResponse>> findAllCoins() {
+        List<CoinFullResponse> roundSimpleResponses = coinAdminService.findAll();
+        return ResponseEntity.ok(roundSimpleResponses);
+    }
+
+    @AdminTokenRequired
+    @PostMapping("/coins")
+    public ResponseEntity<Void> createCoin(@RequestBody CoinRequest coinRequest) {
+        coinAdminService.create(coinRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @AdminTokenRequired
+    @PutMapping("/coins/{coinId:[\\d]+}")
+    public ResponseEntity<Void> updateCoin(@PathVariable Long coinId,
+                                            @RequestBody CoinRequest coinRequest) {
+        coinAdminService.updateById(coinId, coinRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @AdminTokenRequired
+    @DeleteMapping("/coins/{coinId:[\\d]+}")
+    public ResponseEntity<Void> deleteCoin(@PathVariable Long coinId) {
+        coinAdminService.deleteById(coinId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @AdminTokenRequired
+    @PostMapping("/coins/upload-excel")
+    public ResponseEntity<Void> uploadCoin(@RequestParam MultipartFile file) {
+        coinAdminService.uploadExcel(file);
         return ResponseEntity.ok().build();
     }
 }

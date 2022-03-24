@@ -11,7 +11,6 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.Projects;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.Round;
-import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
@@ -78,7 +77,7 @@ public class VentureCapitalAdminService {
                 .homepage(ventureCapitalRequest.getHomepage())
                 .logo(ventureCapitalRequest.getLogo())
                 .build();
-        ventureCapitalUploadService.checkExistenceAndUpload(ventureCapital);
+        ventureCapitalUploadService.checkExistenceAndSave(ventureCapital);
     }
 
     public void updateById(Long vcId, VentureCapitalRequest ventureCapitalRequest) {
