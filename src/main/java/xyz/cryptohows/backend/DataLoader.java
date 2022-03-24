@@ -6,8 +6,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Coin;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
+import xyz.cryptohows.backend.project.domain.repository.CoinRepository;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
@@ -33,6 +35,7 @@ public class DataLoader implements ApplicationRunner {
     private final PartnershipRepository partnershipRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipationRepository roundParticipationRepository;
+    private final CoinRepository coinRepository;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -81,6 +84,30 @@ public class DataLoader implements ApplicationRunner {
                 .build();
         projectRepository.saveAll(Arrays.asList(klaytn, ETHEREUM, axieInfinity));
 
+        Coin KLAY = Coin.builder()
+                .project(klaytn)
+                .coinSymbol("KLAY")
+                .coinInformation("https://klay.com")
+                .build();
+
+        Coin ETH = Coin.builder()
+                .project(ETHEREUM)
+                .coinSymbol("ETH")
+                .coinInformation("https://ETH.com")
+                .build();
+
+        Coin SLP = Coin.builder()
+                .project(axieInfinity)
+                .coinSymbol("SLP")
+                .coinInformation("https://slp.com")
+                .build();
+
+        Coin AXS = Coin.builder()
+                .project(axieInfinity)
+                .coinSymbol("AXS")
+                .coinInformation("https://axs.com")
+                .build();
+        coinRepository.saveAll(Arrays.asList(KLAY, ETH, SLP, AXS));
 
         Partnership hashedKlaytn = new Partnership(hashed, klaytn);
         Partnership hashedETHEREUM = new Partnership(hashed, ETHEREUM);

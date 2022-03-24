@@ -14,7 +14,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ProjectTest {
+class
+ProjectTest {
 
     private Project klaytn;
 
@@ -55,8 +56,8 @@ class ProjectTest {
                 .build();
     }
 
-    @Test
     @DisplayName("프로젝트는 파트너쉽을 기록한다.")
+    @Test
     void addPartnership() {
         Partnership partnership = new Partnership(hashed, klaytn);
         klaytn.addPartnership(partnership);
@@ -64,8 +65,8 @@ class ProjectTest {
         assertThat(klaytn.getPartnerships()).hasSize(1);
     }
 
-    @Test
     @DisplayName("해당 프로젝트가 아닌 파트너쉽은 프로젝트에 기록할 수 없다.")
+    @Test
     void cannotAddPartnership() {
         Partnership partnership = new Partnership(hashed, cryptohouse);
 
@@ -73,8 +74,8 @@ class ProjectTest {
                 .isInstanceOf(DomainException.class);
     }
 
-    @Test
     @DisplayName("해당 프로젝트의 투자사를 가져올 수 있다.")
+    @Test
     void getInvestors() {
         klaytn.addPartnership(new Partnership(hashed, klaytn));
         klaytn.addPartnership(new Partnership(a16z, klaytn));
@@ -84,8 +85,8 @@ class ProjectTest {
         assertThat(investors).containsExactlyInAnyOrder(hashed, a16z);
     }
 
-    @Test
     @DisplayName("프로젝트에 라운드를 추가할 수 있다.")
+    @Test
     void addRound() {
         Round seed = Round.builder()
                 .project(klaytn)
@@ -99,8 +100,8 @@ class ProjectTest {
         assertThat(klaytn.getRounds()).hasSize(1);
     }
 
-    @Test
     @DisplayName("자기 프로젝트의 라운드가 아니면 추가할 수 없다.")
+    @Test
     void cannotAddRound() {
         Round seriesA = Round.builder()
                 .project(cryptohouse)
@@ -114,8 +115,8 @@ class ProjectTest {
                 .isInstanceOf(DomainException.class);
     }
 
-    @Test
     @DisplayName("여러 라운드가 진행되었다면 가장 최신 라운드를 반환할 수 있다.")
+    @Test
     void getRound() {
         Round seed = Round.builder()
                 .id(1L)
@@ -138,9 +139,23 @@ class ProjectTest {
         assertThat(klaytn.getCurrentRound()).isEqualTo(FundingStage.SERIES_A);
     }
 
-    @Test
     @DisplayName("투자 받은 라운드가 없다면 최신 라운드 반환 시 NONE이 반환된다.")
+    @Test
     void getNoneRound() {
         assertThat(klaytn.getCurrentRound()).isEqualTo(FundingStage.UNKNOWN);
+    }
+
+    @DisplayName("프로젝트에 코인을 추가할 수 있다.")
+    @Test
+    void addCoin() {
+        Coin klay = Coin.builder()
+                .id(1L)
+                .project(klaytn)
+                .coinSymbol("KLAY")
+                .coinInformation("www.klay.com")
+                .build();
+        klaytn.addCoin(klay);
+
+        assertThat(klaytn.getCoins()).contains(klay);
     }
 }

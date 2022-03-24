@@ -42,6 +42,9 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private Set<Round> rounds = new HashSet<>();
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    private List<Coin> coins = new ArrayList<>();
+
     @Builder
     public Project(Long id, String name, String about, String homepage, String logo, String twitter, String community,
                    Category category, Mainnet mainnet) {
@@ -103,6 +106,17 @@ public class Project {
 
     public int getNumberOfPartnerships() {
         return this.partnerships.size();
+    }
+
+    public void addCoin(Coin coin) {
+        if (!this.equals(coin.getProject())) {
+            throw new DomainException("해당 프로젝트의 코인이 아닙니다.");
+        }
+        coins.add(coin);
+    }
+
+    public boolean hasCoin() {
+        return !coins.isEmpty();
     }
 
     @Override
