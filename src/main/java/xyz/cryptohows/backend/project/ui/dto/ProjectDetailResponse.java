@@ -22,12 +22,14 @@ public class ProjectDetailResponse {
     private final String round;
     private final String category;
     private final String mainnet;
+    private final Boolean coinAvailable;
+    private final List<CoinResponse> coins;
     private final List<VentureCapitalSimpleResponse> investors;
     private final List<RoundWithoutProjectResponse> rounds;
 
     public ProjectDetailResponse(Long id, String name, String about, String homepage, String logo, String twitter,
-                                 String community, String round, String category, String mainnet,
-                                 List<VentureCapitalSimpleResponse> investors, List<RoundWithoutProjectResponse> rounds) {
+                                 String community, String round, String category, String mainnet, Boolean coinAvailable,
+                                 List<CoinResponse> coins, List<VentureCapitalSimpleResponse> investors, List<RoundWithoutProjectResponse> rounds) {
         this.id = id;
         this.name = name;
         this.about = about;
@@ -38,6 +40,8 @@ public class ProjectDetailResponse {
         this.round = round;
         this.category = category;
         this.mainnet = mainnet;
+        this.coinAvailable = coinAvailable;
+        this.coins = coins;
         this.investors = investors;
         this.rounds = rounds;
     }
@@ -54,6 +58,8 @@ public class ProjectDetailResponse {
                 project.getCurrentRound().getFundingStage(),
                 project.getCategory().getCategoryName(),
                 project.getMainnet().toString(),
+                project.hasCoin(),
+                CoinResponse.toList(project.getCoins()),
                 VentureCapitalSimpleResponse.toList(project.getInvestors()),
                 RoundWithoutProjectResponse.toList(project.getRoundAsRecentOrder())
         );

@@ -2,10 +2,11 @@ package xyz.cryptohows.backend.project.ui;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import xyz.cryptohows.backend.project.application.ProjectService;
-import xyz.cryptohows.backend.project.domain.Category;
-import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.ui.dto.ProjectDetailResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectPageResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectSearchResponse;
