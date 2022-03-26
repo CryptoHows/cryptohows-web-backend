@@ -28,6 +28,13 @@ public class RoundController {
         return ResponseEntity.ok(roundPageResponse);
     }
 
+    @GetMapping("/rounds/coin-available")
+    public ResponseEntity<RoundPageResponse> findCoinAvailableRounds(@RequestParam(defaultValue = "0") Integer page,
+                                                                     @RequestParam(defaultValue = "10") Integer roundsPerPage) {
+        RoundPageResponse roundPageResponse = roundService.findCoinAvailableRounds(page, roundsPerPage);
+        return ResponseEntity.ok(roundPageResponse);
+    }
+
     @GetMapping("/rounds/funding-stages")
     public ResponseEntity<List<String>> findFundingStages() {
         List<String> fundingStages = FundingStage.getAllFundingStages();
