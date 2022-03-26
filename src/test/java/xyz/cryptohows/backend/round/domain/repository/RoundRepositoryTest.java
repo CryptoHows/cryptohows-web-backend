@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Coin;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
+import xyz.cryptohows.backend.project.domain.repository.CoinRepository;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
@@ -40,6 +42,9 @@ class RoundRepositoryTest {
 
     @Autowired
     private VentureCapitalRepository ventureCapitalRepository;
+
+    @Autowired
+    private CoinRepository coinRepository;
 
     @Autowired
     private TestEntityManager tem;
@@ -99,6 +104,18 @@ class RoundRepositoryTest {
             .fundingStage(FundingStage.SERIES_A)
             .build();
 
+    private final Coin axs = Coin.builder()
+            .project(axieInfinity)
+            .coinSymbol("AXS")
+            .coinInformation("https://coin.axs")
+            .build();
+
+    private final Coin slp = Coin.builder()
+            .project(axieInfinity)
+            .coinSymbol("SLP")
+            .coinInformation("https://coin.slp")
+            .build();
+
     @BeforeEach
     void setUp() {
         projectRepository.saveAll(Arrays.asList(SOLANA, axieInfinity));
@@ -115,6 +132,8 @@ class RoundRepositoryTest {
 
         roundRepository.save(axieSeriesA);
         roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
+
+        coinRepository.saveAll(Arrays.asList(axs, slp));
 
         tem.flush();
         tem.clear();
@@ -210,5 +229,26 @@ class RoundRepositoryTest {
 
         // then
         assertThat(round).isEqualTo(EOSSeed);
+    }
+
+    @Test
+    @DisplayName("코인이 등록된 프로젝트에 대한 라운드를 받아볼 수 있다.")
+    void findCoinAvailableRoundsSortByRecent() {
+        // when
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Round> rounds = roundRepository.findCoinAvailableRoundsSortByRecent(pageable);
+
+        // then
+        assertThat(rounds).containsExactly(axieSeriesA, axieSeed);
+    }
+
+    @Test
+    @DisplayName("코인이 등록된 프로젝트에 대한 라운드 갯수를 받아볼 수 있다.")
+    void countCoinAvailableRounds() {
+        // when
+        Long count = roundRepository.countCoinAvailableRounds();
+
+        // then
+        assertThat(count).isEqualTo(2L);
     }
 }
