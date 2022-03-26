@@ -16,7 +16,7 @@ public enum FilterStrategyFactory {
     MAINNET_AND_CATEGORY(false, false, true),
     MAINNET_AND_VENTURE_CAPITAL(false, true, false),
     CATEGORY_AND_VENTURE_CAPITAL(true, false, false),
-    MAINNET_AND_CATEGORY_AND_VENTURE_CAPITAL(true, true, true);
+    MAINNET_AND_CATEGORY_AND_VENTURE_CAPITAL(false, false, false);
 
     private final boolean isMainnetEmpty;
     private final boolean isCategoryEmpty;
