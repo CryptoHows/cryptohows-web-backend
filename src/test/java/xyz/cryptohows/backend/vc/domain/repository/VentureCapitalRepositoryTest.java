@@ -34,7 +34,7 @@ class VentureCapitalRepositoryTest {
     private TestEntityManager tem;
 
     private final VentureCapital hashed = VentureCapital.builder()
-            .name("해시드")
+            .name("hashed")
             .about("한국의 VC")
             .homepage("hashed.com")
             .logo("hashed.png")
@@ -47,25 +47,25 @@ class VentureCapitalRepositoryTest {
             .logo("a16z.png")
             .build();
 
-    private final Project EOS = Project.builder()
-            .name("EOS")
-            .about("EOS 프로젝트")
-            .homepage("https://EOS.io/")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+    private final Project SOLANA = Project.builder()
+            .name("SOLANA")
+            .about("SOLANA 프로젝트")
+            .homepage("https://SOLANA.io/")
+            .category(Category.INFRASTRUCTURE)
+            .mainnet(Mainnet.SOLANA)
             .build();
 
     private final Project axieInfinity = Project.builder()
             .name("axieInfinity")
             .about("엑시 인피니티")
             .homepage("https://axieInfinity.xyz/")
-            .category(Category.GAMING)
+            .category(Category.WEB3)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
     @BeforeEach
     void setUp() {
-        projectRepository.save(EOS);
+        projectRepository.save(SOLANA);
         projectRepository.save(axieInfinity);
         ventureCapitalRepository.save(hashed);
         ventureCapitalRepository.save(a16z);
@@ -73,12 +73,22 @@ class VentureCapitalRepositoryTest {
         tem.clear();
     }
 
-
+    @DisplayName("VentureCapital의 이름 리스트로 조회할 수 있다.")
     @Test
+    void findAllName() {
+        // when
+        List<VentureCapital> vcs = ventureCapitalRepository.findAllByNameInIgnoreCase(Arrays.asList("hashed", "a16z", "flower"));
+
+        // then
+        assertThat(vcs).hasSize(2);
+        assertThat(vcs).containsExactly(hashed, a16z);
+    }
+
     @DisplayName("VentureCapital이 없어지면, 해당 회사에서 투자한 Partnership 내역은 사라진다.")
+    @Test
     void deleteVentureCapital() {
         // given
-        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedEOS = new Partnership(hashed, SOLANA);
         Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
         partnershipRepository.saveAll(Arrays.asList(hashedEOS, hashedAxieInfinity));
         tem.flush();
@@ -92,26 +102,24 @@ class VentureCapitalRepositoryTest {
         assertThat(partnerships).isEmpty();
     }
 
+    @DisplayName("VentureCapital의 이름 리스트로 조회할 수 있으며, 대소문자는 상관이 없다.")
     @Test
-    @DisplayName("VentureCapital의 이름 리스트로 조회할 수 있다.")
-    void findAllName() {
+    void findAllNameIgnoreCase() {
         // when
-        List<VentureCapital> vcs = ventureCapitalRepository.findAllByNameInIgnoreCase(Arrays.asList("해시드", "a16z", "flower"));
+        List<VentureCapital> vcs = ventureCapitalRepository.findAllByNameInIgnoreCase(Arrays.asList("hashed", "A16Z", "flower"));
 
         // then
         assertThat(vcs).hasSize(2);
         assertThat(vcs).containsExactly(hashed, a16z);
     }
 
-
+    @DisplayName("VentureCapital의 이름을 알파벳 순으로 조회한다.")
     @Test
-    @DisplayName("VentureCapital의 이름 리스트로 조회할 수 있으며, 대소문자는 상관이 없다.")
-    void findAllNameIgnoreCase() {
+    void findAllNames() {
         // when
-        List<VentureCapital> vcs = ventureCapitalRepository.findAllByNameInIgnoreCase(Arrays.asList("해시드", "A16Z", "flower"));
-
+        List<String> vcnames = ventureCapitalRepository.findAllNames();
         // then
-        assertThat(vcs).hasSize(2);
-        assertThat(vcs).containsExactly(hashed, a16z);
+        assertThat(vcnames).hasSize(2);
+        assertThat(vcnames).containsExactly("a16z", "hashed");
     }
 }

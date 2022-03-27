@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import xyz.cryptohows.backend.project.domain.Project;
+import xyz.cryptohows.backend.round.domain.Round;
+import xyz.cryptohows.backend.round.domain.RoundParticipation;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -29,6 +31,9 @@ public class VentureCapital {
 
     @OneToMany(mappedBy = "ventureCapital", cascade = CascadeType.REMOVE)
     private Set<Partnership> partnerships = new HashSet<>();
+
+    @OneToMany(mappedBy = "ventureCapital", cascade = CascadeType.REMOVE)
+    private Set<RoundParticipation> roundParticipations = new HashSet<>();
 
     @Builder
     public VentureCapital(Long id, String name, String about, String homepage, String logo) {
@@ -55,6 +60,19 @@ public class VentureCapital {
         return partnerships.stream()
                 .map(Partnership::getProject)
                 .collect(Collectors.toList());
+    }
+
+    public List<Round> getParticipatedRounds() {
+        return roundParticipations.stream()
+                .map(RoundParticipation::getRound)
+                .collect(Collectors.toList());
+    }
+
+    public void updateInformation(String name, String about, String homepage, String logo) {
+        this.name = name;
+        this.about = about;
+        this.homepage = homepage;
+        this.logo = logo;
     }
 
     @Override

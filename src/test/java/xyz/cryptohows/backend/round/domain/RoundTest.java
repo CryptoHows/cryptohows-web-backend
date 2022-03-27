@@ -23,7 +23,7 @@ class RoundTest {
             .about("크립토하우스입니다.")
             .homepage("크립토하우스.com")
             .logo("크립토하우스.png")
-            .category(Category.SOCIAL_NETWORK)
+            .category(Category.WEB3)
             .mainnet(Mainnet.NONE)
             .build();
 
@@ -59,14 +59,14 @@ class RoundTest {
     @DisplayName("해당 라운드에 VC가 펀딩 할 수 있다.")
     void vcJoinRound() {
         round.makeParticipation(hashed);
-        assertThat(round.getParticipants()).hasSize(1);
+        assertThat(round.getVcParticipants()).hasSize(1);
     }
 
     @Test
     @DisplayName("해당 라운드에 여러 VC가 동시에 펀딩할 수 있다.")
     void multipleVCJoinRound() {
         round.makeParticipations(Arrays.asList(hashed, a16z));
-        assertThat(round.getParticipants()).hasSize(2);
+        assertThat(round.getVcParticipants()).hasSize(2);
     }
 
     @Test

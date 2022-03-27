@@ -19,4 +19,11 @@ public interface VentureCapitalRepository extends JpaRepository<VentureCapital, 
     Optional<VentureCapital> findByIdFetchJoinPartnerships(@Param("vcId") Long vcId);
 
     List<VentureCapital> findAllByNameInIgnoreCase(List<String> ventureCapitalNames);
+
+    boolean existsByName(String name);
+
+    @Query("select distinct ventureCapital.name " +
+            "from VentureCapital as ventureCapital " +
+            "order by ventureCapital.name asc ")
+    List<String> findAllNames();
 }

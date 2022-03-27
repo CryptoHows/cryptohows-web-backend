@@ -34,6 +34,15 @@ upload:
   password: cryptohows
 swagger-docs:
   url: http://localhost:8080
+admin:
+  id: test
+  password: test
+  payload: test
+security:
+  jwt:
+    access-token:
+      secret-key: test
+      expire-length: 7200000
 ---
 spring:
   config:
@@ -64,6 +73,15 @@ upload:
   password: cryptohows
 swagger-docs:
   url: http://localhost:8080
+admin:
+  id: test
+  password: test
+  payload: test
+security:
+  jwt:
+    access-token:
+      secret-key: test
+      expire-length: 7200000
 ---
 spring:
   config:
@@ -75,7 +93,50 @@ logging:
 swagger-docs:
   url: https://api.cryptohows.xyz
 ---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_batch_fetch_size: 100
+    show-sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+upload:
+  password: ${DEV_PW}
+server:
+  port: ${PORT:8080}
+swagger-docs:
+  url: https://cryptohows.herokuapp.com
+admin:
+  id: ${ADMIN_ID}
+  password: ${ADMIN_PW}
+  payload: ${ADMIN_PAYLOAD}
+security:
+  jwt:
+    access-token:
+      secret-key: ${JWT_SECRET_KEY}
+      expire-length: ${JWT_EXPIRE_LENGTH}
+---
 springdoc:
   version: 1.0.0
   swagger-ui:
     path: index.html
+  paths-to-exclude:
+    - /admin/**

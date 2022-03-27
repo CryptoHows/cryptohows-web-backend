@@ -3,12 +3,14 @@ package xyz.cryptohows.backend.round.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Mainnet;
+import xyz.cryptohows.backend.filtering.FilterStrategy;
+import xyz.cryptohows.backend.filtering.FilterStrategyFactory;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.repository.RoundRepository;
-import xyz.cryptohows.backend.round.ui.dto.RoundCountResponse;
-import xyz.cryptohows.backend.round.ui.dto.RoundResponse;
+import xyz.cryptohows.backend.round.ui.dto.RoundPageResponse;
 
 import java.util.List;
 
@@ -16,22 +18,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoundService {
 
-    private final RoundRepository roundRepository;
+    public final RoundRepository roundRepository;
 
-    public List<RoundResponse> findRecentRounds(Integer page, Integer roundsPerPage) {
-        Pageable pageable = PageRequest.of(page, roundsPerPage, Sort.by("announcedDate").descending());
-        List<Round> rounds = roundRepository.findRecentRounds(pageable);
-        return RoundResponse.toList(rounds);
+    public RoundPageResponse findRounds(String mainnet, String category, String ventureCapitals, String order, Integer page, Integer roundsPerPage) {
+        FilterStrategy filterStrategy = FilterStrategyFactory.of(mainnet, category, ventureCapitals).findStrategy();
+        List<Mainnet> mainnets = Mainnet.parseIn(mainnet);
+        List<Category> categories = Category.parseIn(category);
+        Long count = filterStrategy.countAllRounds(mainnets, categories, ventureCapitals);
+        List<Round> rounds = filterStrategy.findRounds(order, page, roundsPerPage, mainnets, categories, ventureCapitals);
+        return RoundPageResponse.of(count, rounds);
     }
 
-    public List<RoundResponse> findOldRounds(Integer page, Integer roundsPerPage) {
-        Pageable pageable = PageRequest.of(page, roundsPerPage, Sort.by("announcedDate").ascending());
-        List<Round> rounds = roundRepository.findRecentRounds(pageable);
-        return RoundResponse.toList(rounds);
-    }
-
-    public RoundCountResponse countRounds() {
-        long roundCount = roundRepository.count();
-        return new RoundCountResponse(roundCount);
+    public RoundPageResponse findCoinAvailableRounds(Integer page, Integer roundsPerPage) {
+        Pageable pageable = PageRequest.of(page, roundsPerPage);
+        Long count = roundRepository.countCoinAvailableRounds();
+        List<Round> rounds= roundRepository.findCoinAvailableRoundsSortByRecent(pageable);
+        return RoundPageResponse.of(count, rounds);
     }
 }

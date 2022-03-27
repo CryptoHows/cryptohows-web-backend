@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Coin;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
+import xyz.cryptohows.backend.project.domain.repository.CoinRepository;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
@@ -21,6 +23,7 @@ import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -41,6 +44,9 @@ class RoundRepositoryTest {
     private VentureCapitalRepository ventureCapitalRepository;
 
     @Autowired
+    private CoinRepository coinRepository;
+
+    @Autowired
     private TestEntityManager tem;
 
     private final VentureCapital hashed = VentureCapital.builder()
@@ -50,24 +56,24 @@ class RoundRepositoryTest {
             .logo("hashed.png")
             .build();
 
-    private final Project EOS = Project.builder()
-            .name("EOS")
-            .about("EOS 프로젝트")
-            .homepage("https://EOS.io/")
-            .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
-            .mainnet(Mainnet.EOS)
+    private final Project SOLANA = Project.builder()
+            .name("SOLANA")
+            .about("SOLANA 프로젝트")
+            .homepage("https://SOLANA.io/")
+            .category(Category.INFRASTRUCTURE)
+            .mainnet(Mainnet.SOLANA)
             .build();
 
     private final Project axieInfinity = Project.builder()
             .name("axieInfinity")
             .about("엑시 인피니티")
             .homepage("https://axieInfinity.xyz/")
-            .category(Category.GAMING)
+            .category(Category.WEB3)
             .mainnet(Mainnet.ETHEREUM)
             .build();
 
     private final Round EOSSeed = Round.builder()
-            .project(EOS)
+            .project(SOLANA)
             .announcedDate("2019-10")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -83,7 +89,7 @@ class RoundRepositoryTest {
             .build();
 
     private final Round EOSSeriesA = Round.builder()
-            .project(EOS)
+            .project(SOLANA)
             .announcedDate("2020-02")
             .moneyRaised("$20M")
             .newsArticle("https://news.com/funding")
@@ -97,9 +103,22 @@ class RoundRepositoryTest {
             .newsArticle("https://news.com/funding")
             .fundingStage(FundingStage.SERIES_A)
             .build();
+
+    private final Coin axs = Coin.builder()
+            .project(axieInfinity)
+            .coinSymbol("AXS")
+            .coinInformation("https://coin.axs")
+            .build();
+
+    private final Coin slp = Coin.builder()
+            .project(axieInfinity)
+            .coinSymbol("SLP")
+            .coinInformation("https://coin.slp")
+            .build();
+
     @BeforeEach
     void setUp() {
-        projectRepository.saveAll(Arrays.asList(EOS, axieInfinity));
+        projectRepository.saveAll(Arrays.asList(SOLANA, axieInfinity));
         ventureCapitalRepository.save(hashed);
 
         roundRepository.save(EOSSeed);
@@ -113,6 +132,8 @@ class RoundRepositoryTest {
 
         roundRepository.save(axieSeriesA);
         roundParticipationRepository.save(new RoundParticipation(hashed, axieSeriesA));
+
+        coinRepository.saveAll(Arrays.asList(axs, slp));
 
         tem.flush();
         tem.clear();
@@ -137,7 +158,7 @@ class RoundRepositoryTest {
     void vcJoinsRound() {
         Round round = roundRepository.findById(EOSSeed.getId())
                 .orElseThrow(IllegalArgumentException::new);
-        assertThat(round.getParticipants()).hasSize(1);
+        assertThat(round.getVcParticipants()).hasSize(1);
     }
 
     @Test
@@ -158,10 +179,10 @@ class RoundRepositoryTest {
     void recentRounds() {
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").descending());
-        List<Round> recentRounds1 = roundRepository.findRecentRounds(pageable1);
+        List<Round> recentRounds1 = roundRepository.findRounds(pageable1);
 
         Pageable pageable2 = PageRequest.of(1, 2, Sort.by("announcedDate").descending());
-        List<Round> recentRounds2 = roundRepository.findRecentRounds(pageable2);
+        List<Round> recentRounds2 = roundRepository.findRounds(pageable2);
 
         // then
         assertThat(recentRounds1.get(0)).isEqualTo(axieSeriesA);
@@ -176,10 +197,10 @@ class RoundRepositoryTest {
     void recentRoundsASC() {
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").ascending());
-        List<Round> oldRounds1 = roundRepository.findRecentRounds(pageable1);
+        List<Round> oldRounds1 = roundRepository.findRounds(pageable1);
 
         Pageable pageable2 = PageRequest.of(1, 2, Sort.by("announcedDate").ascending());
-        List<Round> oldRounds2 = roundRepository.findRecentRounds(pageable2);
+        List<Round> oldRounds2 = roundRepository.findRounds(pageable2);
 
         // then
         assertThat(oldRounds1.get(0)).isEqualTo(EOSSeed);
@@ -197,5 +218,37 @@ class RoundRepositoryTest {
 
         // then
         assertThat(count).isEqualTo(4L);
+    }
+
+    @Test
+    @DisplayName("id로 라운드를 받아볼 수 있다.")
+    void findByRound() {
+        // when
+        Optional<Round> roundById = roundRepository.findById(EOSSeed.getId());
+        Round round = roundById.get();
+
+        // then
+        assertThat(round).isEqualTo(EOSSeed);
+    }
+
+    @Test
+    @DisplayName("코인이 등록된 프로젝트에 대한 라운드를 받아볼 수 있다.")
+    void findCoinAvailableRoundsSortByRecent() {
+        // when
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Round> rounds = roundRepository.findCoinAvailableRoundsSortByRecent(pageable);
+
+        // then
+        assertThat(rounds).containsExactly(axieSeriesA, axieSeed);
+    }
+
+    @Test
+    @DisplayName("코인이 등록된 프로젝트에 대한 라운드 갯수를 받아볼 수 있다.")
+    void countCoinAvailableRounds() {
+        // when
+        Long count = roundRepository.countCoinAvailableRounds();
+
+        // then
+        assertThat(count).isEqualTo(2L);
     }
 }

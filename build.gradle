@@ -39,6 +39,7 @@ dependencies {
 
     // DB
     runtimeOnly 'com.h2database:h2:1.4.199'
+    runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
 
     // Slack
@@ -53,6 +54,17 @@ dependencies {
 
     // Commons-IO
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // restassured
+    testImplementation 'io.rest-assured:rest-assured:3.3.0'
+
+    // TestContainers
+    testImplementation "org.testcontainers:testcontainers:1.15.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.15.3"
+    testImplementation "org.testcontainers:localstack:1.15.3"
 }
 
 tasks.named('test') {

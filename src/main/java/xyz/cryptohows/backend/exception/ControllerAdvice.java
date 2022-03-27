@@ -24,6 +24,12 @@ public class ControllerAdvice {
         return ResponseEntity.internalServerError().body(e.getMessage());
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<String> handleUnauthorizedException(UnauthorizedException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Void> handleException(Exception e) {
         StringBuilder stringBuilder = new StringBuilder();

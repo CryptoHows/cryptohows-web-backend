@@ -6,8 +6,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import xyz.cryptohows.backend.project.domain.Category;
+import xyz.cryptohows.backend.project.domain.Coin;
 import xyz.cryptohows.backend.project.domain.Mainnet;
 import xyz.cryptohows.backend.project.domain.Project;
+import xyz.cryptohows.backend.project.domain.repository.CoinRepository;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
@@ -33,6 +35,7 @@ public class DataLoader implements ApplicationRunner {
     private final PartnershipRepository partnershipRepository;
     private final RoundRepository roundRepository;
     private final RoundParticipationRepository roundParticipationRepository;
+    private final CoinRepository coinRepository;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -58,17 +61,17 @@ public class DataLoader implements ApplicationRunner {
                 .about("클레이튼(Klaytn)은 ㈜카카오의 자회사인 그라운드엑스가 개발한 디앱(dApp·분산애플리케이션)을 위한 블록체인 플랫폼이다")
                 .homepage("https://www.klaytn.com/")
                 .logo("https://www.theguru.co.kr/data/photos/20220102/art_16420309738883_e42c48.png")
-                .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
+                .category(Category.INFRASTRUCTURE)
                 .mainnet(Mainnet.KLAYTN)
                 .build();
 
-        Project EOS = Project.builder()
-                .name("EOS")
-                .about("위임지분증명(DPoS) 방식, 이더리움의 느린/비싼 처리 해결 대안")
-                .homepage("https://EOS.io/")
+        Project ETHEREUM = Project.builder()
+                .name("ETHEREUM")
+                .about("이더리움")
+                .homepage("https://ETHEREUM.io/")
                 .logo("https://t1.daumcdn.net/cfile/tistory/99913D455B351BD601")
-                .category(Category.BLOCKCHAIN_INFRASTRUCTURE)
-                .mainnet(Mainnet.EOS)
+                .category(Category.INFRASTRUCTURE)
+                .mainnet(Mainnet.ETHEREUM)
                 .build();
 
         Project axieInfinity = Project.builder()
@@ -76,19 +79,43 @@ public class DataLoader implements ApplicationRunner {
                 .about("베트남 스카이마비스에서 개발한 엑시 인피니티 게임")
                 .homepage("https://axieinfinity.com/")
                 .logo("https://techvodoo.com/wp-content/uploads/2021/08/Axie-Infinity-1.jpg")
-                .category(Category.GAMING)
+                .category(Category.WEB3)
                 .mainnet(Mainnet.ETHEREUM)
                 .build();
-        projectRepository.saveAll(Arrays.asList(klaytn, EOS, axieInfinity));
+        projectRepository.saveAll(Arrays.asList(klaytn, ETHEREUM, axieInfinity));
 
+        Coin KLAY = Coin.builder()
+                .project(klaytn)
+                .coinSymbol("KLAY")
+                .coinInformation("https://klay.com")
+                .build();
+
+        Coin ETH = Coin.builder()
+                .project(ETHEREUM)
+                .coinSymbol("ETH")
+                .coinInformation("https://ETH.com")
+                .build();
+
+        Coin SLP = Coin.builder()
+                .project(axieInfinity)
+                .coinSymbol("SLP")
+                .coinInformation("https://slp.com")
+                .build();
+
+        Coin AXS = Coin.builder()
+                .project(axieInfinity)
+                .coinSymbol("AXS")
+                .coinInformation("https://axs.com")
+                .build();
+        coinRepository.saveAll(Arrays.asList(KLAY, ETH, SLP, AXS));
 
         Partnership hashedKlaytn = new Partnership(hashed, klaytn);
-        Partnership hashedEOS = new Partnership(hashed, EOS);
+        Partnership hashedETHEREUM = new Partnership(hashed, ETHEREUM);
         Partnership hashedAxieInfinity = new Partnership(hashed, axieInfinity);
 
-        Partnership a16zEOS = new Partnership(a16z, EOS);
+        Partnership a16zETHEREUM = new Partnership(a16z, ETHEREUM);
         Partnership a16zAxieInfinity = new Partnership(a16z, axieInfinity);
-        partnershipRepository.saveAll(Arrays.asList(hashedKlaytn, hashedEOS, hashedAxieInfinity, a16zEOS, a16zAxieInfinity));
+        partnershipRepository.saveAll(Arrays.asList(hashedKlaytn, hashedETHEREUM, hashedAxieInfinity, a16zETHEREUM, a16zAxieInfinity));
 
 
         Round klaytnSeed = Round.builder()
@@ -99,8 +126,16 @@ public class DataLoader implements ApplicationRunner {
                 .fundingStage(FundingStage.SEED)
                 .build();
 
-        Round EOSICO = Round.builder()
-                .project(EOS)
+        Round klaytnSeriesA = Round.builder()
+                .project(klaytn)
+                .announcedDate("2020-03")
+                .moneyRaised("$100M")
+                .newsArticle("https://www.finyear.com/Klaytn-raises-90-million-in-seed-funding-to-drive-the-mainstream-adoption-of-blockchain_a41034.html")
+                .fundingStage(FundingStage.SERIES_A)
+                .build();
+
+        Round ETHEREUMICO = Round.builder()
+                .project(ETHEREUM)
                 .announcedDate("2019-09")
                 .moneyRaised("$4B")
                 .newsArticle("https://www.coindesk.com/markets/2019/09/17/the-first-yearlong-ico-for-eos-raised-4-billion-the-second-just-28-million/")
@@ -114,15 +149,17 @@ public class DataLoader implements ApplicationRunner {
                 .newsArticle("https://www.coindesk.com/business/2021/10/04/axie-infinity-to-raise-150m-series-b-at-3b-valuation-report/")
                 .fundingStage(FundingStage.SERIES_B)
                 .build();
-        roundRepository.saveAll(Arrays.asList(klaytnSeed, EOSICO, axieInfinitySeriesB));
+        roundRepository.saveAll(Arrays.asList(klaytnSeed, klaytnSeriesA, ETHEREUMICO, axieInfinitySeriesB));
 
 
         RoundParticipation hashedKlaytnSeed = new RoundParticipation(hashed, klaytnSeed);
-        RoundParticipation hashedEOSICO = new RoundParticipation(hashed, EOSICO);
+        RoundParticipation hashedKlaytnSeriesA = new RoundParticipation(hashed, klaytnSeriesA);
+        RoundParticipation hashedETHEREUMICO = new RoundParticipation(hashed, ETHEREUMICO);
         RoundParticipation hashedaxieInfinitySeriesB = new RoundParticipation(hashed, axieInfinitySeriesB);
 
-        RoundParticipation a16zEOSICO = new RoundParticipation(a16z, EOSICO);
+        RoundParticipation a16zETHEREUMICO = new RoundParticipation(a16z, ETHEREUMICO);
         RoundParticipation a16zaxieInfinitySeriesB = new RoundParticipation(a16z, axieInfinitySeriesB);
-        roundParticipationRepository.saveAll(Arrays.asList(hashedKlaytnSeed, hashedEOSICO, hashedaxieInfinitySeriesB, a16zEOSICO, a16zaxieInfinitySeriesB));
+        roundParticipationRepository.saveAll(Arrays.asList(hashedKlaytnSeed, hashedKlaytnSeriesA, hashedETHEREUMICO,
+                hashedaxieInfinitySeriesB, a16zETHEREUMICO, a16zaxieInfinitySeriesB));
     }
 }
