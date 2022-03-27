@@ -24,6 +24,8 @@ public class Project {
     private Long id;
 
     private String name;
+
+    @Column(columnDefinition = "TEXT")
     private String about;
     private String homepage;
     private String logo;
