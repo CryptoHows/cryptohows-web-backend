@@ -75,14 +75,14 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
 
     @Query("select count(distinct round)  " +
             "from Round as round " +
-            "where round.project.coins.size > 0 ")
+            "where size(round.project.coins) > 0 ")
     Long countCoinAvailableRounds();
 
     @Query("select distinct round " +
             "from Round as round " +
             "join fetch round.project " +
             "join fetch round.vcParticipants " +
-            "where round.project.coins.size > 0 " +
+            "where size(round.project.coins) > 0 " +
             "order by round.announcedDate desc")
     List<Round> findCoinAvailableRoundsSortByRecent(Pageable pageable);
 }

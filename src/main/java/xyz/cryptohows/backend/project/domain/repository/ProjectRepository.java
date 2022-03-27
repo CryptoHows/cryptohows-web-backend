@@ -60,7 +60,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("select project " +
             "from Project as project " +
             "join fetch project.partnerships " +
-            "order by project.partnerships.size desc")
+            "order by size(project.partnerships) desc")
     LinkedHashSet<Project> findAllProjectsOrderByNumberOfPartnerships();
 
     Project findByNameIgnoreCase(String name);
