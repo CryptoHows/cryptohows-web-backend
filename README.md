@@ -1,43 +1,35 @@
 ## CryptoHows Backend API
 
-### 도메인 설계
+### 도메인 구조
 
 **[VentureCapital]**
 
 - 벤쳐 캐피탈의 정보를 담은 엔티티
-- 이름 / 소개 / 홈페이지 / 로고 사진 / List<Partnership\> partnerships
+- ID | 회사명 | 소개 | 홈페이지 | 로고 사진 | List<Partnership\> partnerships | List<RoundParticipation\> roundParticipations
 
 **[Partnership]**
 
 - 벤쳐 캐피탈 - 프로젝트를 잇는 중개 엔티티
 - 어떤 벤처 캐피탈과 프로젝트가 파트너쉽을 맺었는지 기록
-- VentureCapital / Project
+- ID | VentureCapital | Project
 
 **[Project]**
 
 - 프로젝트의 정보를 담은 엔티티
-- 이름 / 소개 / 홈페이지 / 로고 사진 / 카테고리 / 메인넷 / List<Partnership\> partnerships / List<Round\> rounds
+- ID | 프로젝트명 | 소개 | 홈페이지 | 로고 사진 | 트위터 | 커뮤니티 | 카테고리 | 메인넷 | List<Partnership\> partnerships | List<Round\> rounds | List<Coin\> coins
+
+**[Coin]**
+
+- 코인의 정보를 담은 엔티티
+- ID | Project | 코인 심볼 | 코인 정보 더보기 링크
 
 **[RoundParticipation]**
 
 - 벤처 캐피탈 - 라운드를 잇는 중개 엔티티
 - 어떤 벤처캐피탈이 어떤 라운드에 참여했는지 기록
-- VentureCapital / Round
+- ID | VentureCapital | Round
 
 **[Round]**
 
 - 투자 라운드의 정보를 담은 엔티티
-- Project 프로젝트 / 투자 시기 / 투자 금액 / 투자 라운드 / List<RoundParticipation/> participants
-
-### 구현할 기능 목록
-
-- [x] TDD를 통한 도메인 설계
-- [x] 도메인 별 패키지 분리
-- [x] Repository Layer 테스트 작성
-- [x] Service Layer 구현
-- [x] Web Layer 구현
-- [x] API 문서화
-- [x] 데이터 Excel 파일 업로드 지원
-  - [x] VC 업로드 지원
-  - [x] Project 업로드 지원
-  - [x] Round 업로드 지원
+- ID | Project | 투자 시기 | 투자 금액 | 투자 유치 뉴스 링크 | 총 투자자 | 투자 라운드 | List<RoundParticipation\> vcParticipants
