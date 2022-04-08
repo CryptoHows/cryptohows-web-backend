@@ -15,6 +15,8 @@ public enum Category {
     DEFI("DeFi"),
     INFRASTRUCTURE("Infrastructure"),
     NFTS("NFTs"),
+    DAO("Dao"),
+    P2E("P2E"),
     WEB3("Web3");
 
     private final String categoryName;
