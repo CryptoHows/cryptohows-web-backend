@@ -15,7 +15,7 @@ public enum Category {
     DEFI("DeFi"),
     INFRASTRUCTURE("Infrastructure"),
     NFTS("NFTs"),
-    DAO("Dao"),
+    DAO("DAO"),
     P2E("P2E"),
     WEB3("Web3");
 
