@@ -9,6 +9,7 @@ import xyz.cryptohows.backend.admin.application.*;
 import xyz.cryptohows.backend.admin.ui.dto.*;
 import xyz.cryptohows.backend.admin.validation.AdminTokenRequired;
 import xyz.cryptohows.backend.auth.ui.dto.TokenResponse;
+import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.ui.dto.CoinFullResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectSimpleResponse;
@@ -120,6 +121,12 @@ public class AdminController {
     public ResponseEntity<Void> uploadProjects(@RequestParam MultipartFile file) {
         projectAdminService.uploadExcel(file);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/projects/categories")
+    public ResponseEntity<List<String>> getAllCategories() {
+        List<String> categories = Category.getAllCategories();
+        return ResponseEntity.ok(categories);
     }
 
     @AdminTokenRequired
