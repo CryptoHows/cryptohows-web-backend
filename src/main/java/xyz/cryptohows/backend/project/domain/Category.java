@@ -42,7 +42,7 @@ public enum Category {
 
     public static Category ofRegister(String input) {
         String inputCategory = input.trim();
-        if (inputCategory.isEmpty()) {
+        if (inputCategory.isEmpty() || "N/A".equals(input)) {
             return NONE;
         }
         return Arrays.stream(values())
