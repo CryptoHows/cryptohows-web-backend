@@ -65,16 +65,7 @@ public class ProjectAdminService {
     }
 
     public void updateById(Long projectId, ProjectRequest projectRequest) {
-        Project project = findByIdIfPossible(projectId);
-        project.updateInformation(
-                projectRequest.getName(),
-                projectRequest.getAbout(),
-                projectRequest.getHomepage(),
-                projectRequest.getLogo(),
-                projectRequest.getTwitter(),
-                projectRequest.getCommunity(),
-                projectRequest.getCategory(),
-                projectRequest.getMainnet()
-        );
+        deleteById(projectId);
+        create(projectRequest);
     }
 }
