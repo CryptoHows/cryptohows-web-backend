@@ -76,15 +76,24 @@ public class RoundUploadService {
 
         List<RoundExcelFormat> roundExcelFormats = RoundExcelFormat.toList(rounds);
         for (RoundExcelFormat roundExcelFormat : roundExcelFormats) {
-            Project project = findProject(roundExcelFormat.getProjectName());
-            FundingStage fundingStage = FundingStage.of(roundExcelFormat.getFundingStage());
-            LocalDate localDate = roundExcelFormat.convertToLocalDate();
-            if (roundRepository.existsByProjectAndFundingStageAndAnnouncedDate(project, fundingStage, localDate)) {
-                Round round = roundRepository.findByProjectAndFundingStageAndAnnouncedDate(project, fundingStage, localDate);
-                roundParticipationRepository.save(new RoundParticipation(newVC, round));
-            } else {
-                uploadSingleRound(roundExcelFormat);
-            }
+            uploadRoundIfProjectExists(newVC, roundExcelFormat);
         }
+    }
+
+    private void uploadRoundIfProjectExists(VentureCapital newVC, RoundExcelFormat roundExcelFormat) {
+        if (!projectRepository.existsByName(roundExcelFormat.getProjectName())) {
+            return;
+        }
+
+        Project project = findProject(roundExcelFormat.getProjectName());
+        FundingStage fundingStage = FundingStage.of(roundExcelFormat.getFundingStage());
+        LocalDate localDate = roundExcelFormat.convertToLocalDate();
+        if (roundRepository.existsByProjectAndFundingStageAndAnnouncedDate(project, fundingStage, localDate)) {
+            Round round = roundRepository.findByProjectAndFundingStageAndAnnouncedDate(project, fundingStage, localDate);
+            roundParticipationRepository.save(new RoundParticipation(newVC, round));
+            return;
+        }
+
+        uploadSingleRound(roundExcelFormat);
     }
 }
