@@ -81,11 +81,13 @@ public class AdminController {
     }
 
     @AdminTokenRequired
-    @PostMapping("/venture-capital/new-listing")
-    public ResponseEntity<Void> uploadNewListingVentureCapital(@RequestBody VentureCapitalRequest ventureCapitalRequest,
-                                                 @RequestParam MultipartFile projects,
-                                                 @RequestParam MultipartFile rounds) {
-        ventureCapitalAdminService.uploadNewListingVentureCapital(ventureCapitalRequest, projects, rounds);
+    @PostMapping("/venture-capitals/new-listing")
+    public ResponseEntity<Void> uploadNewListingVentureCapital(@ModelAttribute VentureCapitalNewListingRequest ventureCapitalNewListingRequest) {
+        ventureCapitalAdminService.uploadNewListingVentureCapital(
+                ventureCapitalNewListingRequest.extractVentureCapitalRequest(),
+                ventureCapitalNewListingRequest.getProjects(),
+                ventureCapitalNewListingRequest.getRounds()
+        );
         return ResponseEntity.ok().build();
     }
 
