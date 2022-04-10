@@ -81,6 +81,17 @@ public class AdminController {
     }
 
     @AdminTokenRequired
+    @PostMapping("/venture-capitals/new-listing")
+    public ResponseEntity<Void> uploadNewListingVentureCapital(@ModelAttribute VentureCapitalNewListingRequest ventureCapitalNewListingRequest) {
+        ventureCapitalAdminService.uploadNewListingVentureCapital(
+                ventureCapitalNewListingRequest.extractVentureCapitalRequest(),
+                ventureCapitalNewListingRequest.getProjects(),
+                ventureCapitalNewListingRequest.getRounds()
+        );
+        return ResponseEntity.ok().build();
+    }
+
+    @AdminTokenRequired
     @GetMapping("/projects")
     public ResponseEntity<List<ProjectSimpleResponse>> findAllProjects() {
         List<ProjectSimpleResponse> projectSimpleResponses = projectAdminService.findAll();

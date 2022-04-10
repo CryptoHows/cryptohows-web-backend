@@ -16,11 +16,13 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.CoinRepository;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.round.domain.FundingStage;
+import xyz.cryptohows.backend.round.domain.LocalDateConverter;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.RoundParticipation;
 import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -139,8 +141,8 @@ class RoundRepositoryTest {
         tem.clear();
     }
 
-    @Test
     @DisplayName("Round의 Project가 없다면 저장되지 않는다.")
+    @Test
     void cannotSaveRound() {
         Round noProject = Round.builder()
                 .announcedDate("2019-10")
@@ -153,16 +155,16 @@ class RoundRepositoryTest {
                 .isInstanceOf(Exception.class);
     }
 
-    @Test
     @DisplayName("해당 Round에 벤처캐피탈이 참여할 수 있다.")
+    @Test
     void vcJoinsRound() {
         Round round = roundRepository.findById(EOSSeed.getId())
                 .orElseThrow(IllegalArgumentException::new);
         assertThat(round.getVcParticipants()).hasSize(1);
     }
 
-    @Test
     @DisplayName("해당 라운드가 삭제되면, 그에 따른 RoundParticipant 모두 삭제된다.")
+    @Test
     void roundDeleted() {
         // when
         long countBefore = roundParticipationRepository.count();
@@ -174,8 +176,8 @@ class RoundRepositoryTest {
         assertThat(countAfter).isEqualTo(3L);
     }
 
-    @Test
     @DisplayName("최근에 투자받은 라운드 순서대로 페이지네이션을 통해 받아볼 수 있다.")
+    @Test
     void recentRounds() {
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").descending());
@@ -192,8 +194,8 @@ class RoundRepositoryTest {
         assertThat(recentRounds2.get(1)).isEqualTo(EOSSeed);
     }
 
-    @Test
     @DisplayName("투자받은 라운드 오래된 순서대로 페이지네이션을 통해 받아볼 수 있다.")
+    @Test
     void recentRoundsASC() {
         // when
         Pageable pageable1 = PageRequest.of(0, 2, Sort.by("announcedDate").ascending());
@@ -210,8 +212,8 @@ class RoundRepositoryTest {
         assertThat(oldRounds2.get(1)).isEqualTo(axieSeriesA);
     }
 
-    @Test
     @DisplayName("라운드의 카운트를 셀 수 있다.")
+    @Test
     void countRound() {
         // when
         long count = roundRepository.count();
@@ -220,8 +222,8 @@ class RoundRepositoryTest {
         assertThat(count).isEqualTo(4L);
     }
 
-    @Test
     @DisplayName("id로 라운드를 받아볼 수 있다.")
+    @Test
     void findByRound() {
         // when
         Optional<Round> roundById = roundRepository.findById(EOSSeed.getId());
@@ -231,8 +233,8 @@ class RoundRepositoryTest {
         assertThat(round).isEqualTo(EOSSeed);
     }
 
-    @Test
     @DisplayName("코인이 등록된 프로젝트에 대한 라운드를 받아볼 수 있다.")
+    @Test
     void findCoinAvailableRoundsSortByRecent() {
         // when
         Pageable pageable = PageRequest.of(0, 10);
@@ -242,13 +244,36 @@ class RoundRepositoryTest {
         assertThat(rounds).containsExactly(axieSeriesA, axieSeed);
     }
 
-    @Test
     @DisplayName("코인이 등록된 프로젝트에 대한 라운드 갯수를 받아볼 수 있다.")
+    @Test
     void countCoinAvailableRounds() {
         // when
         Long count = roundRepository.countCoinAvailableRounds();
 
         // then
         assertThat(count).isEqualTo(2L);
+    }
+
+    @DisplayName("프로젝트 이름, FundingStage, 투자 날짜로 Round를 찾을 수 있다.")
+    @Test
+    void findByProjectAndFundingStageAndLocalDate() {
+        // given
+        String date = "2022.4.10";
+        Round axieSeriesD = Round.builder()
+                .project(axieInfinity)
+                .announcedDate(date)
+                .moneyRaised("$100M")
+                .newsArticle("https://news.com/funding")
+                .fundingStage(FundingStage.SERIES_D)
+                .build();
+        roundRepository.save(axieSeriesD);
+
+        // when
+        LocalDate localDate = LocalDateConverter.formatDate(date);
+        Round foundRound = roundRepository.findByProjectAndFundingStageAndAnnouncedDate(axieInfinity, FundingStage.SERIES_D, localDate);
+
+        // then
+        assertThat(foundRound).isEqualTo(axieSeriesD);
+        assertThat(roundRepository.existsByProjectAndFundingStageAndAnnouncedDate(axieInfinity, FundingStage.SERIES_D, localDate)).isTrue();
     }
 }

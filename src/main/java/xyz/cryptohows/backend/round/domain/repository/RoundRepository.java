@@ -7,8 +7,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import xyz.cryptohows.backend.project.domain.Category;
 import xyz.cryptohows.backend.project.domain.Mainnet;
+import xyz.cryptohows.backend.project.domain.Project;
+import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,4 +88,8 @@ public interface RoundRepository extends JpaRepository<Round, Long> {
             "where size(round.project.coins) > 0 " +
             "order by round.announcedDate desc")
     List<Round> findCoinAvailableRoundsSortByRecent(Pageable pageable);
+
+    boolean existsByProjectAndFundingStageAndAnnouncedDate(Project project, FundingStage fundingStage, LocalDate announcedDate);
+
+    Round findByProjectAndFundingStageAndAnnouncedDate(Project project, FundingStage fundingStage, LocalDate announcedDate);
 }

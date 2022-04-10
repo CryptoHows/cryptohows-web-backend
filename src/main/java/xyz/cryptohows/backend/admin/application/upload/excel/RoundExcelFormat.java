@@ -7,9 +7,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.round.domain.FundingStage;
+import xyz.cryptohows.backend.round.domain.LocalDateConverter;
 import xyz.cryptohows.backend.round.domain.Round;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,6 +73,10 @@ public class RoundExcelFormat {
             return "";
         }
         return "$" + NumberFormat.getInstance().format(value);
+    }
+
+    public LocalDate convertToLocalDate() {
+        return  LocalDateConverter.formatDate(announcedDate);
     }
 
     public Round toRound(Project project) {

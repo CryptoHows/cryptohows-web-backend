@@ -26,4 +26,6 @@ public interface VentureCapitalRepository extends JpaRepository<VentureCapital, 
             "from VentureCapital as ventureCapital " +
             "order by ventureCapital.name asc ")
     List<String> findAllNames();
+
+    Optional<VentureCapital> findByNameIgnoreCase(String ventureCapitalName);
 }

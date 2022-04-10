@@ -45,7 +45,7 @@ public enum Mainnet {
 
     public static Mainnet ofRegister(String input) {
         String inputMainnet = input.trim();
-        if (inputMainnet.isEmpty()) {
+        if (inputMainnet.isEmpty() || "N/A".equals(input)) {
             return NONE;
         }
         return Arrays.stream(values())
