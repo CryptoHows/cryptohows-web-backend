@@ -44,10 +44,12 @@ public class ProjectUploadService {
     }
 
     private void uploadPartnerships(List<ProjectExcelFormat> projectExcelFormats) {
-        projectExcelFormats.forEach(projectExcelFormat -> {
-            Project project = projectRepository.findByNameIgnoreCase(projectExcelFormat.getName());
-            savePartnerships(project, projectExcelFormat.getInvestors());
-        });
+        projectExcelFormats.forEach(this::uploadSingleProjectPartnership);
+    }
+
+    private void uploadSingleProjectPartnership(ProjectExcelFormat projectExcelFormat) {
+        Project project = projectRepository.findByNameIgnoreCase(projectExcelFormat.getName());
+        savePartnerships(project, projectExcelFormat.getInvestors());
     }
 
     public void savePartnerships(Project project, List<String> investors) {
@@ -56,5 +58,22 @@ public class ProjectUploadService {
                 .map(ventureCapital -> new Partnership(ventureCapital, project))
                 .collect(Collectors.toList());
         partnershipRepository.saveAll(projectPartnerships);
+    }
+
+    public void uploadNewListingVentureCapitalProjects(String ventureCapitalName, MultipartFile projectFile) {
+        VentureCapital newVC = ventureCapitalRepository.findByNameIgnoreCase(ventureCapitalName)
+                .orElseThrow(() -> new CryptoHowsException(ventureCapitalName + "는 존재하지 않습니다."));
+
+        List<ProjectExcelFormat> projectExcelFormats = ProjectExcelFormat.toList(projectFile);
+        for (ProjectExcelFormat projectExcelFormat : projectExcelFormats) {
+            if (projectRepository.existsByName(projectExcelFormat.getName())) {
+                Project project = projectRepository.findByNameIgnoreCase(projectExcelFormat.getName());
+                partnershipRepository.save(new Partnership(newVC, project));
+            } else {
+                Project project = projectExcelFormat.toProject();
+                projectRepository.save(project);
+                savePartnerships(project, projectExcelFormat.getInvestors());
+            }
+        }
     }
 }

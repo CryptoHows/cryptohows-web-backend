@@ -20,6 +20,10 @@ public class ExcelFileFixture {
     public static final String ROUNDS_PROJECT_NOT_UPLOADED = "Round_project_not_uploaded.xlsx";
     public static final String ROUNDS_DUPLICATED = "Round_duplicated.xlsx";
 
+    public static final String NEW_VC_SCENARIO_PATH = "new-vc-scenario/";
+    public static final String NEW_VC_PROJECTS = "New_VC_projects.xlsx";
+    public static final String NEW_VC_ROUNDS = "New_VC_rounds.xlsx";
+
     public static MultipartFile getVentureCapitalsFile() {
         File ventureCapitals = new File(new File("").getAbsolutePath() + FILE_PATH + VENTURE_CAPITALS);
         return generateMultipartFile(VENTURE_CAPITALS, ventureCapitals);
@@ -53,6 +57,31 @@ public class ExcelFileFixture {
     public static MultipartFile getRoundsDuplicated() {
         File rounds = new File(new File("").getAbsolutePath() + FILE_PATH + ROUNDS_DUPLICATED);
         return generateMultipartFile(ROUNDS, rounds);
+    }
+
+    public static MultipartFile getExistingVentureCapitalsFile() {
+        File ventureCapitals = new File(new File("").getAbsolutePath() + FILE_PATH + NEW_VC_SCENARIO_PATH + VENTURE_CAPITALS);
+        return generateMultipartFile(VENTURE_CAPITALS, ventureCapitals);
+    }
+
+    public static MultipartFile getExistingProjects() {
+        File projects = new File(new File("").getAbsolutePath() + FILE_PATH + NEW_VC_SCENARIO_PATH + PROJECTS);
+        return generateMultipartFile(PROJECTS, projects);
+    }
+
+    public static MultipartFile getExistingRounds() {
+        File rounds = new File(new File("").getAbsolutePath() + FILE_PATH + NEW_VC_SCENARIO_PATH + ROUNDS);
+        return generateMultipartFile(ROUNDS, rounds);
+    }
+
+    public static MultipartFile getNewVCProjects() {
+        File projects = new File(new File("").getAbsolutePath() + FILE_PATH + NEW_VC_SCENARIO_PATH + NEW_VC_PROJECTS);
+        return generateMultipartFile(NEW_VC_PROJECTS, projects);
+    }
+
+    public static MultipartFile getNewVCRounds() {
+        File rounds = new File(new File("").getAbsolutePath() + FILE_PATH + NEW_VC_SCENARIO_PATH + NEW_VC_ROUNDS);
+        return generateMultipartFile(NEW_VC_ROUNDS, rounds);
     }
 
     private static MultipartFile generateMultipartFile(String fileName, File file) {
