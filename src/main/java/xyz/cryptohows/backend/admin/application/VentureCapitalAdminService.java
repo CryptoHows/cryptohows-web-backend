@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.cryptohows.backend.admin.application.upload.ProjectUploadService;
+import xyz.cryptohows.backend.admin.application.upload.RoundUploadService;
 import xyz.cryptohows.backend.admin.application.upload.VentureCapitalUploadService;
 import xyz.cryptohows.backend.admin.ui.dto.VentureCapitalRequest;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
@@ -26,6 +28,9 @@ import java.util.stream.Collectors;
 public class VentureCapitalAdminService {
 
     private final VentureCapitalUploadService ventureCapitalUploadService;
+    private final ProjectUploadService projectUploadService;
+    private final RoundUploadService roundUploadService;
+
     private final VentureCapitalRepository ventureCapitalRepository;
     private final ProjectRepository projectRepository;
     private final RoundRepository roundRepository;
@@ -89,5 +94,11 @@ public class VentureCapitalAdminService {
                 ventureCapitalRequest.getHomepage(),
                 ventureCapitalRequest.getLogo()
         );
+    }
+
+    public void uploadNewListingVentureCapital(VentureCapitalRequest ventureCapitalRequest, MultipartFile projects, MultipartFile rounds) {
+        create(ventureCapitalRequest);
+        projectUploadService.uploadNewListingVentureCapitalProjects(ventureCapitalRequest.getName(), projects);
+        roundUploadService.uploadNewListingVentureCapitalRounds(ventureCapitalRequest.getName(), rounds);
     }
 }

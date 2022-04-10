@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import xyz.cryptohows.backend.exception.CryptoHowsException;
 import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
+import xyz.cryptohows.backend.round.domain.FundingStage;
 import xyz.cryptohows.backend.round.domain.Round;
 import xyz.cryptohows.backend.round.domain.RoundParticipation;
 import xyz.cryptohows.backend.round.domain.repository.RoundParticipationRepository;
@@ -15,6 +16,7 @@ import xyz.cryptohows.backend.vc.domain.VentureCapital;
 import xyz.cryptohows.backend.vc.domain.repository.VentureCapitalRepository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -30,11 +32,15 @@ public class RoundUploadService {
     public void uploadRounds(MultipartFile file) {
         List<RoundExcelFormat> roundExcelFormats = RoundExcelFormat.toList(file);
         for (RoundExcelFormat roundExcelFormat : roundExcelFormats) {
-            Project project = findProject(roundExcelFormat.getProjectName());
-            Round round = roundExcelFormat.toRound(project);
-            validateRoundAndSave(project, round);
-            uploadRoundParticipation(round, roundExcelFormat.getParticipants());
+            uploadSingleRound(roundExcelFormat);
         }
+    }
+
+    private void uploadSingleRound(RoundExcelFormat roundExcelFormat) {
+        Project project = findProject(roundExcelFormat.getProjectName());
+        Round round = roundExcelFormat.toRound(project);
+        validateRoundAndSave(project, round);
+        uploadRoundParticipation(round, roundExcelFormat.getParticipants());
     }
 
     public Project findProject(String projectName) {
@@ -62,5 +68,23 @@ public class RoundUploadService {
             roundParticipations.add(new RoundParticipation(participant, round));
         }
         roundParticipationRepository.saveAll(roundParticipations);
+    }
+
+    public void uploadNewListingVentureCapitalRounds(String ventureCapitalName, MultipartFile rounds) {
+        VentureCapital newVC = ventureCapitalRepository.findByNameIgnoreCase(ventureCapitalName)
+                .orElseThrow(() -> new CryptoHowsException(ventureCapitalName + "은 존재하지 않습니다."));
+
+        List<RoundExcelFormat> roundExcelFormats = RoundExcelFormat.toList(rounds);
+        for (RoundExcelFormat roundExcelFormat : roundExcelFormats) {
+            Project project = findProject(roundExcelFormat.getProjectName());
+            FundingStage fundingStage = FundingStage.of(roundExcelFormat.getFundingStage());
+            LocalDate localDate = roundExcelFormat.convertToLocalDate();
+            if (roundRepository.existsByProjectAndFundingStageAndAnnouncedDate(project, fundingStage, localDate)) {
+                Round round = roundRepository.findByProjectAndFundingStageAndAnnouncedDate(project, fundingStage, localDate);
+                roundParticipationRepository.save(new RoundParticipation(newVC, round));
+            } else {
+                uploadSingleRound(roundExcelFormat);
+            }
+        }
     }
 }
