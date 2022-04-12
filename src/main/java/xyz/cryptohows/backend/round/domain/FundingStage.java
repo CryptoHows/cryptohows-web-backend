@@ -14,6 +14,7 @@ public enum FundingStage {
     STRATEGIC("strategic"),
     GROWTH("growth"),
     SEED("seed"),
+    PRE_SERIES_A("pre series A"),
     SERIES_A("series A"),
     SERIES_B("series B"),
     SERIES_C("series C"),
