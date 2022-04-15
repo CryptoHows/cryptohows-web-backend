@@ -13,6 +13,7 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectSimpleResponse;
+import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ProjectAdminService {
 
     private final ProjectUploadService projectUploadService;
     private final ProjectRepository projectRepository;
+    private final PartnershipRepository partnershipRepository;
 
     public List<ProjectSimpleResponse> findAll() {
         List<Project> projects = projectRepository.findAll();
@@ -65,7 +67,19 @@ public class ProjectAdminService {
     }
 
     public void updateById(Long projectId, ProjectRequest projectRequest) {
-        deleteById(projectId);
-        create(projectRequest);
+        Project project = findByIdIfPossible(projectId);
+        partnershipRepository.deleteByProject(project);
+        partnershipRepository.flush();
+        project.updateInformation(
+                projectRequest.getName(),
+                projectRequest.getAbout(),
+                projectRequest.getHomepage(),
+                projectRequest.getLogo(),
+                projectRequest.getTwitter(),
+                projectRequest.getCommunity(),
+                projectRequest.getCategory(),
+                projectRequest.getMainnet()
+        );
+        projectUploadService.savePartnerships(project, projectRequest.generateInvestors());
     }
 }
