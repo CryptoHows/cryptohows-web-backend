@@ -13,11 +13,9 @@ import xyz.cryptohows.backend.project.domain.Project;
 import xyz.cryptohows.backend.project.domain.repository.ProjectRepository;
 import xyz.cryptohows.backend.project.ui.dto.ProjectResponse;
 import xyz.cryptohows.backend.project.ui.dto.ProjectSimpleResponse;
-import xyz.cryptohows.backend.vc.domain.Partnership;
 import xyz.cryptohows.backend.vc.domain.repository.PartnershipRepository;
 
 import java.util.List;
-import java.util.Set;
 
 @Transactional
 @Service
