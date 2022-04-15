@@ -70,6 +70,8 @@ public class ProjectAdminService {
 
     public void updateById(Long projectId, ProjectRequest projectRequest) {
         Project project = findByIdIfPossible(projectId);
+        partnershipRepository.deleteByProject(project);
+        partnershipRepository.flush();
         project.updateInformation(
                 projectRequest.getName(),
                 projectRequest.getAbout(),
@@ -80,8 +82,6 @@ public class ProjectAdminService {
                 projectRequest.getCategory(),
                 projectRequest.getMainnet()
         );
-        Set<Partnership> partnerships = project.getPartnerships();
-        partnershipRepository.deleteAll(partnerships);
         projectUploadService.savePartnerships(project, projectRequest.generateInvestors());
     }
 }

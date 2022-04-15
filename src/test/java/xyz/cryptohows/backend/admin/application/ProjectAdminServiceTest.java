@@ -42,7 +42,7 @@ class ProjectAdminServiceTest {
     private EntityManager em;
 
     private final VentureCapital hashed = VentureCapital.builder()
-            .name("해시드")
+            .name("hashed")
             .about("한국의 VC")
             .homepage("hashed.com")
             .logo("hashed.png")

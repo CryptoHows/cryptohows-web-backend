@@ -18,6 +18,8 @@ public interface PartnershipRepository extends JpaRepository<Partnership, Long> 
 
     void deleteByVentureCapital(VentureCapital ventureCapital);
 
+    void deleteByProject(Project project);
+
     @Query("select count(distinct partnership.project) " +
             "from Partnership as partnership " +
             "where partnership.ventureCapital.name in (:ventureCapitalNames)")
